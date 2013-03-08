@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h:form id="question_form">
+
+            <h:panelGrid id="question" columns="2">
+
+                <h:outputLabel value="Question :"/>
+                <h:outputText value="#{quizsub_ctrl.currentQuestion.text}"/>
+
+                <h:outputText value="Answer : "/>
+                <p:selectOneRadio value="#{quizsub_ctrl.userAnswer}" converter="possibleAnswerItemsConverter">
+                    <f:selectItems value="#{quizsub_ctrl.currentQuestion.possibleAnswers}" var="a"
+                                   itemLabel="#{a.text}"/>
+                </p:selectOneRadio>
+
+                <p:commandButton value="Prev" action="#{quizsub_ctrl.prev}"
+                                 rendered="#{!quizsub_ctrl.isStartOfQuiz}" update="question"/>
+                <p:commandButton value="Next" action="#{quizsub_ctrl.next}"
+                                 rendered="#{!quizsub_ctrl.isEndOfQuiz}" update="question"/>
+                <p:commandButton value="Complete" action="#{quizsub_ctrl.complete}"
+                                 rendered="#{quizsub_ctrl.isEndOfQuiz}" update="finalResult"/>
+
+                <p:messages/>
+            </h:panelGrid>
+
+            <h:panelGroup id="finalResult">
+                <h:panelGrid rendered="#{quizsub_ctrl.quizComplete}">
+                    <h:outputLabel value="Final Score:"/>
+                    <h:outputText value="#{quizsub_ctrl.finalScore}"/>
+                </h:panelGrid>
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
