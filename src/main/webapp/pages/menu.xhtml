@@ -15,16 +15,18 @@
         <p:menu id="nav_menu" styleClass="nav_menu">
             <p:menuitem value="Menu #1"/>
             <p:menuitem value="Menu #2"/>
-            <p:menuitem id="question_page_btn" value="Start Quiz"
-                        action="/pages/quiz/question?faces-redirect=true" ajax="false"/>
+            <p:menuitem id="question_page_btn" value="Quiz"
+                        action="/pages/quiz/user_quiz?faces-redirect=true" ajax="false"/>
             <!--p:menuitem id="users_grid_page_btn" value="Users (Grid)"
                         action="/pages/user/users_grid?faces-redirect=true" rendered="#{s:hasPermission('menu:user')}"/-->
             <p:menuitem id="users_page_btn" value="Users"
-                        action="/pages/user/users_list?faces-redirect=true" ajax="false" rendered="#{s:hasPermission('menu:user')}"/>
+                        action="/pages/user/users_list?faces-redirect=true" ajax="false"
+                        rendered="#{s:hasPermission('menu:user')}"/>
             <p:menuitem id="logs_page_btn" value="Logs"
                         action="/pages/superadmin/logs?faces-redirect=true" rendered="#{s:hasPermission('menu:logs')}"/>
             <p:menuitem id="personal_page_btn" value="Modify Personal Info"
-                        action="/pages/user/personal?faces-redirect=true" rendered="#{s:hasPermission('menu:personal_info')}"/>
+                        action="/pages/user/personal?faces-redirect=true"
+                        rendered="#{s:hasPermission('menu:personal_info')}"/>
             <p:menuitem id="account_page_btn" value="Modify Account"
                         action="/pages/user/account?faces-redirect=true" rendered="#{s:hasPermission('menu:account')}"/>
 

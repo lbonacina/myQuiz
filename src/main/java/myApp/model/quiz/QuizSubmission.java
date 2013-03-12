@@ -18,6 +18,10 @@ import java.util.*;
 public class QuizSubmission {
 // ------------------------------ FIELDS ------------------------------
 
+    public enum Status {
+        NEW, STARTED, COMPLETED
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,9 +36,17 @@ public class QuizSubmission {
     @NotNull
     private Quiz quiz;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date")
-    private Date date;
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    private Status status;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_date")
+    private Date endDate;
 
     @Column(name = "final_score")
     private Double finalScore;
@@ -46,14 +58,14 @@ public class QuizSubmission {
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
-
     public QuizSubmission() {
+        userAnswers = new ArrayList<Answer>();
     }
 
-    public QuizSubmission(User user, Quiz quiz, Date date) {
+    public QuizSubmission(User user, Quiz quiz) {
+        status = Status.NEW;
         this.user = user;
         this.quiz = quiz;
-        this.date = date;
         userAnswers = new ArrayList<Answer>();
     }
 
@@ -64,13 +76,16 @@ public class QuizSubmission {
     }
 
     public void registerAnswers(Question question, List<PossibleAnswer> answers) {
-
         for (PossibleAnswer p : answers)
             userAnswers.add(new Answer(question, p));
     }
 
+    public void start() {
+        status = Status.STARTED;
+        startDate = Calendar.getInstance().getTime();
+    }
 
-    public double score() {
+    public double complete() {
 
         double score = 0.0;
 
@@ -89,6 +104,10 @@ public class QuizSubmission {
         }
 
         finalScore = Math.round(score * 100.0) / 100.0;
+
+        endDate = Calendar.getInstance().getTime();
+        status = Status.COMPLETED;
+
         return finalScore;
     }
 
@@ -110,12 +129,20 @@ public class QuizSubmission {
         this.userAnswers = userAnswers;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public Quiz getQuiz() {
@@ -140,5 +167,13 @@ public class QuizSubmission {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/resources/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h:form id="question_form">
+
+            <p:commandButton value="Test" action="#{userquiz_ctrl.createTestQuizSubmission}" update="user_quiz"/>
+
+            <p:commandButton value="Start" action="#{userquiz_ctrl.startQuiz}" ajax="false"/>
+
+            <p:dataTable id="user_quiz" value="#{userquiz_ctrl.userQuiz}" var="quiz"
+                         selectionMode="single" selection="#{userquiz_ctrl.selectedQuizSubmission}" rowKey="#{quiz.id}">
+                <p:column headerText="Name">
+                    #{quiz.quiz.name}
+                </p:column>
+                <p:column headerText="Status">
+                    #{quiz.status}
+                </p:column>
+                <p:column headerText="Start Date">
+                    <h:outputText value="#{quiz.startDate}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="End Date">
+                    <h:outputText value="#{quiz.endDate}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Final Score">
+                    #{quiz.finalScore}
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -34,22 +34,22 @@
                                      disabled="#{quizsub_ctrl.isStartOfQuiz}" update="question"/>
                     <p:commandButton value="Next" styleClass="next" action="#{quizsub_ctrl.next}"
                                      disabled="#{quizsub_ctrl.isEndOfQuiz}" update="question"/>
-                    <p:commandButton value="Complete" action="#{quizsub_ctrl.complete}"
-                                     rendered="#{quizsub_ctrl.isEndOfQuiz}" update="finalResult"/>
+                    <p:commandButton value="Complete" action="#{quizsub_ctrl.complete}" ajax="false"
+                                     rendered="#{quizsub_ctrl.isEndOfQuiz}"/>
 
                     <p:messages/>
                 </p:outputPanel>
 
             </p:outputPanel>
 
-
-            <h:panelGroup id="finalResult">
-                <h:panelGrid rendered="#{quizsub_ctrl.quizComplete}">
-                    <h:outputLabel value="Final Score:"/>
-                    <h:outputText value="#{quizsub_ctrl.finalScore}"/>
-                </h:panelGrid>
-            </h:panelGroup>
-
+            <!--
+                        <h:panelGroup id="finalResult">
+                            <h:panelGrid rendered="#{quizsub_ctrl.quizComplete}">
+                                <h:outputLabel value="Final Score:"/>
+                                <h:outputText value="#{quizsub_ctrl.finalScore}"/>
+                            </h:panelGrid>
+                        </h:panelGroup>
+            -->
         </h:form>
 
     </ui:define>
