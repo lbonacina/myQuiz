@@ -1,35 +1,34 @@
 /* Core styles for the page */
 body {
-  margin: 0;
-  padding: 5px;
-  font-size: 11px;
-/*
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-*/
+    margin: 0;
+    padding: 5px;
+    font-size: 11px;
+    /*
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+    */
 }
 
 .page_layout_north {
     overflow-y: hidden;
     padding: 0 !important;
-    border: 0 none ;
+    border: 0 none;
 }
 
 .page_layout_center {
-    padding: 20px ;
+    padding: 20px;
 }
 
 .page_toolbar {
     height: 50px;
-    background: #01325A none ;
-    color : white;
+    background: #01325A none;
+    color: white;
 }
 
 .nav_menu {
     border: 0 none !important;
 }
-
 
 .ui-outputlabel {
     font-weight: bold;
@@ -39,6 +38,7 @@ body {
     font-size: 2em;
     font-weight: bold;
 }
+
 /*
    input form without the grids, all based on floating & clearing
    remember to use  use of class 'ui-helper-clearfix' (provided by PF) to avoid collapsing div of all floating content,
@@ -48,42 +48,42 @@ body {
 .input_form {
     padding: 20px;
 }
+
 .input_form .dialogLabel {
     padding: 2px;
     margin: 4px 4px 10px;
     width: 80px;
-    float:left;
-    clear:left;
+    float: left;
+    clear: left;
 }
 
 .input_form .ui-message-error {
-    float:left;
+    float: left;
 }
 
 .input_form input {
-    float:left;
+    float: left;
     width: 300px;
 }
 
 .input_form .ui-chkbox {
     margin-top: 3px;
-    float:left;
+    float: left;
 }
 
 .account_details {
     margin-top: 50px;
     width: 600px;
-    margin-left: auto ;
-    margin-right: auto ;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 
 .account_input_form .dialogLabel {
     width: 130px;
 }
 
 .account_input_form input {
-    float:left;
+    float: left;
     width: 150px;
 }
 
@@ -96,8 +96,8 @@ body {
     -moz-box-shadow: none !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
-    background: none  !important;
-    width:240px !important;
+    background: none !important;
+    width: 240px !important;
 }
 
 .ui-selectlistbox-list tr {
@@ -113,13 +113,44 @@ body {
 */
 
 .add_user_icon {
-    background-image: url(#{resource['images/user_add.ico']}) !important;
+    background-image: url(#{resource[ 'images/user_add.ico' ]}) !important;
 }
 
 .delete_user_icon {
-    background-image: url(#{resource['images/user_delete.ico']}) !important;
+    background-image: url(#{resource[ 'images/user_delete.ico' ]}) !important;
 }
 
 .full_screen_icon {
-    background-image: url(#{resource['images/view_fullsceen.ico']}) !important;
+    background-image: url(#{resource[ 'images/view_fullsceen.ico' ]}) !important;
+}
+
+.question_button_panel {
+    float: left;
+    clear: left;
+}
+
+.question .ui-outputlabel {
+    float: left;
+    clear: left;
+    font-size: 2em;
+    margin-top: 10px;
+}
+
+.question .question_text {
+    float: left;
+    clear: left;
+    font-size: 1.5em;
+    margin: 20px;
+}
+
+.question .ui-selectoneradio {
+    float: left;
+    clear: left;
+    font-size: 1.5em;
+    margin: 20px;
+    /*    border-spacing: 20px; */
+}
+
+.question .ui-selectoneradio td, .question .ui-selectoneradio tr {
+    padding: 10px;
 }

@@ -3,21 +3,22 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
-                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:p="http://primefaces.org/ui"
                 template="/resources/templates/default.xhtml">
     <ui:define name="content">
 
         <h:form id="question_form">
 
-            <h:panelGrid id="question" columns="2">
 
-                <h:outputLabel value="Question :"/>
-                <h:outputText value="#{quizsub_ctrl.currentQuestion.text}"/>
+            <p:outputPanel id="question" styleClass="question">
 
-                <h:outputText value="Answer : "/>
+                <p:outputLabel
+                        value="Question #{quizsub_ctrl.currentQuestionNumber} of #{quizsub_ctrl.quiz.numberOfQuestions} : "/>
+                <h:outputText styleClass="question_text ui-widget" value="#{quizsub_ctrl.currentQuestion.text}"/>
+
+                <p:outputLabel value="Answers : "/>
                 <p:selectOneRadio value="#{quizsub_ctrl.singleUserAnswer}" converter="possibleAnswerItemsConverter"
-                                  rendered="#{!quizsub_ctrl.currentQuestionMultiAnswer}">
+                                  layout="pageDirection" rendered="#{!quizsub_ctrl.currentQuestionMultiAnswer}">
                     <f:selectItems value="#{quizsub_ctrl.currentPossibleAnswers}"
                                    var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
                 </p:selectOneRadio>
@@ -28,15 +29,19 @@
                                    var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
                 </p:selectManyCheckbox>
 
-                <p:commandButton value="Prev" action="#{quizsub_ctrl.prev}"
-                                 rendered="#{!quizsub_ctrl.isStartOfQuiz}" update="question"/>
-                <p:commandButton value="Next" action="#{quizsub_ctrl.next}"
-                                 rendered="#{!quizsub_ctrl.isEndOfQuiz}" update="question"/>
-                <p:commandButton value="Complete" action="#{quizsub_ctrl.complete}"
-                                 rendered="#{quizsub_ctrl.isEndOfQuiz}" update="finalResult"/>
+                <p:outputPanel styleClass="question_button_panel">
+                    <p:commandButton value="Prev" styleClass="prev" action="#{quizsub_ctrl.prev}"
+                                     disabled="#{quizsub_ctrl.isStartOfQuiz}" update="question"/>
+                    <p:commandButton value="Next" styleClass="next" action="#{quizsub_ctrl.next}"
+                                     disabled="#{quizsub_ctrl.isEndOfQuiz}" update="question"/>
+                    <p:commandButton value="Complete" action="#{quizsub_ctrl.complete}"
+                                     rendered="#{quizsub_ctrl.isEndOfQuiz}" update="finalResult"/>
 
-                <p:messages/>
-            </h:panelGrid>
+                    <p:messages/>
+                </p:outputPanel>
+
+            </p:outputPanel>
+
 
             <h:panelGroup id="finalResult">
                 <h:panelGrid rendered="#{quizsub_ctrl.quizComplete}">
