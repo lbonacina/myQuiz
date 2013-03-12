@@ -37,7 +37,7 @@ public class QuizSubmission {
     private Date date;
 
     @Column(name = "final_score")
-    private int finalScore;
+    private Double finalScore;
 
     //@OneToMany(cascade = CascadeType.ALL)
     //@JoinColumn(name = "quiz_submission_id")
@@ -65,8 +65,8 @@ public class QuizSubmission {
 
     public void registerAnswers(Question question, List<PossibleAnswer> answers) {
 
-        for ( PossibleAnswer p : answers )
-            userAnswers.add(new Answer(question, p)) ;
+        for (PossibleAnswer p : answers)
+            userAnswers.add(new Answer(question, p));
     }
 
 
@@ -88,17 +88,18 @@ public class QuizSubmission {
             score += q.score(pa);
         }
 
-        return Math.round(score * 100.0) / 100.0;
+        finalScore = Math.round(score * 100.0) / 100.0;
+        return finalScore;
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
-    public int getFinalScore() {
+    public Double getFinalScore() {
         return finalScore;
     }
 
-    public void setFinalScore(int finalResult) {
-        this.finalScore = finalResult;
+    public void setFinalScore(Double finalScore) {
+        this.finalScore = finalScore;
     }
 
     public List<Answer> getUserAnswers() {

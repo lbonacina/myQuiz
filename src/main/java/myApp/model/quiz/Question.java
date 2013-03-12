@@ -17,22 +17,22 @@ import java.util.List;
 @Entity
 @Table(name = "question")
 @Inheritance
-@DiscriminatorColumn(name="type")
+@DiscriminatorColumn(name = "type")
 public abstract class Question {
 // ------------------------------ FIELDS ------------------------------
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id ;
+    Long id;
 
     @NotNull
     @Size(min = 10, max = 4000)
     String text;
 
-    @OneToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JoinColumn(name="question_id",nullable = false)
-    List<PossibleAnswer> possibleAnswers ;
+    @JoinColumn(name = "id_question", nullable = false)
+    List<PossibleAnswer> possibleAnswers;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -45,21 +45,21 @@ public abstract class Question {
 
     public Question(String text, List<PossibleAnswer> possibleAnswers) {
         this.text = text;
-        this.possibleAnswers = possibleAnswers ;
+        this.possibleAnswers = possibleAnswers;
     }
 
     public PossibleAnswer getNthPossibleAnswer(int n) {
 
-        return possibleAnswers.get(n-1) ;
+        return possibleAnswers.get(n - 1);
     }
 
     @Transient
-    public String getDiscriminatorValue(){
-        DiscriminatorValue val = this.getClass().getAnnotation( DiscriminatorValue.class );
+    public String getDiscriminatorValue() {
+        DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
         return val == null ? null : val.value();
     }
 
-    public abstract double score(List<PossibleAnswer> userAnswers) ;
+    public abstract double score(List<PossibleAnswer> userAnswers);
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 

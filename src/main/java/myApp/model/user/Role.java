@@ -1,10 +1,6 @@
 package myApp.model.user;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -33,11 +29,11 @@ public class Role implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            name="role_permission",
-            joinColumns=@JoinColumn(name="role_id", referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="permission_id", referencedColumnName="id")
+            name = "role_permission",
+            joinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_permission", referencedColumnName = "id")
     )
-    private Set<Permission> permissions ;
+    private Set<Permission> permissions;
 
     public Long getId() {
         return id;

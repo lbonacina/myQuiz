@@ -1,23 +1,20 @@
 package myApp.model.user;
 
-import java.io.Serializable;
-import java.util.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /* TODO : separate user data from authentication information ? */
 @Entity
@@ -27,9 +24,9 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -6004763139641579839L;
 
-    private final static int NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT = 3 ;
+    private final static int NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT = 3;
     private static final PasswordService passwordService = new DefaultPasswordService();
-    private final static String DEFAULT_PASSWORD = "12345678" ;
+    private final static String DEFAULT_PASSWORD = "12345678";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,17 +68,17 @@ public class User implements Serializable {
     private String decryptedPassword;
 
     @Column(nullable = false)
-    private boolean enabled ;
+    private boolean enabled;
 
     @Column(nullable = false)
-    private boolean superadmin ;
+    private boolean superadmin;
 
     @Column(nullable = false, name = "pwd_change_on_next_login")
-    private boolean forcePasswordChangeOnNextLogin ;
+    private boolean forcePasswordChangeOnNextLogin;
 
     @NotNull
     @Column(name = "failed_login_attempt_count", nullable = false)
-    private int failedLoginAttemptCount ;
+    private int failedLoginAttemptCount;
 
     // AFAIK there is no wa in JPA2 to control fetch stategies apart from EAGER/LAZY
     // we need to use the Hibernate annotation directly
@@ -90,20 +87,20 @@ public class User implements Serializable {
     //@Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 50)
     //@NotEmpty
-    @JoinTable(name="user_role",
-               joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"),
-               inverseJoinColumns=@JoinColumn(name="role_id", referencedColumnName="id"))
-    protected Set<Role> roles ;
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id"))
+    protected Set<Role> roles;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public User() {
 
-        id = null ;
-        roles = new HashSet<Role>() ;
-        enabled = true ;
-        superadmin = false ;
-        failedLoginAttemptCount = 0 ;
+        id = null;
+        roles = new HashSet<Role>();
+        enabled = true;
+        superadmin = false;
+        failedLoginAttemptCount = 0;
         resetPassword();
     }
 
@@ -111,24 +108,24 @@ public class User implements Serializable {
 
     public String getFullName() {
 
-        return firstName + " " + lastName ;
+        return firstName + " " + lastName;
     }
 
     public void disable() {
-        failedLoginAttemptCount = 0 ;
-        enabled = false ;
+        failedLoginAttemptCount = 0;
+        enabled = false;
     }
 
     public void enable() {
-        failedLoginAttemptCount = 0 ;
-        enabled = true ;
+        failedLoginAttemptCount = 0;
+        enabled = true;
     }
 
     public Set<String> getPermissionNames() {
         Set<String> set = new HashSet<String>();
         for (Role r : roles) {
             for (Permission p : r.getPermissions()) {
-                set.add(p.getPermission()) ;
+                set.add(p.getPermission());
             }
         }
         return set;
@@ -137,7 +134,7 @@ public class User implements Serializable {
     public Set<String> getRoleNames() {
         Set<String> set = new HashSet<String>();
         for (Role r : roles) {
-            set.add(r.getRole()) ;
+            set.add(r.getRole());
         }
         return set;
     }
@@ -145,39 +142,39 @@ public class User implements Serializable {
     public String getRolesAsString() {
         StringBuilder sb = new StringBuilder();
         for (Role r : roles) {
-            sb.append(r.getRole()) ;
+            sb.append(r.getRole());
         }
         return sb.toString();
     }
 
     public void assignRoles(Collection<Role> newRoles) {
 
-        for ( Iterator<Role> iter = roles.iterator() ; iter.hasNext() ; )
-            if ( ! newRoles.contains(iter.next()) )
+        for (Iterator<Role> iter = roles.iterator(); iter.hasNext(); )
+            if (!newRoles.contains(iter.next()))
                 iter.remove();
 
-        for ( Role r : newRoles )
-            roles.add(r) ;
+        for (Role r : newRoles)
+            roles.add(r);
     }
 
     // no real need to store a boolean locked in DB, since failedLoginAttemptCount already tells us if account is locked or no
     public boolean isLocked() {
-        return (failedLoginAttemptCount >= NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT) ;
+        return (failedLoginAttemptCount >= NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT);
     }
 
     public void assignPassword(String plainTextPwd) {
         password = passwordService.encryptPassword(plainTextPwd);
-        forcePasswordChangeOnNextLogin = false ;
+        forcePasswordChangeOnNextLogin = false;
     }
 
     public void resetPassword() {
-        decryptedPassword = generateNewPassword() ;
+        decryptedPassword = generateNewPassword();
         password = passwordService.encryptPassword(decryptedPassword);
-        forcePasswordChangeOnNextLogin = true ;
+        forcePasswordChangeOnNextLogin = true;
     }
 
     private String generateNewPassword() {
-        return DEFAULT_PASSWORD ;
+        return DEFAULT_PASSWORD;
         // you may use this to enable generation of random password on reset
         // passwords may then be sent via email, if supported
         //return RandomStringUtils.randomAlphabetic(8) ;
@@ -185,9 +182,9 @@ public class User implements Serializable {
 
     // increment failedLoginAttemptCount if we are below threshold and return the number of attempts left
     public int trackFailedLoginAttempt() {
-        if ( failedLoginAttemptCount < NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT )
+        if (failedLoginAttemptCount < NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT)
             failedLoginAttemptCount += 1;
-        return NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT - failedLoginAttemptCount ;
+        return NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT - failedLoginAttemptCount;
     }
 
     // reset failedLoginAttemptCount
@@ -196,7 +193,7 @@ public class User implements Serializable {
     }
 
     public void unlock() {
-        failedLoginAttemptCount = 0 ;
+        failedLoginAttemptCount = 0;
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------

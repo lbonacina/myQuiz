@@ -24,7 +24,7 @@
                 </p:selectOneRadio>
 
                 <p:selectManyCheckbox value="#{quizsub_ctrl.multiUserAnswer}" converter="possibleAnswerItemsConverter"
-                                      rendered="#{quizsub_ctrl.currentQuestionMultiAnswer}">
+                                      layout="pageDirection" rendered="#{quizsub_ctrl.currentQuestionMultiAnswer}">
                     <f:selectItems value="#{quizsub_ctrl.currentPossibleAnswers}"
                                    var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
                 </p:selectManyCheckbox>

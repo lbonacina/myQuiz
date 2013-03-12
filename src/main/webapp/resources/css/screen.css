@@ -143,7 +143,7 @@ body {
     margin: 20px;
 }
 
-.question .ui-selectoneradio {
+.question .ui-selectoneradio, .question .ui-selectmanycheckbox {
     float: left;
     clear: left;
     font-size: 1.5em;

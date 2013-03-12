@@ -28,10 +28,10 @@ public class Quiz {
     @Size(min = 10, max = 4000)
     String name;
 
-    @OneToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @JoinColumn(name="quiz_id")
-    List<Question> questions ;
+    @JoinColumn(name = "id_quiz")
+    List<Question> questions;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -46,16 +46,16 @@ public class Quiz {
 // -------------------------- OTHER METHODS --------------------------
 
     public void addQuestion(Question question) {
-        questions.add(question) ;
+        questions.add(question);
     }
 
     // 1-based
     public Question getNthQuestion(int n) {
-        return questions.get(n-1) ;
+        return questions.get(n - 1);
     }
-    
+
     public int getNumberOfQuestions() {
-        return questions.size(); 
+        return questions.size();
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
