@@ -27,10 +27,4 @@ public class TrueFalseQuestion extends OneAnswerQuestion {
         possibleAnswers.add(new PossibleAnswer("False",!correctAnswer)) ;
         setPossibleAnswers(possibleAnswers);
     }
-
-    //@Override
-    //public double score(List<PossibleAnswer> userAnswers) {
-    //    assert userAnswers.size() == 1 ;
-    //    return (userAnswers.get(0).correct) ? 1.0 : 0.0 ;
-    //}
 }

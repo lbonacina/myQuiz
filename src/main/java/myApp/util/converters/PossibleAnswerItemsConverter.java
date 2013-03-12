@@ -19,7 +19,6 @@ public class PossibleAnswerItemsConverter extends SelectItemsConverter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        Long id = (value instanceof PossibleAnswer) ? ((PossibleAnswer) value).getId() : null;
-        return (id != null) ? String.valueOf(id) : null;
+        return (value instanceof PossibleAnswer) ? ((PossibleAnswer) value).getText() : null;
     }
 }

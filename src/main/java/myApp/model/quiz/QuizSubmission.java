@@ -39,8 +39,9 @@ public class QuizSubmission {
     @Column(name = "final_score")
     private int finalScore;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "quiz_submission_id")
+    //@OneToMany(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "quiz_submission_id")
+    @Transient
     private List<Answer> userAnswers;
 
 // --------------------------- CONSTRUCTORS ---------------------------
@@ -61,11 +62,13 @@ public class QuizSubmission {
     public void registerAnswer(Question question, PossibleAnswer answer) {
         userAnswers.add(new Answer(question, answer));
     }
-    /*
+
     public void registerAnswers(Question question, List<PossibleAnswer> answers) {
-        userAnswers.add(new Answer(question, new ArrayList<PossibleAnswer>(answers))) ;
+
+        for ( PossibleAnswer p : answers )
+            userAnswers.add(new Answer(question, p)) ;
     }
-    */
+
 
     public double score() {
 

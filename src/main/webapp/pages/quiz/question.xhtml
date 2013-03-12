@@ -16,10 +16,17 @@
                 <h:outputText value="#{quizsub_ctrl.currentQuestion.text}"/>
 
                 <h:outputText value="Answer : "/>
-                <p:selectOneRadio value="#{quizsub_ctrl.userAnswer}" converter="possibleAnswerItemsConverter">
-                    <f:selectItems value="#{quizsub_ctrl.currentQuestion.possibleAnswers}" var="a"
-                                   itemLabel="#{a.text}"/>
+                <p:selectOneRadio value="#{quizsub_ctrl.singleUserAnswer}" converter="possibleAnswerItemsConverter"
+                                  rendered="#{!quizsub_ctrl.currentQuestionMultiAnswer}">
+                    <f:selectItems value="#{quizsub_ctrl.currentPossibleAnswers}"
+                                   var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
                 </p:selectOneRadio>
+
+                <p:selectManyCheckbox value="#{quizsub_ctrl.multiUserAnswer}" converter="possibleAnswerItemsConverter"
+                                      rendered="#{quizsub_ctrl.currentQuestionMultiAnswer}">
+                    <f:selectItems value="#{quizsub_ctrl.currentPossibleAnswers}"
+                                   var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
+                </p:selectManyCheckbox>
 
                 <p:commandButton value="Prev" action="#{quizsub_ctrl.prev}"
                                  rendered="#{!quizsub_ctrl.isStartOfQuiz}" update="question"/>

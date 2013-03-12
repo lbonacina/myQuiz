@@ -39,14 +39,15 @@ public class TrueOrFalseQuizTest {
 
         QuizSubmission quizSubmission = new QuizSubmission(user, quiz, Calendar.getInstance().getTime()) ;
 
-        for ( int n = 1 ; n <= quiz.getNumberOfQuestions() ; n++ ) {
-
-            Question q = quiz.getNthQuestion(n) ;
-            if (( n == 1 ) || ( n==4 ))
-                quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1)); // true
-            else
-                quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2)); // false
-        }
+        Question q ;
+        q = quiz.getNthQuestion(1) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1));
+        q = quiz.getNthQuestion(2) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2));
+        q = quiz.getNthQuestion(3) ;
+        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        q = quiz.getNthQuestion(4) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1));
 
         Assert.assertEquals(4.0, quizSubmission.score());
     }
@@ -58,34 +59,57 @@ public class TrueOrFalseQuizTest {
 
         QuizSubmission quizSubmission = new QuizSubmission(user, quiz, Calendar.getInstance().getTime()) ;
 
-        for ( int n = 1 ; n <= quiz.getNumberOfQuestions() ; n++ ) {
-
-            Question q = quiz.getNthQuestion(n) ;
-            if (( n == 1 ) || ( n==4 ))
-                quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2)); // false
-            else
-                quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1)); // true
-
-        }
+        Question q ;
+        q = quiz.getNthQuestion(1) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2));
+        q = quiz.getNthQuestion(2) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1));
+        q = quiz.getNthQuestion(3) ;
+        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(1));
+        q = quiz.getNthQuestion(4) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2));
 
         Assert.assertEquals(0.0, quizSubmission.score());
     }
 
     @Test
-    public void oneOutOfFourTest() {
+    // TFFT
+    public void oneOutOfFourTest1() {
 
         User user = new User() ;
 
         QuizSubmission quizSubmission = new QuizSubmission(user, quiz, Calendar.getInstance().getTime()) ;
 
-        for ( int n = 1 ; n <= quiz.getNumberOfQuestions() ; n++ ) {
+        Question q ;
+        q = quiz.getNthQuestion(1) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2));
+        q = quiz.getNthQuestion(2) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1));
+        q = quiz.getNthQuestion(3) ;
+        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(1));
+        q = quiz.getNthQuestion(4) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1));
 
-            Question q = quiz.getNthQuestion(n) ;
-            if ( n == 1 )
-                quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2));
-            else
-                quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1));
-        }
+        Assert.assertEquals(1.0, quizSubmission.score());
+    }
+
+    @Test
+    // TFFT
+    public void oneOutOfFourTest2() {
+
+        User user = new User() ;
+
+        QuizSubmission quizSubmission = new QuizSubmission(user, quiz, Calendar.getInstance().getTime()) ;
+
+        Question q ;
+        q = quiz.getNthQuestion(1) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2));
+        q = quiz.getNthQuestion(2) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(1));
+        q = quiz.getNthQuestion(3) ;
+        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        q = quiz.getNthQuestion(4) ;
+        quizSubmission.registerAnswer(q,q.getNthPossibleAnswer(2));
 
         Assert.assertEquals(1.0, quizSubmission.score());
     }

@@ -49,6 +49,12 @@ public abstract class Question {
         return possibleAnswers.get(n-1) ;
     }
 
+    @Transient
+    public String getDiscriminatorValue(){
+        DiscriminatorValue val = this.getClass().getAnnotation( DiscriminatorValue.class );
+        return val == null ? null : val.value();
+    }
+
     public abstract double score(List<PossibleAnswer> userAnswers) ;
 
     // --------------------- GETTER / SETTER METHODS ---------------------
