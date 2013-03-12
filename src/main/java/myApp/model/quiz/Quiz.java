@@ -76,11 +76,11 @@ public class Quiz {
         this.name = name;
     }
 
-    protected List<Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 
-    protected void setQuestions(List<Question> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 

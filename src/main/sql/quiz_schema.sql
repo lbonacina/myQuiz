@@ -166,8 +166,8 @@ CREATE TABLE IF NOT EXISTS `quiz` (
 -- Struttura della tabella `quiz_submission`
 --
 
-DROP TABLE IF EXISTS `quiz_submission`;
-CREATE TABLE IF NOT EXISTS `quiz_submission` (
+DROP TABLE IF EXISTS `submission`;
+CREATE TABLE IF NOT EXISTS `submission` (
   `id`  INT NOT NULL AUTO_INCREMENT,
   `id_quiz`  INT NOT NULL,
   `id_user`  INT NOT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `quiz_submission` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Dump dei dati per la tabella `quiz_submission`
+-- Dump dei dati per la tabella `submission`
 --
 
 
@@ -311,3 +311,25 @@ INSERT INTO `user_role` (`id_user`, `id_role`) VALUES
 (1, 1),
 (2, 2),
 (3, 3);
+
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE `session` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` longtext NOT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `id_quiz` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK76508296D2B269C9` (`id_quiz`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `user_session`;
+CREATE TABLE `user_session` (
+  `id_session` bigint(20) NOT NULL,
+  `id_user` bigint(20) NOT NULL,
+  KEY `FKD1401A22A638D7AD` (`id_session`),
+  KEY `FKD1401A2272C5ACFF` (`id_user`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+

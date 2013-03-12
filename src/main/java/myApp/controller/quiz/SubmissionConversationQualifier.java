@@ -5,5 +5,5 @@ package myApp.controller.quiz;
  * Date: 02/08/12
  * Time: 19.52
  */
-public interface QuizSubmissionConversationQualifier {
+public interface SubmissionConversationQualifier {
 }

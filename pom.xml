@@ -275,11 +275,11 @@
             <version>2.6</version>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>14.0</version>
-        </dependency>
+        </dependency-->
 
         <!-- Needed for running tests (you may also use TestNG) -->
         <dependency>

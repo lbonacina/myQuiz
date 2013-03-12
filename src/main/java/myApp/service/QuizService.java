@@ -1,7 +1,7 @@
 package myApp.service;
 
 import myApp.model.quiz.Quiz;
-import myApp.model.quiz.QuizSubmission;
+import myApp.model.quiz.Submission;
 import myApp.model.user.User;
 import myApp.repository.QuizRepository;
 import myApp.repository.QuizSubmissionRepository;
@@ -36,24 +36,24 @@ public class QuizService implements Serializable {
         return quizRepository.findOne(id);
     }
 
-    public void saveQuizSubmission(QuizSubmission quizSubmission) {
+    public void saveQuizSubmission(Submission submission) {
 /*
-        assert quizSubmission.getFinalScore() != null ;
-        assert quizSubmission.getUser() != null ;
-        assert quizSubmission.getStartDate() != null ;
-        assert quizSubmission.getEndDate() != null ;
+        assert submission.getFinalScore() != null ;
+        assert submission.getUser() != null ;
+        assert submission.getStartDate() != null ;
+        assert submission.getEndDate() != null ;
 */
-        quizSubmissionRepository.save(quizSubmission);
+        quizSubmissionRepository.save(submission);
     }
 
-    public List<QuizSubmission> findQuizSubmissionsForUser(User user) {
+    public List<Submission> findQuizSubmissionsForUser(User user) {
 
         return quizSubmissionRepository.findQuizSubmissionByUser(user);
     }
 
     public void createQuizSubmissionsForUser(Quiz quiz, User user) {
 
-        quizSubmissionRepository.save(new QuizSubmission(user, quiz));
+        quizSubmissionRepository.save(new Submission(user, quiz));
     }
 
 }

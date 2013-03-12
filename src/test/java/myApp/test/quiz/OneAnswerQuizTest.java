@@ -61,19 +61,19 @@ public class OneAnswerQuizTest {
 
         User user = new User();
 
-        QuizSubmission quizSubmission = new QuizSubmission(user, quiz);
+        Submission submission = new Submission(user, quiz);
 
         Question q;
         q = quiz.getNthQuestion(1);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(1));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(1));
         q = quiz.getNthQuestion(2);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
         q = quiz.getNthQuestion(3);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(1));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(1));
         q = quiz.getNthQuestion(4);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(3));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(3));
 
-        Assert.assertEquals(4.0, quizSubmission.complete());
+        Assert.assertEquals(4.0, submission.complete());
     }
 
     @Test
@@ -81,19 +81,19 @@ public class OneAnswerQuizTest {
 
         User user = new User();
 
-        QuizSubmission quizSubmission = new QuizSubmission(user, quiz);
+        Submission submission = new Submission(user, quiz);
 
         Question q;
         q = quiz.getNthQuestion(1);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
         q = quiz.getNthQuestion(2);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(1));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(1));
         q = quiz.getNthQuestion(3);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
         q = quiz.getNthQuestion(4);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
 
-        Assert.assertEquals(0.0, quizSubmission.complete());
+        Assert.assertEquals(0.0, submission.complete());
     }
 
     @Test
@@ -101,18 +101,18 @@ public class OneAnswerQuizTest {
 
         User user = new User();
 
-        QuizSubmission quizSubmission = new QuizSubmission(user, quiz);
+        Submission submission = new Submission(user, quiz);
 
         Question q;
         q = quiz.getNthQuestion(1);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
         q = quiz.getNthQuestion(2);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
         q = quiz.getNthQuestion(3);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
         q = quiz.getNthQuestion(4);
-        quizSubmission.registerAnswer(q, q.getNthPossibleAnswer(2));
+        submission.registerAnswer(q, q.getNthPossibleAnswer(2));
 
-        Assert.assertEquals(1.0, quizSubmission.complete());
+        Assert.assertEquals(1.0, submission.complete());
     }
 }

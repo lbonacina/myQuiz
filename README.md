@@ -6,6 +6,13 @@ myQuiz is a simple application for online quiz, based on the myApp skeleton
     - authentication / authorization with Apache Shiro
     - User/Role management interface
 
+
+TODO : ideas
+
+    - implements the concept of Session to associtate Users with Quiz and generate QuizSubmission
+    - Session could trace also % of completion of users, aggregate scores and stats
+    - generate the result of the test as HTML file for the user to review
+
 uses :
 
     - Primefaces & Omnifaces as JSF lib
