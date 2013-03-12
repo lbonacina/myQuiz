@@ -5,6 +5,7 @@ import com.google.common.collect.ListMultimap;
 import myApp.model.quiz.*;
 import myApp.model.user.User;
 import myApp.security.LoggedUser;
+import myApp.service.QuizService;
 import myApp.util.AppLog;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
@@ -29,10 +30,9 @@ public class QuizSubmissionController implements Serializable {
     static final long serialVersionUID = 8277824266030751108L;
 
     @Inject FacesContext facesContext;
-
     @Inject @AppLog Logger log;
-
     @Inject @LoggedUser User user ;
+    @Inject QuizService quizService ;
 
     Quiz quiz ;
     QuizSubmission quizSubmission ;
@@ -50,33 +50,10 @@ public class QuizSubmissionController implements Serializable {
     @PostConstruct
     public void init() {
 
-        List<PossibleAnswer> q1list = new ArrayList<PossibleAnswer>() ;
-        q1list.add(new PossibleAnswer("answer_1",true));
-        q1list.add(new PossibleAnswer("answer_2",false));
-        q1list.add(new PossibleAnswer("answer_3",false));
-        Question q1 = new OneAnswerQuestion("question_1",q1list) ;
+        quiz = quizService.findById((long)1) ;
 
-        List<PossibleAnswer> q2list = new ArrayList<PossibleAnswer>() ;
-        q2list.add(new PossibleAnswer("answer_1",true));
-        q2list.add(new PossibleAnswer("answer_2",true));
-        q2list.add(new PossibleAnswer("answer_3",false));
-        Question q2 = new MultiAnswerQuestion("question_2",q2list) ;
-
-        List<PossibleAnswer> q3list = new ArrayList<PossibleAnswer>() ;
-        q3list.add(new PossibleAnswer("answer_1",true));
-        q3list.add(new PossibleAnswer("answer_2",false));
-        q3list.add(new PossibleAnswer("answer_3",false));
-        Question q3 = new OneAnswerQuestion("question_3",q3list) ;
-
-        Question q4 = new TrueFalseQuestion("question_1",true) ;
-        Question q5 = new TrueFalseQuestion("question_2",false) ;
-
-        quiz = new Quiz("SimpleQuiz") ;
-        quiz.addQuestion(q1);
-        quiz.addQuestion(q2);
-        quiz.addQuestion(q3);
-        quiz.addQuestion(q4);
-        quiz.addQuestion(q5);
+        assert quiz != null ;
+        assert quiz.getNumberOfQuestions() == 3 ;
 
         quizSubmission = new QuizSubmission(user, quiz, Calendar.getInstance().getTime()) ;
 
@@ -180,12 +157,11 @@ public class QuizSubmissionController implements Serializable {
 
     public void complete() {
 
+        userAnswers.remove(getCurrentQuestion()) ;
         if ( isCurrentQuestionMultiAnswer() ) {
-            userAnswers.remove(getCurrentQuestion()) ;
             userAnswers.putAll(getCurrentQuestion(),multiUserAnswer) ;
         }
         else {
-            userAnswers.remove(getCurrentQuestion()) ;
             userAnswers.put(getCurrentQuestion(),singleUserAnswer) ;
         }
 

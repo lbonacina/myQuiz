@@ -1,5 +1,8 @@
 package myApp.model.quiz;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,7 +29,8 @@ public abstract class Question {
     @Size(min = 10, max = 4000)
     String text;
 
-    @OneToMany(cascade= CascadeType.ALL)
+    @OneToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name="question_id",nullable = false)
     List<PossibleAnswer> possibleAnswers ;
 
