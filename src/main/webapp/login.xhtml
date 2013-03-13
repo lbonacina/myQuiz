@@ -6,7 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://omnifaces.org/ui">
 <h:head>
-    <title>myApp</title>
+    <title>myQuiz</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!-- CSS inclusion, see note above -->
     <h:outputStylesheet name="css/screen.css"/>
@@ -29,10 +29,11 @@
             <h:outputLabel for="password_i" value="Password : "/>
             <h:inputSecret id="password_i" value="#{auth_ctrl.password}" required="true"/>
             <f:facet name="footer">
-                    <p:commandButton id="submit_btn" action="#{auth_ctrl.login}" ajax="false" style="clear:left;"
-                                     icon="ui-icon-play" iconPos="right" value="Login"/>
-                    <p:messages id="loginError_msg" style="clear:left;"/>
-                    <p:outputLabel id="sessionExpired_lbl" value="#{msg.sessionExpired}" rendered="#{param.reason == 'expired'}" style="clear:left;"/>
+                <p:commandButton id="submit_btn" action="#{auth_ctrl.login}" ajax="false" style="clear:left;"
+                                 icon="ui-icon-play" iconPos="right" value="Login"/>
+                <p:messages id="loginError_msg" style="clear:left;"/>
+                <p:outputLabel id="sessionExpired_lbl" value="#{msg.sessionExpired}"
+                               rendered="#{param.reason == 'expired'}" style="clear:left;"/>
             </f:facet>
         </p:panelGrid>
 

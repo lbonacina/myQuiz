@@ -44,7 +44,7 @@
 
     <!-- CDI Listener to inject a JPA Realm into Shiro. see class for info -->
     <listener>
-       <listener-class>myApp.security.CdiEnvironmentLoaderListener</listener-class>
+        <listener-class>myQuiz.security.CdiEnvironmentLoaderListener</listener-class>
     </listener>
 
     <!-- JSF Servlet, not really needed, but probably necessary to hook the NoCacheFilter (need to to confirm) -->

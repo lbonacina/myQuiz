@@ -16,7 +16,7 @@
         </encoder>
     </appender>
 
-    <logger name="myApp" level="DEBUG">
+    <logger name="myQuiz" level="DEBUG">
     </logger>
 
     <logger name="org.apache.shiro" level="WARNING">
@@ -27,8 +27,9 @@
 
     <!-- by default log goes to LOG appender -->
     <root level="ERROR">
-        <appender-ref ref="LOG" />
-        <appender-ref ref="STDOUT"/> <!-- for dev purpose only, print all to stdout and then JBoss prints it in is server.log -->
+        <!--appender-ref ref="LOG" /-->
+        <appender-ref ref="STDOUT"/>
+        <!-- for dev purpose only, print all to stdout and then JBoss prints it in is server.log -->
     </root>
 
 </configuration>

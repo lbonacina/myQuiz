@@ -1,0 +1,59 @@
+package myQuiz.service;
+
+import myQuiz.model.quiz.Quiz;
+import myQuiz.model.quiz.Submission;
+import myQuiz.model.user.User;
+import myQuiz.repository.QuizRepository;
+import myQuiz.repository.QuizSubmissionRepository;
+import myQuiz.util.AppLog;
+import org.slf4j.Logger;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * User: eluibon
+ * Date: 11/12/12
+ * Time: 14.06
+ */
+@Stateless
+public class QuizService implements Serializable {
+// ------------------------------ FIELDS ------------------------------
+
+    private static final long serialVersionUID = 2332677310929733841L;
+
+    @Inject @AppLog
+    private Logger log;
+
+    @Inject QuizRepository quizRepository;
+    @Inject QuizSubmissionRepository quizSubmissionRepository;
+
+// -------------------------- OTHER METHODS --------------------------
+
+    public Quiz findById(Long id) {
+        return quizRepository.findOne(id);
+    }
+
+    public void saveQuizSubmission(Submission submission) {
+/*
+        assert submission.getFinalScore() != null ;
+        assert submission.getUser() != null ;
+        assert submission.getStartDate() != null ;
+        assert submission.getEndDate() != null ;
+*/
+        quizSubmissionRepository.save(submission);
+    }
+
+    public List<Submission> findQuizSubmissionsForUser(User user) {
+
+        return quizSubmissionRepository.findQuizSubmissionByUser(user);
+    }
+
+    public void createQuizSubmissionsForUser(Quiz quiz, User user) {
+
+        quizSubmissionRepository.save(new Submission(user, quiz));
+    }
+
+}

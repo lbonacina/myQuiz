@@ -6,7 +6,7 @@
     <namespace>http://el.security.shiro/func</namespace>
     <function>
         <function-name>hasPermission</function-name>
-        <function-class>myApp.security.ELSecutiryFunctions</function-class>
+        <function-class>myQuiz.security.ELSecurityFunctions</function-class>
         <function-signature>java.lang.Boolean hasPermission(java.lang.String)</function-signature>
     </function>
 </facelet-taglib>
