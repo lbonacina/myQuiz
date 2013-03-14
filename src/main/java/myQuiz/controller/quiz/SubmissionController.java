@@ -91,6 +91,39 @@ public class SubmissionController implements Serializable {
         return "results?faces-redirect=true";
     }
 
+    public String exit() {
+
+        conversation.close();
+        return "/pages/quiz/user_subs?faces-redirect=true";
+    }
+
+    /**
+     * check if the answer given by user to the question (from the multimap) is correct
+     * TODO : maybe return a GIF to an icon like ok/ko
+     * public String isAnswerOk(Question question) {
+     * <p/>
+     * List<PossibleAnswer> answers = (List<PossibleAnswer>) userAnswers.get(question) ;
+     * return ( question.score(answers) == 1.0 ) ? "OK" : "KO" ;
+     * }
+     * <p/>
+     * <p/>
+     * public String isSingleAnswerOk(Question question, PossibleAnswer possibleAnswer) {
+     * <p/>
+     * List<PossibleAnswer> answers = (List<PossibleAnswer>) userAnswers.get(question) ;
+     * if ( ( answers.contains(possibleAnswer) && possibleAnswer.isCorrect() ) ||
+     * ( !answers.contains(possibleAnswer) && !possibleAnswer.isCorrect() ) )
+     * return "OK";
+     * else
+     * return "KO";
+     * }
+     */
+
+    public String getResultReport() {
+
+        ResultReportGenerator rrg = new ResultReportGenerator();
+        return rrg.generateResultReport(quiz, userAnswers);
+    }
+
     public List<PossibleAnswer> getCurrentPossibleAnswers() {
         return quiz.getNthQuestion(currentQuestionNumber).getPossibleAnswers();
     }

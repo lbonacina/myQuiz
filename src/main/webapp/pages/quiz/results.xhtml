@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/resources/templates/default.xhtml">
@@ -9,14 +8,27 @@
 
         <h:form id="question_form">
 
+            <h:outputStylesheet name="css/result_report.css"/>
+
+            <h:outputText value="#{sub_ctrl.resultReport}" escape="false"/>
+            <!--
+            <p>
+                <p:outputLabel value="Your final score is : #{sub_ctrl.finalScore}"/>
+            </p>
             <ui:repeat value="#{sub_ctrl.quiz.questions}" var="q">
-                <p>
-                    Question : #{q.text}
+                <p class="ui-widget">
+                    <b>Result = #{sub_ctrl.isAnswerOk(q)} - Question</b> : #{q.text}
+
                     <ui:repeat value="#{q.possibleAnswers}" var="pa">
-                        Answer : #{pa.text}
+                        <p class="ui-widget" style="margin-left: 10px;">
+                            <b>Result = #{sub_ctrl.isSingleAnswerOk(q,pa)} - Answer</b> : #{pa.text}
+                        </p>
                     </ui:repeat>
                 </p>
             </ui:repeat>
+            -->
+
+            <p:commandButton value="Exit" action="#{sub_ctrl.exit}"/>
         </h:form>
 
     </ui:define>

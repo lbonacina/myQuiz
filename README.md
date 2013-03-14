@@ -9,9 +9,10 @@ myQuiz is a simple application for online quiz, based on the myApp skeleton
 
 TODO : ideas
 
-    - implements the concept of Session to associtate Users with Quiz and generate QuizSubmission
+    - implements the concept of Session to associate Users with Quiz and generate QuizSubmission
     - Session could trace also % of completion of users, aggregate scores and stats
     - generate the result of the test as HTML file for the user to review
+    - quiz should be executed without access to the side menu, structure the templates with and without menu (with decoration ?)
 
 uses :
 
