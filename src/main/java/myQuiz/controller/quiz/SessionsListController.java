@@ -8,6 +8,7 @@ import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessS
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,8 +22,8 @@ import java.util.List;
 @Named("sl_ctrl")
 @ViewAccessScoped
 public class SessionsListController implements Serializable {
+// ------------------------------ FIELDS ------------------------------
 
-    // ------------------------------ FIELDS ------------------------------
     private static final long serialVersionUID = -6015402483174483083L;
 
 
@@ -32,11 +33,43 @@ public class SessionsListController implements Serializable {
     @Inject SessionService sessionService;
 
     List<Session> sessions;
+    Session selectedSession;
+
+// -------------------------- OTHER METHODS --------------------------
 
     @PostConstruct
     public void init() {
 
         sessions = sessionService.findAll();
+    }
+
+    public String newSession() {
+
+        selectedSession = new Session();
+        return "edit?faces-redirect=true";
+    }
+
+    public String editSession() {
+
+        // TODO : cannot edit a Session that is already started, so we need to check if currentDate >= startDate
+        // session edit might delete all submissions of the users and recreate them
+        if (selectedSession != null)
+            return "edit?faces-redirect=true";
+
+        // TODO error on missing selection
+        return "";
+    }
+
+// --------------------- GETTER / SETTER METHODS ---------------------
+
+    @Produces
+    @SelectedSession
+    public Session getSelectedSession() {
+        return selectedSession;
+    }
+
+    public void setSelectedSession(Session selectedSession) {
+        this.selectedSession = selectedSession;
     }
 
     public List<Session> getSessions() {

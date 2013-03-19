@@ -20,22 +20,22 @@
                 <p:outputPanel id="session_details" styleClass="input_form account_input_form ui-helper-clearfix">
 
                     <p:outputLabel styleClass="dialogLabel" value="Quiz : "/>
-                    <p:selectOneMenu id="quiz" value="#{sess_ctrl.selectedQuiz}" converter="quizSelectItemsConverter">
+                    <p:selectOneMenu id="quiz" value="#{sess_ctrl.session.quiz}" converter="quizSelectItemsConverter">
                         <f:selectItems value="#{sess_ctrl.quizList}" var="quiz" itemLabel="#{quiz.name}"
                                        itemValue="#{quiz}"/>
                     </p:selectOneMenu>
                     <p:message id="quiz_msg" for="quiz"/>
 
                     <p:outputLabel styleClass="dialogLabel" value="Session Name : "/>
-                    <p:inputText id="sessionName" value="#{sess_ctrl.sessionName}"/>
+                    <p:inputText id="sessionName" value="#{sess_ctrl.session.name}"/>
                     <p:message id="sessionName_msg" for="sessionName"/>
 
                     <p:outputLabel styleClass="dialogLabel" value="Start Date : "/>
-                    <p:calendar id="startDate" value="#{sess_ctrl.startDate}"/>
+                    <p:calendar id="startDate" value="#{sess_ctrl.session.startDate}"/>
                     <p:message id="startDate_msg" for="startDate"/>
 
                     <p:outputLabel styleClass="dialogLabel" value="End Date : "/>
-                    <p:calendar id="endDate" value="#{sess_ctrl.endDate}"/>
+                    <p:calendar id="endDate" value="#{sess_ctrl.session.endDate}"/>
                     <p:message id="endDate_msg" for="endDate"/>
 
                 </p:outputPanel>

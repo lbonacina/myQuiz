@@ -6,6 +6,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "quiz")
-public class Quiz {
-// ------------------------------ FIELDS ------------------------------
+public class Quiz implements Serializable {
+
+    // ------------------------------ FIELDS ------------------------------
+    private static final long serialVersionUID = 4482970585403512285L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

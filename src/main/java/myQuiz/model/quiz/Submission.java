@@ -5,6 +5,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -15,12 +16,10 @@ import java.util.*;
  */
 @Entity
 @Table(name = "submission")
-public class Submission {
+public class Submission implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
-    public enum Status {
-        NEW, STARTED, COMPLETED
-    }
+    private static final long serialVersionUID = 1428114395020218857L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +32,8 @@ public class Submission {
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
-    private Status status;
+    @Column(name = "status")
+    private SubmissionStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_timestamp")
@@ -63,13 +63,41 @@ public class Submission {
     }
 
     public Submission(User user, Session session) {
-        status = Status.NEW;
+        status = SubmissionStatus.NEW;
         this.user = user;
         this.session = session;
         userAnswers = new ArrayList<Answer>();
     }
 
-    // -------------------------- OTHER METHODS --------------------------
+// -------------------------- OTHER METHODS --------------------------
+
+    public double complete() {
+        double score = 0.0;
+
+        Map<Question, PossibleAnswer> answerMap = new HashMap<Question, PossibleAnswer>();
+        MultiValueMap mvm = MultiValueMap.decorate(answerMap, ArrayList.class);
+
+        for (Answer answer : userAnswers) {
+            mvm.put(answer.getQuestion(), answer.getAnswer());
+        }
+
+        for (Iterator iter = mvm.keySet().iterator(); iter.hasNext(); ) {
+            Question q = (Question) iter.next();
+            List<PossibleAnswer> pa = (List<PossibleAnswer>) mvm.get(q);
+            score += q.score(pa);
+        }
+
+        finalScore = Math.round(score * 100.0) / 100.0;
+
+        endTimestamp = Calendar.getInstance().getTime();
+        status = SubmissionStatus.COMPLETED;
+
+        return finalScore;
+    }
+
+    public Quiz getQuiz() {
+        return session.getQuiz();
+    }
 
     public void registerAnswer(Question question, PossibleAnswer answer) {
         userAnswers.add(new Answer(question, answer));
@@ -81,65 +109,11 @@ public class Submission {
     }
 
     public void start() {
-        status = Status.STARTED;
+        status = SubmissionStatus.STARTED;
         startTimestamp = Calendar.getInstance().getTime();
     }
 
-    public double complete() {
-
-        double score = 0.0;
-
-        Map<Question, PossibleAnswer> answerMap = new HashMap<Question, PossibleAnswer>();
-        MultiValueMap mvm = MultiValueMap.decorate(answerMap, ArrayList.class);
-
-        for (Answer answer : userAnswers) {
-            mvm.put(answer.getQuestion(), answer.getAnswer());
-        }
-
-        for (Iterator iter = mvm.keySet().iterator(); iter.hasNext(); ) {
-
-            Question q = (Question) iter.next();
-            List<PossibleAnswer> pa = (List<PossibleAnswer>) mvm.get(q);
-            score += q.score(pa);
-        }
-
-        finalScore = Math.round(score * 100.0) / 100.0;
-
-        endTimestamp = Calendar.getInstance().getTime();
-        status = Status.COMPLETED;
-
-        return finalScore;
-    }
-
-    public Quiz getQuiz() {
-        return session.getQuiz();
-    }
-
 // --------------------- GETTER / SETTER METHODS ---------------------
-
-    public Double getFinalScore() {
-        return finalScore;
-    }
-
-    public void setFinalScore(Double finalScore) {
-        this.finalScore = finalScore;
-    }
-
-    public List<Answer> getUserAnswers() {
-        return userAnswers;
-    }
-
-    public void setUserAnswers(List<Answer> userAnswers) {
-        this.userAnswers = userAnswers;
-    }
-
-    public Date getStartTimestamp() {
-        return startTimestamp;
-    }
-
-    public void setStartTimestamp(Date startDate) {
-        this.startTimestamp = startDate;
-    }
 
     public Date getEndTimestamp() {
         return endTimestamp;
@@ -149,12 +123,12 @@ public class Submission {
         this.endTimestamp = endDate;
     }
 
-    public User getUser() {
-        return user;
+    public Double getFinalScore() {
+        return finalScore;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setFinalScore(Double finalScore) {
+        this.finalScore = finalScore;
     }
 
     public Long getId() {
@@ -165,19 +139,71 @@ public class Submission {
         this.id = id;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public Session getSession() {
         return session;
     }
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    public Date getStartTimestamp() {
+        return startTimestamp;
+    }
+
+    public void setStartTimestamp(Date startDate) {
+        this.startTimestamp = startDate;
+    }
+
+    public SubmissionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SubmissionStatus status) {
+        this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Answer> getUserAnswers() {
+        return userAnswers;
+    }
+
+    public void setUserAnswers(List<Answer> userAnswers) {
+        this.userAnswers = userAnswers;
+    }
+
+// ------------------------ CANONICAL METHODS ------------------------
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Submission that = (Submission) o;
+
+        if (session != null ? !session.equals(that.session) : that.session != null) return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user != null ? user.hashCode() : 0;
+        result = 31 * result + (session != null ? session.hashCode() : 0);
+        return result;
+    }
+
+// -------------------------- ENUMERATIONS --------------------------
+
+    public enum SubmissionStatus {
+        NEW, STARTED, COMPLETED
     }
 }

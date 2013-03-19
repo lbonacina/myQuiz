@@ -3,6 +3,7 @@ package myQuiz.model.quiz;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,10 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "possible_answer")
-public class PossibleAnswer {
+public class PossibleAnswer implements Serializable {
+// ------------------------------ FIELDS ------------------------------
+
+    private static final long serialVersionUID = 2217728808580244207L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +30,24 @@ public class PossibleAnswer {
     @Column
     boolean correct;
 
+// --------------------------- CONSTRUCTORS ---------------------------
+
     public PossibleAnswer() {
     }
 
     public PossibleAnswer(String text, boolean correct) {
         this.text = text;
         this.correct = correct;
+    }
+
+// --------------------- GETTER / SETTER METHODS ---------------------
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -46,13 +62,7 @@ public class PossibleAnswer {
         return correct;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+// ------------------------ CANONICAL METHODS ------------------------
 
     @Override
     public boolean equals(Object o) {

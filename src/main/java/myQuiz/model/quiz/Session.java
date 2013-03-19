@@ -5,7 +5,9 @@ import myQuiz.model.user.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,16 +18,23 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "session")
-public class Session {
+public class Session implements Serializable {
 // ------------------------------ FIELDS ------------------------------
+
+    private static final long serialVersionUID = 4775639456110933500L;
+
+    @NotNull
+    @Size(min = 1, max = 4000)
+    String name;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Size(min = 1, max = 4000)
-    String name;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status")
+    private SessionStatus status;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_quiz", referencedColumnName = "id", nullable = true)
@@ -40,26 +49,36 @@ public class Session {
     @Column(name = "end_date")
     private Date endDate;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_session",
             joinColumns = @JoinColumn(name = "id_session"),
             inverseJoinColumns = @JoinColumn(name = "id_user"))
-    private Set<User> users;
-
-    @OneToMany(mappedBy = "session")
-    private Set<Submission> submissions;
+    private Set<User> subscribers;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Session() {
+        status = SessionStatus.NEW;
+        subscribers = new HashSet<User>();
     }
 
-    public Session(String name, Quiz quiz, Date startDate, Date endDate, Set<User> users) {
+    public Session(String name, Quiz quiz, Date startDate, Date endDate) {
+        status = SessionStatus.NEW;
         this.name = name;
         this.quiz = quiz;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.users = users;
+        subscribers = new HashSet<User>();
+    }
+
+// --------------------- GETTER / SETTER METHODS ---------------------
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public Long getId() {
@@ -68,6 +87,14 @@ public class Session {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Quiz getQuiz() {
@@ -86,35 +113,25 @@ public class Session {
         this.startDate = startDate;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public SessionStatus getStatus() {
+        return status;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setStatus(SessionStatus status) {
+        this.status = status;
     }
 
-    public String getName() {
-        return name;
+    public Set<User> getSubscribers() {
+        return subscribers;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubscribers(Set<User> users) {
+        this.subscribers = users;
     }
 
-    public Date getEndDate() {
-        return endDate;
-    }
+// -------------------------- ENUMERATIONS --------------------------
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Set<Submission> getSubmissions() {
-        return submissions;
-    }
-
-    public void setSubmissions(Set<Submission> submissions) {
-        this.submissions = submissions;
+    public enum SessionStatus {
+        NEW, OPEN, CLOSED
     }
 }

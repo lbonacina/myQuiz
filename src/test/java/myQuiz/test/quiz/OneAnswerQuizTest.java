@@ -61,7 +61,7 @@ public class OneAnswerQuizTest {
 
         User user = new User();
 
-        Session session = new Session("test", quiz, null, null, null);
+        Session session = new Session("test", quiz, null, null);
         Submission submission = new Submission(user, session);
 
         Question q;
@@ -82,7 +82,7 @@ public class OneAnswerQuizTest {
 
         User user = new User();
 
-        Session session = new Session("test", quiz, null, null, null);
+        Session session = new Session("test", quiz, null, null);
         Submission submission = new Submission(user, session);
 
         Question q;
@@ -103,7 +103,7 @@ public class OneAnswerQuizTest {
 
         User user = new User();
 
-        Session session = new Session("test", quiz, null, null, null);
+        Session session = new Session("test", quiz, null, null);
         Submission submission = new Submission(user, session);
 
         Question q;

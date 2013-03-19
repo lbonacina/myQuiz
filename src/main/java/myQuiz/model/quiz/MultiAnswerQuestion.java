@@ -4,6 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue("multi")
-public class MultiAnswerQuestion extends Question {
+public class MultiAnswerQuestion extends Question implements Serializable {
+
+    private static final long serialVersionUID = -7314490433719448775L;
 
     public MultiAnswerQuestion() {
         super();

@@ -17,9 +17,11 @@
 
             <pe:layoutPane position="center" size="280" resizable="false" closable="false">
 
-                <p:commandButton value="New" action="edit?faces-redirect=true" ajax="false"/>
+                <p:commandButton value="New" action="#{sl_ctrl.newSession}" ajax="false"/>
+                <p:commandButton value="Edit" action="#{sl_ctrl.editSession}" ajax="false"/>
 
-                <p:dataTable value="#{sl_ctrl.sessions}" var="s">
+                <p:dataTable value="#{sl_ctrl.sessions}" var="s" selection="#{sl_ctrl.selectedSession}"
+                             selectionMode="single" rowKey="#{s.id}">
 
                     <p:column headerText="Name">
                         #{s.name}
