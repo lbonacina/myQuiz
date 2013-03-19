@@ -1,6 +1,5 @@
 package myQuiz.controller.quiz;
 
-import myQuiz.model.quiz.Quiz;
 import myQuiz.model.quiz.Submission;
 import myQuiz.model.user.User;
 import myQuiz.security.LoggedUser;
@@ -39,17 +38,16 @@ public class UserSubsController implements Serializable {
 
     Submission selectedSubmission;
 
-// -------------------------- OTHER METHODS --------------------------
-
+    // -------------------------- OTHER METHODS --------------------------
+/*
     public void createTestQuizSubmission() {
 
         Quiz quiz = quizService.findById((long) 1);
         quizService.createQuizSubmissionsForUser(quiz, user);
         userQuiz = quizService.findQuizSubmissionsForUser(user);
     }
-
+*/
     public String startQuiz() {
-
         quizController.start(selectedSubmission);
         return "submission?faces-redirect=true";
     }

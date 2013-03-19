@@ -4,7 +4,7 @@ import myQuiz.model.quiz.Quiz;
 import myQuiz.model.quiz.Submission;
 import myQuiz.model.user.User;
 import myQuiz.repository.QuizRepository;
-import myQuiz.repository.QuizSubmissionRepository;
+import myQuiz.repository.SubmissionRepository;
 import myQuiz.util.AppLog;
 import org.slf4j.Logger;
 
@@ -28,9 +28,13 @@ public class QuizService implements Serializable {
     private Logger log;
 
     @Inject QuizRepository quizRepository;
-    @Inject QuizSubmissionRepository quizSubmissionRepository;
+    @Inject SubmissionRepository quizSubmissionRepository;
 
 // -------------------------- OTHER METHODS --------------------------
+
+    public List<Quiz> findAll() {
+        return quizRepository.findAll();
+    }
 
     public Quiz findById(Long id) {
         return quizRepository.findOne(id);
@@ -50,10 +54,10 @@ public class QuizService implements Serializable {
 
         return quizSubmissionRepository.findQuizSubmissionByUser(user);
     }
+    /*
+      public void createQuizSubmissionsForUser(Quiz quiz, User user) {
 
-    public void createQuizSubmissionsForUser(Quiz quiz, User user) {
-
-        quizSubmissionRepository.save(new Submission(user, quiz));
-    }
-
+          quizSubmissionRepository.save(new Submission(user, quiz));
+      }
+    */
 }

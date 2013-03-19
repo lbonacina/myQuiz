@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h:form id="session_form">
+
+            <pe:layoutPane position="north" size="40" resizable="false" closable="false">
+                <h:outputText id="page_title" styleClass="page-title"
+                              value="TODO"/>
+            </pe:layoutPane>
+
+            <pe:layoutPane position="center" size="280" resizable="false" closable="false">
+
+                <p:outputPanel id="session_details" styleClass="input_form account_input_form ui-helper-clearfix">
+
+                    <p:outputLabel styleClass="dialogLabel" value="Quiz : "/>
+                    <p:selectOneMenu id="quiz" value="#{sess_ctrl.selectedQuiz}" converter="quizSelectItemsConverter">
+                        <f:selectItems value="#{sess_ctrl.quizList}" var="quiz" itemLabel="#{quiz.name}"
+                                       itemValue="#{quiz}"/>
+                    </p:selectOneMenu>
+                    <p:message id="quiz_msg" for="quiz"/>
+
+                    <p:outputLabel styleClass="dialogLabel" value="Session Name : "/>
+                    <p:inputText id="sessionName" value="#{sess_ctrl.sessionName}"/>
+                    <p:message id="sessionName_msg" for="sessionName"/>
+
+                    <p:outputLabel styleClass="dialogLabel" value="Start Date : "/>
+                    <p:calendar id="startDate" value="#{sess_ctrl.startDate}"/>
+                    <p:message id="startDate_msg" for="startDate"/>
+
+                    <p:outputLabel styleClass="dialogLabel" value="End Date : "/>
+                    <p:calendar id="endDate" value="#{sess_ctrl.endDate}"/>
+                    <p:message id="endDate_msg" for="endDate"/>
+
+                </p:outputPanel>
+
+
+                <p:pickList value="#{sess_ctrl.usersPickList}" var="user"
+                            itemValue="#{user}" itemLabel="#{user.fullName}" converter="UserPickListConverter">
+                    <p:column>
+                        #{user.fullName}
+                    </p:column>
+                </p:pickList>
+
+                <p:commandButton value="Save" action="#{sess_ctrl.save}" ajax="false"/>
+                <p:messages/>
+
+            </pe:layoutPane>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

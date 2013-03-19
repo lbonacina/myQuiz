@@ -62,7 +62,8 @@ public class MultiAnswerQuizTest {
 
         User user = new User();
 
-        Submission submission = new Submission(user, quiz);
+        Session session = new Session("test", quiz, null, null, null);
+        Submission submission = new Submission(user, session);
 
         Question q;
         q = quiz.getNthQuestion(1);
@@ -86,7 +87,8 @@ public class MultiAnswerQuizTest {
 
         User user = new User();
 
-        Submission submission = new Submission(user, quiz);
+        Session session = new Session("test", quiz, null, null, null);
+        Submission submission = new Submission(user, session);
 
         Question q;
         q = quiz.getNthQuestion(1);
@@ -108,7 +110,8 @@ public class MultiAnswerQuizTest {
 
         User user = new User();
 
-        Submission submission = new Submission(user, quiz);
+        Session session = new Session("test", quiz, null, null, null);
+        Submission submission = new Submission(user, session);
 
         Question q;
         q = quiz.getNthQuestion(1);
@@ -129,7 +132,8 @@ public class MultiAnswerQuizTest {
 
         User user = new User();
 
-        Submission submission = new Submission(user, quiz);
+        Session session = new Session("test", quiz, null, null, null);
+        Submission submission = new Submission(user, session);
 
         Question q;
         q = quiz.getNthQuestion(1);
@@ -152,7 +156,8 @@ public class MultiAnswerQuizTest {
 
         User user = new User();
 
-        Submission submission = new Submission(user, quiz);
+        Session session = new Session("test", quiz, null, null, null);
+        Submission submission = new Submission(user, session);
 
         Question q;
         q = quiz.getNthQuestion(1);

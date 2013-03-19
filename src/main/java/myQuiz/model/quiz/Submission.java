@@ -31,26 +31,26 @@ public class Submission {
     @NotNull
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_quiz", referencedColumnName = "id", nullable = true)
-    @NotNull
-    private Quiz quiz;
-
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_date")
-    private Date startDate;
+    @Column(name = "start_timestamp")
+    private Date startTimestamp;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_date")
-    private Date endDate;
+    @Column(name = "end_timestamp")
+    private Date endTimestamp;
 
     @Column(name = "final_score")
     private Double finalScore;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_session")
+    private Session session;
+
+    // Answers are not saved right now, only total score
     //@OneToMany(cascade = CascadeType.ALL)
     //@JoinColumn(name = "quiz_submission_id")
     @Transient
@@ -62,14 +62,14 @@ public class Submission {
         userAnswers = new ArrayList<Answer>();
     }
 
-    public Submission(User user, Quiz quiz) {
+    public Submission(User user, Session session) {
         status = Status.NEW;
         this.user = user;
-        this.quiz = quiz;
+        this.session = session;
         userAnswers = new ArrayList<Answer>();
     }
 
-// -------------------------- OTHER METHODS --------------------------
+    // -------------------------- OTHER METHODS --------------------------
 
     public void registerAnswer(Question question, PossibleAnswer answer) {
         userAnswers.add(new Answer(question, answer));
@@ -82,7 +82,7 @@ public class Submission {
 
     public void start() {
         status = Status.STARTED;
-        startDate = Calendar.getInstance().getTime();
+        startTimestamp = Calendar.getInstance().getTime();
     }
 
     public double complete() {
@@ -105,10 +105,14 @@ public class Submission {
 
         finalScore = Math.round(score * 100.0) / 100.0;
 
-        endDate = Calendar.getInstance().getTime();
+        endTimestamp = Calendar.getInstance().getTime();
         status = Status.COMPLETED;
 
         return finalScore;
+    }
+
+    public Quiz getQuiz() {
+        return session.getQuiz();
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
@@ -129,28 +133,20 @@ public class Submission {
         this.userAnswers = userAnswers;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartTimestamp() {
+        return startTimestamp;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartTimestamp(Date startDate) {
+        this.startTimestamp = startDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getEndTimestamp() {
+        return endTimestamp;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Quiz getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
+    public void setEndTimestamp(Date endDate) {
+        this.endTimestamp = endDate;
     }
 
     public User getUser() {
@@ -175,5 +171,13 @@ public class Submission {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 }

@@ -9,7 +9,7 @@
 
         <h:form id="question_form">
 
-            <p:commandButton value="Test" action="#{usersubs_ctrl.createTestQuizSubmission}" update="user_quiz"/>
+            <!--p:commandButton value="Test" action="#{usersubs_ctrl.createTestQuizSubmission}" update="user_quiz"/-->
 
             <p:commandButton value="Start" action="#{usersubs_ctrl.startQuiz}" ajax="false"/>
 
@@ -22,13 +22,13 @@
                     #{quiz.status}
                 </p:column>
                 <p:column headerText="Start Date">
-                    <h:outputText value="#{quiz.startDate}">
-                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    <h:outputText value="#{quiz.session.startDate}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="End Date">
-                    <h:outputText value="#{quiz.endDate}">
-                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    <h:outputText value="#{quiz.session.endDate}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="Final Score">

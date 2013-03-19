@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h:form id="sessions_form">
+
+            <pe:layoutPane position="north" size="40" resizable="false" closable="false">
+                <h:outputText id="page_title" styleClass="page-title"
+                              value="TODO"/>
+            </pe:layoutPane>
+
+            <pe:layoutPane position="center" size="280" resizable="false" closable="false">
+
+                <p:commandButton value="New" action="edit?faces-redirect=true" ajax="false"/>
+
+                <p:dataTable value="#{sl_ctrl.sessions}" var="s">
+
+                    <p:column headerText="Name">
+                        #{s.name}
+                    </p:column>
+                    <p:column headerText="Quiz">
+                        #{s.quiz.name}
+                    </p:column>
+                    <p:column headerText="Start Date">
+                        <h:outputText value="#{s.startDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="End Date">
+                        <h:outputText value="#{s.endDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+
+            </pe:layoutPane>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

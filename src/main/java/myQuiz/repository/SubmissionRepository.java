@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 04/01/13
  * Time: 16.17
  */
-public interface QuizSubmissionRepository extends JpaRepository<Submission, Long>, QueryDslPredicateExecutor {
+public interface SubmissionRepository extends JpaRepository<Submission, Long>, QueryDslPredicateExecutor {
 
     public List<Submission> findQuizSubmissionByUser(User user);
 }

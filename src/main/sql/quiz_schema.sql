@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `access_log` (
   `result` varchar(255) NOT NULL,
   `timestamp` datetime NOT NULL,  
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dump dei dati per la tabella `access_log`
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `access_log` (
 --  KEY `FKABCA3FBE82B4AAAC` (`id_answer`),
 --  KEY `FKABCA3FBEEE66F56B` (`id_question`),
 --  KEY `FKABCA3FBE5D2014C0` (`quiz_submission_id`)
---) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dump dei dati per la tabella `answer`
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `permission` (
   `permission` varchar(100) NOT NULL,
   `description` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dump dei dati per la tabella `permission`
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `possible_answer` (
   `id_question`  INT NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK44AC824CE97BEAF5` (`id_question`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dump dei dati per la tabella `possible_answer`
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   `id_quiz`  INT DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKBA823BE697775615` (`id_quiz`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dump dei dati per la tabella `question`
@@ -153,39 +153,38 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `id`  INT NOT NULL AUTO_INCREMENT,
   `name` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dump dei dati per la tabella `quiz`
 --
 
-
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `quiz_submission`
+-- Struttura della tabella `session`
 --
 
-DROP TABLE IF EXISTS `submission`;
-CREATE TABLE IF NOT EXISTS `submission` (
-  `id`  INT NOT NULL AUTO_INCREMENT,
-  `id_quiz`  INT NOT NULL,
-  `id_user`  INT NOT NULL,
-  `status`  INT NOT NULL,
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE `session` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` longtext NOT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
-  `final_score` double(3,2) DEFAULT NULL,
+  `id_quiz` INT NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK27B2177672C5ACFF` (`id_user`),
-  KEY `FK27B21776D2B269C9` (`id_quiz`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `FK76508296CC63B15` (`id_quiz`),
+  CONSTRAINT `FK76508296CC63B15` FOREIGN KEY (`id_quiz`) REFERENCES `quiz` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 --
--- Dump dei dati per la tabella `submission`
+-- Dump dei dati per la tabella `session`
 --
 
 
 -- --------------------------------------------------------
+
+
 
 --
 -- Struttura della tabella `role`
@@ -197,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   `role` varchar(100) NOT NULL,
   `description` longtext NOT NULL,  
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dump dei dati per la tabella `role`
@@ -221,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `role_permission` (
   PRIMARY KEY (`id_role`,`id_permission`),
   KEY `FKBD40D538625146BF` (`id_role`),
   KEY `FKBD40D538CC9F345F` (`id_permission`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dump dei dati per la tabella `role_permission`
@@ -277,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dump dei dati per la tabella `user`
@@ -301,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `user_role` (
   PRIMARY KEY (`id_user`,`id_role`),
   KEY `FK143BF46A625146BF` (`id_role`),
   KEY `FK143BF46A77C0A9F` (`id_user`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dump dei dati per la tabella `user_role`
@@ -312,24 +311,43 @@ INSERT INTO `user_role` (`id_user`, `id_role`) VALUES
 (2, 2),
 (3, 3);
 
-DROP TABLE IF EXISTS `session`;
-CREATE TABLE `session` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` longtext NOT NULL,
-  `start_date` datetime DEFAULT NULL,
-  `end_date` datetime DEFAULT NULL,
-  `id_quiz` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK76508296D2B269C9` (`id_quiz`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 DROP TABLE IF EXISTS `user_session`;
 CREATE TABLE `user_session` (
-  `id_session` bigint(20) NOT NULL,
-  `id_user` bigint(20) NOT NULL,
+  `id_session` INT NOT NULL,
+  `id_user` INT NOT NULL,
   KEY `FKD1401A22A638D7AD` (`id_session`),
   KEY `FKD1401A2272C5ACFF` (`id_user`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `quiz_submission`
+--
+
+DROP TABLE IF EXISTS `submission`;
+CREATE TABLE `submission` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `status` int(1) NOT NULL,
+  `final_score` double DEFAULT NULL,
+  `start_timestamp` datetime DEFAULT NULL,
+  `end_timestamp` datetime DEFAULT NULL,
+  `id_session` INT DEFAULT NULL,
+  `id_user` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK84363B4C2E69F2E1` (`id_session`),
+  KEY `FK84363B4CACD97E4B` (`id_user`),
+  CONSTRAINT `FK84363B4CACD97E4B` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK84363B4C2E69F2E1` FOREIGN KEY (`id_session`) REFERENCES `session` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Dump dei dati per la tabella `submission`
+--
+
+
+-- --------------------------------------------------------
 
 

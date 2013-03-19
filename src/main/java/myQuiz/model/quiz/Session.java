@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +24,7 @@ public class Session {
     private Long id;
 
     @NotNull
-    @Size(min = 10, max = 4000)
+    @Size(min = 1, max = 4000)
     String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -44,11 +44,22 @@ public class Session {
     @JoinTable(name = "user_session",
             joinColumns = @JoinColumn(name = "id_session"),
             inverseJoinColumns = @JoinColumn(name = "id_user"))
-    private List<User> users;
+    private Set<User> users;
+
+    @OneToMany(mappedBy = "session")
+    private Set<Submission> submissions;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Session() {
+    }
+
+    public Session(String name, Quiz quiz, Date startDate, Date endDate, Set<User> users) {
+        this.name = name;
+        this.quiz = quiz;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.users = users;
     }
 
     public Long getId() {
@@ -75,11 +86,11 @@ public class Session {
         this.startDate = startDate;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
@@ -97,5 +108,13 @@ public class Session {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Set<Submission> getSubmissions() {
+        return submissions;
+    }
+
+    public void setSubmissions(Set<Submission> submissions) {
+        this.submissions = submissions;
     }
 }
