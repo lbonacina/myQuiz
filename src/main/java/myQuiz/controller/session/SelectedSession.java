@@ -1,4 +1,4 @@
-package myQuiz.controller.quiz;
+package myQuiz.controller.session;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.ElementType;

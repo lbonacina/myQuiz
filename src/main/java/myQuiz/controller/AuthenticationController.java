@@ -111,7 +111,10 @@ public class AuthenticationController implements Serializable {
                 return "pages/user/account?faces-redirect=true";
             } else {
                 log.debug("Redirecting to main page.");
-                return "pages/main?faces-redirect=true";
+                if (subject.hasRole("User"))
+                    return "pages/quiz/user_subs?faces-redirect=true";
+                else
+                    return "pages/main?faces-redirect=true";
             }
         } else {
 

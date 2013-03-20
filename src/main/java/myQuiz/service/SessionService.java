@@ -1,7 +1,10 @@
 package myQuiz.service;
 
-import myQuiz.model.quiz.Session;
+import myQuiz.model.quiz.Submission;
+import myQuiz.model.session.Session;
+import myQuiz.model.user.User;
 import myQuiz.repository.SessionRepository;
+import myQuiz.repository.SubmissionRepository;
 import myQuiz.util.AppLog;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Sort;
@@ -9,7 +12,9 @@ import org.springframework.data.domain.Sort;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: eluibon
@@ -26,6 +31,7 @@ public class SessionService implements Serializable {
     private Logger log;
 
     @Inject SessionRepository sessionRepository;
+    @Inject SubmissionRepository submissionRepository;
 
 // -------------------------- OTHER METHODS --------------------------
 
@@ -38,5 +44,18 @@ public class SessionService implements Serializable {
     public void save(Session session) {
 
         sessionRepository.save(session);
+    }
+
+    public void open(Session session) {
+
+        session.setStatus(Session.SessionStatus.OPEN);
+
+        Set<Submission> submissionSet = new HashSet<Submission>();
+        for (User user : session.getSubscribers()) {
+            submissionSet.add(new Submission(user, session));
+        }
+
+        sessionRepository.save(session);
+        submissionRepository.save(submissionSet);
     }
 }

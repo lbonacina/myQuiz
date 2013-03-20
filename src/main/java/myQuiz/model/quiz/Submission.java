@@ -1,5 +1,6 @@
 package myQuiz.model.quiz;
 
+import myQuiz.model.session.Session;
 import myQuiz.model.user.User;
 import org.apache.commons.collections.map.MultiValueMap;
 
@@ -46,7 +47,7 @@ public class Submission implements Serializable {
     @Column(name = "final_score")
     private Double finalScore;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_session")
     private Session session;
 

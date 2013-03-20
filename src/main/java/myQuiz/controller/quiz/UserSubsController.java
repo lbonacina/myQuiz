@@ -39,15 +39,19 @@ public class UserSubsController implements Serializable {
     Submission selectedSubmission;
 
     // -------------------------- OTHER METHODS --------------------------
-/*
-    public void createTestQuizSubmission() {
 
-        Quiz quiz = quizService.findById((long) 1);
-        quizService.createQuizSubmissionsForUser(quiz, user);
-        userQuiz = quizService.findQuizSubmissionsForUser(user);
-    }
-*/
     public String startQuiz() {
+/*
+        if (!selectedSubmission.getStatus().equals(Submission.SubmissionStatus.NEW)) {
+            Messages.addGlobalError("noSessionSelected");
+            return "";
+        }
+
+        if (selectedSubmission== null) {
+            Messages.addGlobalError("noSessionSelected");
+            return "";
+        }
+  */
         quizController.start(selectedSubmission);
         return "submission?faces-redirect=true";
     }

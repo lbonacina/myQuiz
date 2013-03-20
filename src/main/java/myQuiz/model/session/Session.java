@@ -1,5 +1,6 @@
-package myQuiz.model.quiz;
+package myQuiz.model.session;
 
+import myQuiz.model.quiz.Quiz;
 import myQuiz.model.user.User;
 
 import javax.persistence.*;
@@ -23,13 +24,13 @@ public class Session implements Serializable {
 
     private static final long serialVersionUID = 4775639456110933500L;
 
-    @NotNull
-    @Size(min = 1, max = 4000)
-    String name;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Size(min = 1, max = 4000)
+    String name;
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
@@ -43,10 +44,12 @@ public class Session implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_date")
+    @NotNull
     private Date startDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_date")
+    @NotNull
     private Date endDate;
 
     @ManyToMany(fetch = FetchType.EAGER)

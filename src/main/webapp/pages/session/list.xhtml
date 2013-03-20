@@ -17,14 +17,20 @@
 
             <pe:layoutPane position="center" size="280" resizable="false" closable="false">
 
-                <p:commandButton value="New" action="#{sl_ctrl.newSession}" ajax="false"/>
-                <p:commandButton value="Edit" action="#{sl_ctrl.editSession}" ajax="false"/>
+                <p:growl id="messages"/>
+
+                <p:commandButton value="New" action="#{sl_ctrl.newSession}"/>
+                <p:commandButton value="Edit" action="#{sl_ctrl.editSession}" update="messages"/>
+                <p:commandButton value="Open" action="#{sl_ctrl.openSession}" update="messages"/>
 
                 <p:dataTable value="#{sl_ctrl.sessions}" var="s" selection="#{sl_ctrl.selectedSession}"
                              selectionMode="single" rowKey="#{s.id}">
 
                     <p:column headerText="Name">
                         #{s.name}
+                    </p:column>
+                    <p:column headerText="Status">
+                        #{s.status}
                     </p:column>
                     <p:column headerText="Quiz">
                         #{s.quiz.name}

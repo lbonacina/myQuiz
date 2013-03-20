@@ -80,26 +80,6 @@ CREATE TABLE IF NOT EXISTS `permission` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dump dei dati per la tabella `permission`
---
-
-INSERT INTO `permission` (`id`, `description`, `permission`) VALUES
-(1, 'desc', 'menu:user'),
-(2, 'desc', 'menu:personal_info'),
-(3, 'desc', 'menu:account'),
-(4, 'desc', 'user:new'),
-(5, 'desc', 'user:view'),
-(6, 'desc', 'user:edit'),
-(7, 'desc', 'user:delete'),
-(8, 'desc', 'user:undelete'),
-(9, 'desc', 'user:enable'),
-(10, 'desc', 'user:disable'),
-(11, 'desc', 'user:unlock'),
-(12, 'desc', 'user:list_superadmin'),
-(13, 'desc', 'user:list_enabled'),
-(14, 'desc', 'menu:logs');
-
 -- --------------------------------------------------------
 
 --
@@ -199,15 +179,6 @@ CREATE TABLE IF NOT EXISTS `role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dump dei dati per la tabella `role`
---
-
-INSERT INTO `role` (`id`, `description`, `role`) VALUES
-(1, 'desc', 'Superadmin'),
-(2, 'desc', 'Admin'),
-(3, 'desc', 'User');
-
 -- --------------------------------------------------------
 
 --
@@ -222,37 +193,6 @@ CREATE TABLE IF NOT EXISTS `role_permission` (
   KEY `FKBD40D538625146BF` (`id_role`),
   KEY `FKBD40D538CC9F345F` (`id_permission`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `role_permission`
---
-
-INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(1, 5),
-(1, 6),
-(1, 7),
-(1, 8),
-(1, 9),
-(1, 10),
-(1, 11),
-(1, 12),
-(1, 13),
-(1, 14),
-(2, 1),
-(2, 2),
-(2, 3),
-(2, 4),
-(2, 5),
-(2, 6),
-(2, 8),
-(2, 9),
-(2, 10),
-(3, 2),
-(3, 3);
 
 -- --------------------------------------------------------
 
@@ -304,14 +244,6 @@ CREATE TABLE IF NOT EXISTS `user_role` (
   KEY `FK143BF46A77C0A9F` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dump dei dati per la tabella `user_role`
---
-
-INSERT INTO `user_role` (`id_user`, `id_role`) VALUES
-(1, 1),
-(2, 2),
-(3, 3);
 
 DROP TABLE IF EXISTS `user_session`;
 CREATE TABLE `user_session` (

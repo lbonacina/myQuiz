@@ -14,9 +14,11 @@
     <h:form id="menu_form">
         <p:menu id="nav_menu" styleClass="nav_menu">
             <p:menuitem id="question_page_btn" value="My Quiz"
-                        action="/pages/quiz/user_subs?faces-redirect=true" ajax="false"/>
-            <p:menuitem id="sessions_page_btn" value="Sessions"
-                        action="/pages/session/list?faces-redirect=true" ajax="false"/>
+                        action="/pages/quiz/user_subs?faces-redirect=true" ajax="false"
+                        rendered="#{s:hasPermission('menu:quiz')}"/>
+            <p:menuitem id="sessions_page_btn" value="Sessions" actionListener="#{menu.resetConversations}"
+                        action="/pages/session/list?faces-redirect=true" ajax="false"
+                        rendered="#{s:hasPermission('menu:session')}"/>
             <p:menuitem id="users_page_btn" value="Users"
                         action="/pages/user/list?faces-redirect=true" ajax="false"
                         rendered="#{s:hasPermission('menu:user')}"/>

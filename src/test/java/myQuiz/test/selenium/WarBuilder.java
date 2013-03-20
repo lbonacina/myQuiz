@@ -33,7 +33,7 @@ public class WarBuilder {
                 .addPackage("myQuiz.repository")
                 .addPackage("myQuiz.security")
                 .addPackage("myQuiz.security.accesslog")
-                .addAsResource("bundles/myApp_en.properties")
+                .addAsResource("bundles/myQuiz_en.properties")
                 .addAsResource("bundles/MessageBundle_en.properties")
                 .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
                         // database initialization, Arquillian Persistence does not work well with Drone + Webdriver

@@ -1,32 +1,33 @@
-package myQuiz.controller.quiz;
+package myQuiz.controller.session;
 
 import myQuiz.model.quiz.Quiz;
-import myQuiz.model.quiz.Session;
+import myQuiz.model.session.Session;
 import myQuiz.model.user.User;
 import myQuiz.service.QuizService;
 import myQuiz.service.SessionService;
 import myQuiz.service.UserService;
 import myQuiz.util.AppLog;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationGroup;
+import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationScoped;
+import org.omnifaces.util.Messages;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
  * controls the executions of one quiz by the user (the submission)
  */
 @Named("sess_ctrl")
-@ViewAccessScoped
+@ConversationScoped
+@ConversationGroup(SessionConversationQualifier.class)
 public class SessionController implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
@@ -44,10 +45,15 @@ public class SessionController implements Serializable {
 
     private DualListModel<User> usersPickList;
 
+    @Inject private Event<Session> sessionEvent;
+
+
 // -------------------------- OTHER METHODS --------------------------
 
     @PostConstruct
     public void init() {
+
+        log.debug("SessionController::init");
 
         quizList = quizService.findAll();
 
@@ -60,11 +66,30 @@ public class SessionController implements Serializable {
         usersPickList.setTarget(new ArrayList<User>(subscribers));
     }
 
-    public void save() {
+    public String save() {
 
-        session.getSubscribers().clear();
-        session.setSubscribers(new HashSet<User>(usersPickList.getTarget()));
-        sessionService.save(session);
+        boolean isValid = true;
+        if (session.getStartDate().before(Calendar.getInstance().getTime())) {
+            Messages.addError("session_form:startDate", "startDateMustBeAfterToday");
+            isValid = false;
+        }
+        if (session.getEndDate().before(session.getStartDate())) {
+            Messages.addError("session_form:endDate", "endDateMustBeAfterStartDate");
+            isValid = false;
+        }
+        if ((usersPickList.getTarget() == null) || (usersPickList.getTarget().size() == 0)) {
+            Messages.addError("session_form:subscribers", "mustHaveAtLeastOneSubscriber");
+            isValid = false;
+        }
+
+        if (isValid) {
+            session.getSubscribers().clear();
+            session.setSubscribers(new HashSet<User>(usersPickList.getTarget()));
+            sessionService.save(session);
+            sessionEvent.fire(session);
+        }
+
+        return (isValid) ? "list?faces-redirect=true" : "";
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------

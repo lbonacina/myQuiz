@@ -31,25 +31,29 @@
                     <p:message id="sessionName_msg" for="sessionName"/>
 
                     <p:outputLabel styleClass="dialogLabel" value="Start Date : "/>
-                    <p:calendar id="startDate" value="#{sess_ctrl.session.startDate}"/>
+                    <p:calendar id="startDate" pattern="dd/MM/yyyy" value="#{sess_ctrl.session.startDate}"/>
                     <p:message id="startDate_msg" for="startDate"/>
 
                     <p:outputLabel styleClass="dialogLabel" value="End Date : "/>
-                    <p:calendar id="endDate" value="#{sess_ctrl.session.endDate}"/>
+                    <p:calendar id="endDate" pattern="dd/MM/yyyy" value="#{sess_ctrl.session.endDate}"/>
                     <p:message id="endDate_msg" for="endDate"/>
+
+                    <p:outputLabel styleClass="dialogLabel" value="Subscribers : "/>
+                    <p:pickList id="subscribers" value="#{sess_ctrl.usersPickList}" var="user"
+                                style="float:left;clear:left;"
+                                itemValue="#{user}" itemLabel="#{user.fullName}" converter="UserPickListConverter">
+                        <p:column>
+                            #{user.fullName}
+                        </p:column>
+                    </p:pickList>
+                    <p:message id="subscribers_msg" for="subscribers"/>
+
+                    <!--p:messages id="messages" globalOnly="true"/-->
 
                 </p:outputPanel>
 
-
-                <p:pickList value="#{sess_ctrl.usersPickList}" var="user"
-                            itemValue="#{user}" itemLabel="#{user.fullName}" converter="UserPickListConverter">
-                    <p:column>
-                        #{user.fullName}
-                    </p:column>
-                </p:pickList>
-
-                <p:commandButton value="Save" action="#{sess_ctrl.save}" ajax="false"/>
-                <p:messages/>
+                <p:commandButton value="Save" action="#{sess_ctrl.save}" update="session_details"/>
+                <p:commandButton value="Back" action="list?faces-redirect=true" immediate="true"/>
 
             </pe:layoutPane>
 

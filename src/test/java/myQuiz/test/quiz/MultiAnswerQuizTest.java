@@ -2,6 +2,7 @@ package myQuiz.test.quiz;
 
 import junit.framework.Assert;
 import myQuiz.model.quiz.*;
+import myQuiz.model.session.Session;
 import myQuiz.model.user.User;
 import org.junit.Before;
 import org.junit.Test;

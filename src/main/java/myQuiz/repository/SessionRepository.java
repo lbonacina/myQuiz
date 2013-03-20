@@ -1,6 +1,6 @@
 package myQuiz.repository;
 
-import myQuiz.model.quiz.Session;
+import myQuiz.model.session.Session;
 import myQuiz.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
