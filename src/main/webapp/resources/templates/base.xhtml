@@ -1,7 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:ui="http://java.sun.com/jsf/facelets">
@@ -22,33 +21,26 @@
         <pe:layoutPane styleClassContent="page_layout_north" position="north" size="58" resizable="false"
                        closable="true">
             <p:toolbar styleClass="page_toolbar">
-                <p:toolbarGroup align="left">
+                <p:toolbarGroup align="left" styleClass="top_header">
+                    <h:outputText value="myQuiz"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right" styleClass="logged_user_header">
+                    <h:outputText value="User: #{loggedUserFullName}"/>
                 </p:toolbarGroup>
             </p:toolbar>
         </pe:layoutPane>
+
+        <ui:insert name="west">
+        </ui:insert>
+
+        <ui:insert name="center">
+        </ui:insert>
 
         <pe:layoutPane position="south" size="50" resizable="false" closable="true">
             <h:outputText value="FOOTER"/>
         </pe:layoutPane>
 
-        <pe:layoutPane position="west" size="200" resizable="false" closable="true">
-            <f:facet name="header">
-                <h:outputText id="logged_user_full_name" styleClass="ui-widget" value="User: #{loggedUserFullName}"/>
-                <p:graphicImage url="#{resource['images/view_fullscreen.ico']}" style="float:right;"
-                                title="Full Screen"
-                                onclick="pageLayoutWidget.close('west');pageLayoutWidget.close('north');pageLayoutWidget.close('south');"/>
-            </f:facet>
-            <ui:include src="/pages/menu.xhtml"/>
-        </pe:layoutPane>
-
-        <pe:layoutPane styleClassContent="page_layout_center" position="center">
-            <ui:insert name="content">
-                [Template content will be inserted here]
-            </ui:insert>
-        </pe:layoutPane>
-
     </pe:layout>
-
 
 </h:body>
 

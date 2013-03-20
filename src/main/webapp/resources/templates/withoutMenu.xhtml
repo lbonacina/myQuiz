@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/templates/base.xhtml">
+
+    <ui:define name="west">
+    </ui:define>
+
+    <ui:define name="center">
+        <pe:layoutPane styleClassContent="page_layout_center" position="center">
+            <ui:insert name="content">
+                [Template content will be inserted here]
+            </ui:insert>
+        </pe:layoutPane>
+    </ui:define>
+
+</ui:composition>
