@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/templates/base.xhtml">
+
+    <ui:define name="west">
+        <pe:layoutPane position="west" size="200" resizable="false" closable="true">
+            <f:facet name="header">
+                <h:outputText id="logged_user_full_name" styleClass="ui-widget" value="Main Menu"/>
+                <p:graphicImage url="#{resource['images/view_fullscreen.ico']}" style="float:right;"
+                                title="Full Screen"
+                                onclick="pageLayoutWidget.close('west');pageLayoutWidget.close('north');pageLayoutWidget.close('south');"/>
+            </f:facet>
+            <ui:include src="/pages/menu.xhtml"/>
+        </pe:layoutPane>
+    </ui:define>
+
+    <ui:define name="center">
+        <pe:layoutPane styleClassContent="page_layout_center" position="center">
+            <ui:insert name="content">
+                [Template content will be inserted here]
+            </ui:insert>
+        </pe:layoutPane>
+    </ui:define>
+
+</ui:composition>

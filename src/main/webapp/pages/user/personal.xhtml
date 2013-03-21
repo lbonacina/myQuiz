@@ -1,46 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions"
-                template="/resources/templates/default.xhtml">
+                template="/resources/templates/withMenu.xhtml">
     <ui:define name="content">
 
         <h:form id="users_form">
 
-            <pe:layoutPane position="north" size="40" resizable="false" closable="false">
-                <h:outputText id="page_title" styleClass="page-title"
-                              value="#{msg.page_title_personal}"/>
-            </pe:layoutPane>
+            <pe:layoutPane styleClassContent="page_layout_center ui-widget" position="center" resizable="false"
+                           closable="false">
 
-            <pe:layoutPane styleClassContent="page_layout_center ui-widget" position="center" resizable="false" closable="false">
+                <f:facet name="header">
+                    <h:outputText id="page_title" styleClass="ui-widget" value="#{msg.page_title_personal}"/>
+                </f:facet>
 
-                <p:panel id="user_details" header="#{msg.page_title_personal}" style="margin-bottom:10px;">
+                <p:outputPanel id="user_details" styleClass="input_form ui-helper-clearfix">
 
-                    <p:outputPanel styleClass="input_form ui-helper-clearfix">
+                    <p:outputLabel styleClass="dialogLabel" value="First Name : "/>
+                    <p:inputText id="firstName" value="#{personal_ctrl.user.firstName}"/>
+                    <p:message id="firstNameMsg" for="firstName"/>
 
-                        <p:outputLabel styleClass="dialogLabel" value="First Name : "/>
-                        <p:inputText id="firstName" value="#{personal_ctrl.user.firstName}"/>
-                        <p:message id="firstNameMsg" for="firstName"/>
+                    <p:outputLabel styleClass="dialogLabel" value="Last Name : "/>
+                    <p:inputText id="lastName" value="#{personal_ctrl.user.lastName}"/>
+                    <p:message id="lastNameMsg" for="lastName"/>
 
-                        <p:outputLabel styleClass="dialogLabel" value="Last Name : "/>
-                        <p:inputText id="lastName" value="#{personal_ctrl.user.lastName}"/>
-                        <p:message id="lastNameMsg" for="lastName"/>
+                    <p:outputLabel styleClass="dialogLabel" value="Email : "/>
+                    <p:inputText id="email" value="#{personal_ctrl.user.email}"/>
+                    <p:message id="emailMsg" for="email"/>
 
-                        <p:outputLabel styleClass="dialogLabel" value="Email : "/>
-                        <p:inputText id="email" value="#{personal_ctrl.user.email}"/>
-                        <p:message id="emailMsg" for="email"/>
+                    <p:outputLabel styleClass="dialogLabel" value="Phone : "/>
+                    <p:inputText id="phone" value="#{personal_ctrl.user.phone}"/>
+                    <p:message id="phoneMsg" for="phone"/>
 
-                        <p:outputLabel styleClass="dialogLabel" value="Phone : "/>
-                        <p:inputText id="phone" value="#{personal_ctrl.user.phone}"/>
-                        <p:message id="phoneMsg" for="phone"/>
+                    <p:messages id="global_msgs" globalOnly="true"/>
 
-                        <p:messages id="global_msgs" globalOnly="true"/>
-
-                    </p:outputPanel>
-
-                </p:panel>
+                </p:outputPanel>
 
                 <p:commandButton value="Save" action="#{personal_ctrl.save}" update="user_details"/>
 

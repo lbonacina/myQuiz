@@ -2,9 +2,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
-                xmlns:pe="http://primefaces.org/ui/extensions"
-                template="/resources/templates/default_no_menu.xhtml">
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/templates/withoutMenu.xhtml">
     <ui:define name="content">
 
         <h:form id="users_form">
@@ -16,6 +15,7 @@
                                   value="#{msg.account_page_first_loging_1}"
                                   rendered="#{personal_ctrl.user.forcePasswordChangeOnNextLogin}"/>
                 </p>
+
                 <p>
                     <h:outputText id="forced_pwd_change_msg_2"
                                   value="#{msg.account_page_first_loging_2}"

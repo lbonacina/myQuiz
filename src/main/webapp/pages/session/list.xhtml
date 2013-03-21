@@ -5,17 +5,16 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions"
-                template="/resources/templates/default.xhtml">
+                template="/resources/templates/withMenu.xhtml">
     <ui:define name="content">
 
         <h:form id="sessions_form">
 
-            <pe:layoutPane position="north" size="40" resizable="false" closable="false">
-                <h:outputText id="page_title" styleClass="page-title"
-                              value="TODO"/>
-            </pe:layoutPane>
-
             <pe:layoutPane position="center" size="280" resizable="false" closable="false">
+
+                <f:facet name="header">
+                    <h:outputText id="page_title" styleClass="ui-widget" value="#{msg.page_title_session_management}"/>
+                </f:facet>
 
                 <p:growl id="messages"/>
 

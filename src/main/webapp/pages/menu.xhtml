@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:s="http://el.security.shiro/func">
+      xmlns:s="http://el.security.shiro/func"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <title>Java EE 6 Starter Application</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -11,28 +12,34 @@
 </h:head>
 <h:body>
 
-    <h:form id="menu_form">
-        <p:menu id="nav_menu" styleClass="nav_menu">
-            <p:menuitem id="question_page_btn" value="My Quiz"
-                        action="/pages/quiz/user_subs?faces-redirect=true" ajax="false"
-                        rendered="#{s:hasPermission('menu:quiz')}"/>
-            <p:menuitem id="sessions_page_btn" value="Sessions" actionListener="#{menu.resetConversations}"
-                        action="/pages/session/list?faces-redirect=true" ajax="false"
-                        rendered="#{s:hasPermission('menu:session')}"/>
-            <p:menuitem id="users_page_btn" value="Users"
-                        action="/pages/user/list?faces-redirect=true" ajax="false"
-                        rendered="#{s:hasPermission('menu:user')}"/>
-            <p:menuitem id="logs_page_btn" value="Logs"
-                        action="/pages/superadmin/logs?faces-redirect=true" rendered="#{s:hasPermission('menu:logs')}"/>
-            <p:menuitem id="personal_page_btn" value="Modify Personal Info"
-                        action="/pages/user/personal?faces-redirect=true"
-                        rendered="#{s:hasPermission('menu:personal_info')}"/>
-            <p:menuitem id="account_page_btn" value="Modify Account"
-                        action="/pages/user/account?faces-redirect=true" rendered="#{s:hasPermission('menu:account')}"/>
+    <ui:composition>
 
-            <p:menuitem value="Logout" id="logout_btn" action="#{auth_ctrl.logout}" ajax="false"/>
-        </p:menu>
-    </h:form>
+        <h:form id="menu_form">
+            <p:menu id="nav_menu" styleClass="nav_menu">
+                <p:menuitem id="question_page_btn" value="My Quiz"
+                            action="/pages/quiz/user_subs?faces-redirect=true" ajax="false"
+                            rendered="#{s:hasPermission('menu:quiz')}"/>
+                <p:menuitem id="sessions_page_btn" value="Sessions" actionListener="#{menu.resetConversations}"
+                            action="/pages/session/list?faces-redirect=true" ajax="false"
+                            rendered="#{s:hasPermission('menu:session')}"/>
+                <p:menuitem id="users_page_btn" value="Users"
+                            action="/pages/user/list?faces-redirect=true" ajax="false"
+                            rendered="#{s:hasPermission('menu:user')}"/>
+                <p:menuitem id="logs_page_btn" value="Logs"
+                            action="/pages/superadmin/logs?faces-redirect=true"
+                            rendered="#{s:hasPermission('menu:logs')}"/>
+                <p:menuitem id="personal_page_btn" value="Modify Personal Info"
+                            action="/pages/user/personal?faces-redirect=true"
+                            rendered="#{s:hasPermission('menu:personal_info')}"/>
+                <p:menuitem id="account_page_btn" value="Modify Account"
+                            action="/pages/user/account?faces-redirect=true"
+                            rendered="#{s:hasPermission('menu:account')}"/>
+
+                <p:menuitem value="Logout" id="logout_btn" action="#{auth_ctrl.logout}" ajax="false"/>
+            </p:menu>
+        </h:form>
+
+    </ui:composition>
 
 </h:body>
 </html>

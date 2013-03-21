@@ -5,24 +5,23 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions"
-                template="/resources/templates/default.xhtml">
+                template="/resources/templates/withMenu.xhtml">
     <ui:define name="content">
 
         <h:form id="users_form">
 
-            <pe:layoutPane position="north" size="40" resizable="false" closable="false">
-                <h:outputText id="page_title" styleClass="page-title"
-                              value="#{msg.page_title_users} - #{user_ctrl.fieldsetHeader}"/>
-            </pe:layoutPane>
-
             <pe:layoutPane position="west" size="280" resizable="false" closable="false">
+
+                <f:facet name="header">
+                    <h:outputText id="page_title" styleClass="ui-widget" value="#{msg.page_title_users}"/>
+                </f:facet>
 
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="add_user_btn" icon="add_user_icon" action="#{user_ctrl.create}"
-                                         update="user_details page_title"/>
+                                         update="user_details page_title_2"/>
                         <p:commandButton id="delete_user_btn" icon="delete_user_icon" action="#{user_ctrl.delete}"
-                                         update="user_details page_title"/>
+                                         update="user_details page_title_2"/>
                     </p:toolbarGroup>
                 </p:toolbar>
 
@@ -30,7 +29,7 @@
                                     converter="userSelectItemsConverter" var="u">
                     <f:selectItems value="#{usersList}" var="user" itemLabel="#{user.fullName}"
                                    itemValue="#{user}"/>
-                    <p:ajax update="user_details page_title" listener="#{user_ctrl.selectionListener}"/>
+                    <p:ajax update="user_details page_title_2" listener="#{user_ctrl.selectionListener}"/>
                     <p:column>
                         <h:outputText value="#{u.fullName}"/>
                     </p:column>
@@ -46,6 +45,11 @@
             </pe:layoutPane>
 
             <pe:layoutPane styleClassContent="page_layout_center ui-widget" position="center">
+
+                <f:facet name="header">
+                    <h:outputText id="page_title_2" style="font-weight: normal;" styleClass="ui-widget"
+                                  value="#{user_ctrl.fieldsetHeader}"/>
+                </f:facet>
 
                 <p:outputPanel id="user_details">
 

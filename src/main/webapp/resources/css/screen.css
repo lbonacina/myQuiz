@@ -3,11 +3,6 @@ body {
     margin: 0;
     padding: 5px;
     font-size: 11px;
-    /*
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-    */
 }
 
 .page_layout_north {
@@ -20,10 +15,29 @@ body {
     padding: 20px;
 }
 
+.pe-layout-pane-header {
+    height: 15px !important;
+    padding: 8px 1em !important;
+}
+
+/* "north" toolbar */
 .page_toolbar {
     height: 50px;
     background: #01325A none;
     color: white;
+}
+
+/* app name on top left of the header */
+.top_header {
+    margin-left: 20px;
+    margin-top: 5px;
+    font-size: 2.6em;
+}
+
+/* logged user name on bottom right of the header */
+.logged_user_header {
+    margin-top: 30px;
+    margin-right: 20px;
 }
 
 .nav_menu {
@@ -31,11 +45,6 @@ body {
 }
 
 .ui-outputlabel {
-    font-weight: bold;
-}
-
-.page-title {
-    font-size: 2em;
     font-weight: bold;
 }
 
@@ -123,6 +132,8 @@ body {
 .full_screen_icon {
     background-image: url(#{resource[ 'images/view_fullsceen.ico' ]}) !important;
 }
+
+/* question page */
 
 .question_button_panel {
     float: left;
