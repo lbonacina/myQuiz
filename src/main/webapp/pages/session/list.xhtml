@@ -21,9 +21,11 @@
 
                 <p:commandButton value="New" action="#{sl_ctrl.newSession}"/>
                 <p:commandButton value="Edit" action="#{sl_ctrl.editSession}" update="messages"/>
-                <p:commandButton value="Open" action="#{sl_ctrl.openSession}" update="messages"/>
+                <p:commandButton value="Results" action="#{sl_ctrl.sessionResults}" update="messages"/>
+                <p:commandButton value="Open" action="#{sl_ctrl.openSession}" update="sessions messages"/>
+                <p:commandButton value="Close" action="#{sl_ctrl.closeSession}" update="sessions messages"/>
 
-                <p:dataTable value="#{sl_ctrl.sessions}" var="s" selection="#{sl_ctrl.selectedSession}"
+                <p:dataTable id="sessions" value="#{sl_ctrl.sessions}" var="s" selection="#{sl_ctrl.selectedSession}"
                              selectionMode="single" rowKey="#{s.id}">
 
                     <p:column headerText="Name">

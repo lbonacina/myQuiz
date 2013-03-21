@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/templates/default.xhtml">
+    <ui:define name="content">
+
+        <h:form id="sessions_form">
+
+            <pe:layoutPane position="north" size="40" resizable="false" closable="false">
+                <h:outputText id="page_title" styleClass="page-title"
+                              value="TODO"/>
+            </pe:layoutPane>
+
+            <pe:layoutPane position="center" size="280" resizable="false" closable="false">
+
+                <p:growl id="messages"/>
+
+                <p:button value="Back" outcome="list?faces-redirect=true"/>
+
+                <p:dataTable value="#{results_ctrl.submissionList}" var="r">
+
+                    <p:column headerText="Full Name">
+                        #{r.user.fullName}
+                    </p:column>
+                    <p:column headerText="Status">
+                        #{r.status}
+                    </p:column>
+                    <p:column headerText="Score">
+                        #{r.finalScore}
+                    </p:column>
+                </p:dataTable>
+
+            </pe:layoutPane>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

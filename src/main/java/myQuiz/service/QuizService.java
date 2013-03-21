@@ -52,7 +52,7 @@ public class QuizService implements Serializable {
 
     public List<Submission> findQuizSubmissionsForUser(User user) {
 
-        return quizSubmissionRepository.findQuizSubmissionByUser(user);
+        return quizSubmissionRepository.findSubmissionsByUser(user);
     }
     /*
       public void createQuizSubmissionsForUser(Quiz quiz, User user) {

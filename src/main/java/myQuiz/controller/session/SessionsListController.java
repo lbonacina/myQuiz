@@ -77,7 +77,6 @@ public class SessionsListController implements Serializable {
         return "";
     }
 
-    // TODO : session should open "itself" automatically on start date
     public void openSession() {
 
         if (!selectedSession.getStatus().equals(Session.SessionStatus.NEW)) {
@@ -92,6 +91,26 @@ public class SessionsListController implements Serializable {
 
         sessionService.open(selectedSession);
         sessionEvent.fire(selectedSession);
+    }
+
+    public void closeSession() {
+
+        if (selectedSession == null) {
+            Messages.addGlobalError("noSessionSelected");
+            return;
+        }
+
+        sessionService.close(selectedSession);
+        sessionEvent.fire(selectedSession);
+    }
+
+    public String sessionResults() {
+
+        if (selectedSession == null) {
+            Messages.addGlobalError("noSessionSelected");
+            return "";
+        }
+        return "results?faces-redirect=true";
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------

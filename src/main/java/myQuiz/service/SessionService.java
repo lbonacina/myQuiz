@@ -50,12 +50,32 @@ public class SessionService implements Serializable {
 
         session.setStatus(Session.SessionStatus.OPEN);
 
-        Set<Submission> submissionSet = new HashSet<Submission>();
+        Set<Submission> submissions = new HashSet<Submission>();
         for (User user : session.getSubscribers()) {
-            submissionSet.add(new Submission(user, session));
+            submissions.add(new Submission(user, session));
         }
 
         sessionRepository.save(session);
-        submissionRepository.save(submissionSet);
+        submissionRepository.save(submissions);
+    }
+
+
+    public void close(Session session) {
+
+        session.setStatus(Session.SessionStatus.CLOSED);
+
+        List<Submission> submissions = submissionRepository.findSubmissionsBySession(session);
+
+        for (Submission submission : submissions) {
+            submission.setStatus(Submission.SubmissionStatus.COMPLETED);
+        }
+
+        sessionRepository.save(session);
+        submissionRepository.save(submissions);
+    }
+
+    public List<Submission> findSubmissionsForSession(Session session) {
+
+        return submissionRepository.findSubmissionsBySession(session);
     }
 }
