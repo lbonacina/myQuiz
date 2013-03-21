@@ -65,6 +65,7 @@ public class Submission implements Serializable {
 
     public Submission(User user, Session session) {
         status = SubmissionStatus.NEW;
+        finalScore = 0.0;
         this.user = user;
         this.session = session;
         userAnswers = new ArrayList<Answer>();
@@ -73,6 +74,7 @@ public class Submission implements Serializable {
 // -------------------------- OTHER METHODS --------------------------
 
     public double complete() {
+
         double score = 0.0;
 
         Map<Question, PossibleAnswer> answerMap = new HashMap<Question, PossibleAnswer>();
