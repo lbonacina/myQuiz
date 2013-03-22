@@ -45,30 +45,6 @@ CREATE TABLE IF NOT EXISTS `access_log` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `answer`
---
-
---DROP TABLE IF EXISTS `answer`;
---CREATE TABLE IF NOT EXISTS `answer` (
---  `id`  INT NOT NULL AUTO_INCREMENT,
---  `id_answer`  INT DEFAULT NULL,
---  `id_question`  INT DEFAULT NULL,
---  `quiz_submission_id`  INT DEFAULT NULL,
---  PRIMARY KEY (`id`),
---  KEY `FKABCA3FBE82B4AAAC` (`id_answer`),
---  KEY `FKABCA3FBEEE66F56B` (`id_question`),
---  KEY `FKABCA3FBE5D2014C0` (`quiz_submission_id`)
---) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dump dei dati per la tabella `answer`
---
-
-
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `permission`
 --
 
@@ -83,11 +59,11 @@ CREATE TABLE IF NOT EXISTS `permission` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `possible_answer`
+-- Struttura della tabella `answer`
 --
 
-DROP TABLE IF EXISTS `possible_answer`;
-CREATE TABLE IF NOT EXISTS `possible_answer` (
+DROP TABLE IF EXISTS `answer`;
+CREATE TABLE IF NOT EXISTS `answer` (
   `id`  INT NOT NULL AUTO_INCREMENT,
   `text` longtext NOT NULL,
   `correct` tinyint(1) NOT NULL,
@@ -97,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `possible_answer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Dump dei dati per la tabella `possible_answer`
+-- Dump dei dati per la tabella `answer`
 --
 
 
@@ -257,7 +233,7 @@ CREATE TABLE `user_session` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `quiz_submission`
+-- Struttura della tabella `submission`
 --
 
 DROP TABLE IF EXISTS `submission`;
@@ -269,6 +245,7 @@ CREATE TABLE `submission` (
   `end_timestamp` datetime DEFAULT NULL,
   `id_session` INT DEFAULT NULL,
   `id_user` INT NOT NULL,
+  `report` TEXT NULL,
   PRIMARY KEY (`id`),
   KEY `FK84363B4C2E69F2E1` (`id_session`),
   KEY `FK84363B4CACD97E4B` (`id_user`),

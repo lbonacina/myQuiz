@@ -5,7 +5,6 @@ import org.apache.commons.collections.CollectionUtils;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,26 +23,23 @@ public class MultiAnswerQuestion extends Question implements Serializable {
         super();
     }
 
-    public MultiAnswerQuestion(String text, List<PossibleAnswer> answers) {
-        super(text);
+    public MultiAnswerQuestion(String text, List<Answer> answers) {
+        super(text, answers);
         assert answers != null;
         assert answers.size() > 0;
         assert CollectionUtils.countMatches(answers, new CorrectPredicate()) > 0; // at least one correct answer
-        possibleAnswers = new ArrayList<PossibleAnswer>(answers);
     }
 
     @Override
-    public double score(List<PossibleAnswer> userAnswers) {
+    public double score() {
 
         double scoreAcc = 0.0;
-        double singleAnswerScore = 1.0 / possibleAnswers.size();
-        for (PossibleAnswer pa : possibleAnswers) {
+        double singleAnswerScore = 1.0 / answers.size();
 
-            if (pa.correct) {
-                scoreAcc += (userAnswers.contains(pa)) ? singleAnswerScore : 0.0;
-            } else {
-                scoreAcc += (!userAnswers.contains(pa)) ? singleAnswerScore : 0.0;
-            }
+        for (Answer pa : answers) {
+
+            if ((pa.correct && pa.checked) || (!pa.correct && !pa.checked))
+                scoreAcc += singleAnswerScore;
         }
         return scoreAcc;
     }

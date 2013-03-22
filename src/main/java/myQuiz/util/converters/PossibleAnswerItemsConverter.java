@@ -1,6 +1,6 @@
 package myQuiz.util.converters;
 
-import myQuiz.model.quiz.PossibleAnswer;
+import myQuiz.model.quiz.Answer;
 import org.omnifaces.converter.SelectItemsConverter;
 
 import javax.faces.component.UIComponent;
@@ -18,6 +18,6 @@ public class PossibleAnswerItemsConverter extends SelectItemsConverter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return (value instanceof PossibleAnswer) ? ((PossibleAnswer) value).getText() : null;
+        return (value instanceof Answer) ? ((Answer) value).getText() : null;
     }
 }

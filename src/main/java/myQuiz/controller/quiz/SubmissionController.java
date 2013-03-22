@@ -1,6 +1,6 @@
 package myQuiz.controller.quiz;
 
-import myQuiz.model.quiz.PossibleAnswer;
+import myQuiz.model.quiz.Answer;
 import myQuiz.model.quiz.Question;
 import myQuiz.model.quiz.Quiz;
 import myQuiz.model.quiz.Submission;
@@ -9,7 +9,6 @@ import myQuiz.security.LoggedUser;
 import myQuiz.service.QuizService;
 import myQuiz.util.AppLog;
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.Conversation;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationGroup;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationScoped;
 import org.slf4j.Logger;
@@ -18,7 +17,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +38,8 @@ public class SubmissionController implements Serializable {
 
     static final long serialVersionUID = 8277824266030751108L;
 
-    @Inject Conversation conversation;
+    @Inject @ConversationGroup(SubmissionConversationQualifier.class)
+    ResultsController resultsController;
 
     @Inject FacesContext facesContext;
     @Inject @AppLog Logger log;
@@ -47,8 +51,8 @@ public class SubmissionController implements Serializable {
 
     int currentQuestionNumber;
 
-    PossibleAnswer singleUserAnswer;
-    List<PossibleAnswer> multiUserAnswer;
+    Answer singleUserAnswer;
+    List<Answer> multiUserAnswer;
 
     MultiValueMap userAnswers;
 
@@ -75,57 +79,48 @@ public class SubmissionController implements Serializable {
         }
 
         quizComplete = true;
-        log.debug("User Answers = ");
-        for (Object q : userAnswers.keySet()) {
-            submission.registerAnswers((Question) q, (List<PossibleAnswer>) userAnswers.get(q));
 
-            log.debug("Question : {}", q.toString());
-            for (Object p : (List<PossibleAnswer>) userAnswers.get(q)) {
-                log.debug("Answer : {}", p);
+        log.debug("User Answers = ");
+        for (Question question : quiz.getQuestions()) {
+
+            List<Answer> answers = (List<Answer>) userAnswers.get(question);
+
+            for (Answer a : answers) {
+                a.mark();
+                log.debug("Ans : " + a);
             }
         }
 
         finalScore = submission.complete();
+
+        submission.setReport(generateXMLReport());
+
         quizService.saveQuizSubmission(submission);
+
+        resultsController.setSubmission(submission);
 
         return "results?faces-redirect=true";
     }
 
-    public String exit() {
 
-        conversation.close();
-        return "/pages/quiz/user_subs?faces-redirect=true";
+    private String generateXMLReport() {
+        JAXBContext context;
+        try {
+            context = JAXBContext.newInstance(Submission.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            StringWriter sw = new StringWriter();
+            m.marshal(submission, sw);
+            return sw.getBuffer().toString();
+        }
+        catch (JAXBException e) {
+            log.debug("Error generating XML report :", e);  //To change body of catch statement use File | Settings | File Templates.
+            return "ERROR";
+        }
     }
 
-    /**
-     * check if the answer given by user to the question (from the multimap) is correct
-     * TODO : maybe return a GIF to an icon like ok/ko
-     * public String isAnswerOk(Question question) {
-     * <p/>
-     * List<PossibleAnswer> answers = (List<PossibleAnswer>) userAnswers.get(question) ;
-     * return ( question.score(answers) == 1.0 ) ? "OK" : "KO" ;
-     * }
-     * <p/>
-     * <p/>
-     * public String isSingleAnswerOk(Question question, PossibleAnswer possibleAnswer) {
-     * <p/>
-     * List<PossibleAnswer> answers = (List<PossibleAnswer>) userAnswers.get(question) ;
-     * if ( ( answers.contains(possibleAnswer) && possibleAnswer.isCorrect() ) ||
-     * ( !answers.contains(possibleAnswer) && !possibleAnswer.isCorrect() ) )
-     * return "OK";
-     * else
-     * return "KO";
-     * }
-     */
-
-    public String getResultReport() {
-
-        ResultReportGenerator rrg = new ResultReportGenerator();
-        return rrg.generateResultReport(quiz, userAnswers);
-    }
-
-    public List<PossibleAnswer> getCurrentPossibleAnswers() {
-        return quiz.getNthQuestion(currentQuestionNumber).getPossibleAnswers();
+    public List<Answer> getCurrentPossibleAnswers() {
+        return quiz.getNthQuestion(currentQuestionNumber).getAnswers();
     }
 
     public boolean getIsEndOfQuiz() {
@@ -140,7 +135,7 @@ public class SubmissionController implements Serializable {
     public void init() {
 
         log.debug("SubmissionController::init");
-        userAnswers = MultiValueMap.decorate(new HashMap<Question, PossibleAnswer>(), ArrayList.class);
+        userAnswers = MultiValueMap.decorate(new HashMap<Question, Answer>(), ArrayList.class);
         currentQuestionNumber = 1;
         finalScore = 0.0;
         quizComplete = false;
@@ -163,9 +158,9 @@ public class SubmissionController implements Serializable {
 
             if (isCurrentQuestionMultiAnswer()) {
                 singleUserAnswer = null;
-                multiUserAnswer = (List<PossibleAnswer>) userAnswers.get(getCurrentQuestion());
+                multiUserAnswer = (List<Answer>) userAnswers.get(getCurrentQuestion());
             } else {
-                List<PossibleAnswer> list = (List<PossibleAnswer>) userAnswers.get(getCurrentQuestion());
+                List<Answer> list = (List<Answer>) userAnswers.get(getCurrentQuestion());
                 if ((list != null) && (list.size() > 0))
                     singleUserAnswer = list.get(0);
                 else
@@ -193,9 +188,9 @@ public class SubmissionController implements Serializable {
 
             if (isCurrentQuestionMultiAnswer()) {
                 singleUserAnswer = null;
-                multiUserAnswer = (List<PossibleAnswer>) userAnswers.get(getCurrentQuestion());
+                multiUserAnswer = (List<Answer>) userAnswers.get(getCurrentQuestion());
             } else {
-                List<PossibleAnswer> list = (List<PossibleAnswer>) userAnswers.get(getCurrentQuestion());
+                List<Answer> list = (List<Answer>) userAnswers.get(getCurrentQuestion());
                 if ((list != null) && (list.size() > 0))
                     singleUserAnswer = list.get(0);
                 else
@@ -213,6 +208,7 @@ public class SubmissionController implements Serializable {
     public Question getCurrentQuestion() {
         return quiz.getNthQuestion(currentQuestionNumber);
     }
+
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
@@ -232,11 +228,11 @@ public class SubmissionController implements Serializable {
         this.finalScore = finalScore;
     }
 
-    public List<PossibleAnswer> getMultiUserAnswer() {
+    public List<Answer> getMultiUserAnswer() {
         return multiUserAnswer;
     }
 
-    public void setMultiUserAnswer(List<PossibleAnswer> multiUserAnswer) {
+    public void setMultiUserAnswer(List<Answer> multiUserAnswer) {
         this.multiUserAnswer = multiUserAnswer;
     }
 
@@ -248,11 +244,11 @@ public class SubmissionController implements Serializable {
         this.quiz = quiz;
     }
 
-    public PossibleAnswer getSingleUserAnswer() {
+    public Answer getSingleUserAnswer() {
         return singleUserAnswer;
     }
 
-    public void setSingleUserAnswer(PossibleAnswer singleUserAnswer) {
+    public void setSingleUserAnswer(Answer singleUserAnswer) {
         this.singleUserAnswer = singleUserAnswer;
     }
 

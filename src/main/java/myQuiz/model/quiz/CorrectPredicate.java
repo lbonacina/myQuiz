@@ -12,6 +12,6 @@ public class CorrectPredicate implements Predicate {
 
     @Override
     public boolean evaluate(Object o) {
-        return ((PossibleAnswer) o).correct;
+        return ((Answer) o).correct;
     }
 }

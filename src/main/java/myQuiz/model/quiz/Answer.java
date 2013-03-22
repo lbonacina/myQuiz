@@ -1,6 +1,13 @@
 package myQuiz.model.quiz;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,44 +17,52 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "answer")
-public class Answer {
+@XmlRootElement
+@XmlType(propOrder = {"text", "correct", "checked"})
+public class Answer implements Serializable {
+// ------------------------------ FIELDS ------------------------------
+
+    private static final long serialVersionUID = 2217728808580244207L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_question", referencedColumnName = "id", nullable = true)
-    Question question;
+    @NotNull
+    @Size(min = 10, max = 4000)
+    String text;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_answer", referencedColumnName = "id", nullable = true)
-    PossibleAnswer answer;
+    @NotNull
+    @Column
+    boolean correct;
+
+    @Transient
+    boolean checked;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public Answer() {
     }
 
-    public Answer(Question question, PossibleAnswer answer) {
-        this.question = question;
-        this.answer = answer;
+    public Answer(String text, boolean correct) {
+        this.text = text;
+        this.correct = correct;
+        this.checked = false;
     }
 
-    public Question getQuestion() {
-        return question;
+    public void mark() {
+
+        checked = true;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void unmark() {
+
+        checked = false;
     }
 
-    public PossibleAnswer getAnswer() {
-        return answer;
-    }
+// --------------------- GETTER / SETTER METHODS ---------------------
 
-    public void setAnswer(PossibleAnswer answer) {
-        this.answer = answer;
-    }
-
+    @XmlTransient
     public Long getId() {
         return id;
     }
@@ -56,23 +71,54 @@ public class Answer {
         this.id = id;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @XmlElement
+    public boolean isCorrect() {
+        return correct;
+    }
+
+    @XmlElement
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+
+    // ------------------------ CANONICAL METHODS ------------------------
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Answer answer1 = (Answer) o;
+        Answer that = (Answer) o;
 
-        if (answer != null ? !answer.equals(answer1.answer) : answer1.answer != null) return false;
-        if (question != null ? !question.equals(answer1.question) : answer1.question != null) return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = question != null ? question.hashCode() : 0;
-        result = 31 * result + (answer != null ? answer.hashCode() : 0);
-        return result;
+        return text != null ? text.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "PossibleAnswer{" +
+                "correct=" + correct +
+                ", text='" + text + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

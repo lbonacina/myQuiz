@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * shows all of the submission for the logged user, with status and score
  */
-@Named("usersubs_ctrl")
+@Named("subslist_ctrl")
 @ViewAccessScoped
-public class UserSubsController implements Serializable {
+public class SubmissionsListController implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
     private static final long serialVersionUID = 6783905787434942322L;
@@ -32,7 +32,10 @@ public class UserSubsController implements Serializable {
     @Inject QuizService quizService;
 
     @Inject @ConversationGroup(SubmissionConversationQualifier.class)
-    SubmissionController quizController;
+    SubmissionController submissionController;
+
+    @Inject @ConversationGroup(SubmissionConversationQualifier.class)
+    ResultsController resultsController;
 
     List<Submission> userQuiz;
 
@@ -41,29 +44,26 @@ public class UserSubsController implements Serializable {
     // -------------------------- OTHER METHODS --------------------------
 
     public String startQuiz() {
-/*
-        if (!selectedSubmission.getStatus().equals(Submission.SubmissionStatus.NEW)) {
-            Messages.addGlobalError("noSessionSelected");
-            return "";
-        }
 
-        if (selectedSubmission== null) {
-            Messages.addGlobalError("noSessionSelected");
-            return "";
-        }
-  */
-        quizController.start(selectedSubmission);
+        submissionController.start(selectedSubmission);
         return "submission?faces-redirect=true";
     }
+
+    public String showResults() {
+
+        resultsController.setSubmission(selectedSubmission);
+        return "results?faces-redirect=true";
+    }
+
 
     @PostConstruct
     public void init() {
 
+        log.debug("SubmissionsListController::init");
         userQuiz = quizService.findQuizSubmissionsForUser(user);
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
-
 
     public Submission getSelectedSubmission() {
         return selectedSubmission;

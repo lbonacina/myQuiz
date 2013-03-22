@@ -11,9 +11,7 @@
 
             <p:growl id="messages"/>
 
-            <!--p:commandButton value="Start" action="#{usersubs_ctrl.startQuiz}" ajax="false"/-->
-
-            <p:dataTable id="user_quiz" value="#{usersubs_ctrl.userQuiz}" var="quiz">
+            <p:dataTable id="user_quiz" value="#{subslist_ctrl.userQuiz}" var="quiz">
                 <p:column headerText="Name">
                     #{quiz.quiz.name}
                 </p:column>
@@ -34,8 +32,12 @@
                     #{quiz.finalScore}
                 </p:column>
                 <p:column>
-                    <p:commandButton value="Start" action="#{usersubs_ctrl.startQuiz}" rendered="#{quiz.status=='NEW'}">
-                        <f:setPropertyActionListener value="#{quiz}" target="#{usersubs_ctrl.selectedSubmission}"/>
+                    <p:commandButton value="Start" action="#{subslist_ctrl.startQuiz}" rendered="#{quiz.status=='NEW'}">
+                        <f:setPropertyActionListener value="#{quiz}" target="#{subslist_ctrl.selectedSubmission}"/>
+                    </p:commandButton>
+                    <p:commandButton value="Results" action="#{subslist_ctrl.showResults}"
+                                     rendered="#{quiz.status=='COMPLETED'}">
+                        <f:setPropertyActionListener value="#{quiz}" target="#{subslist_ctrl.selectedSubmission}"/>
                     </p:commandButton>
                 </p:column>
 

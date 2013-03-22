@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,6 +20,9 @@ import java.util.Set;
 /* TODO : separate user data from authentication information ? */
 @Entity
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email"), @UniqueConstraint(columnNames = "username")})
+@XmlRootElement(name = "user")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"firstName", "lastName", "email", "phone"})
 public class User implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
@@ -84,9 +88,7 @@ public class User implements Serializable {
     // we need to use the Hibernate annotation directly
     // also it seems like FetchMode.JOIN does not work properly (need to test)
     @ManyToMany(fetch = FetchType.EAGER)
-    //@Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 50)
-    //@NotEmpty
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id"))
@@ -206,6 +208,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    @XmlTransient
     public int getFailedLoginAttemptCount() {
         return failedLoginAttemptCount;
     }
@@ -222,6 +225,7 @@ public class User implements Serializable {
         this.firstName = firstName;
     }
 
+    @XmlTransient
     public Long getId() {
         return id;
     }
@@ -238,6 +242,7 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    @XmlTransient
     public String getPassword() {
         return password;
     }
@@ -254,6 +259,7 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
+    @XmlTransient
     public Set<Role> getRoles() {
         return roles;
     }
@@ -262,6 +268,7 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
+    @XmlTransient
     public String getUsername() {
         return username;
     }
@@ -270,6 +277,7 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    @XmlTransient
     public boolean isEnabled() {
         return enabled;
     }
@@ -278,6 +286,7 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
+    @XmlTransient
     public boolean isSuperadmin() {
         return superadmin;
     }
@@ -286,6 +295,7 @@ public class User implements Serializable {
         this.superadmin = superadmin;
     }
 
+    @XmlTransient
     public boolean isForcePasswordChangeOnNextLogin() {
         return forcePasswordChangeOnNextLogin;
     }
@@ -294,6 +304,7 @@ public class User implements Serializable {
         this.forcePasswordChangeOnNextLogin = forcePasswordChangeOnNextLogin;
     }
 
+    @XmlTransient
     public String getDecryptedPassword() {
         return decryptedPassword;
     }

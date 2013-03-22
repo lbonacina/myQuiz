@@ -6,6 +6,8 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,15 @@ public class Quiz implements Serializable {
         return questions.size();
     }
 
+    public double score() {
+
+        double scoreAcc = 0.0;
+        for (Question q : questions)
+            scoreAcc += q.score();
+
+        return scoreAcc;
+    }
+
 // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Long getId() {
@@ -79,6 +90,8 @@ public class Quiz implements Serializable {
         this.name = name;
     }
 
+    @XmlElementWrapper(name = "questions")
+    @XmlElement(name = "question")
     public List<Question> getQuestions() {
         return questions;
     }

@@ -6,6 +6,8 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +20,9 @@ import java.util.List;
 @Table(name = "question")
 @Inheritance
 @DiscriminatorColumn(name = "type")
+@XmlRootElement(name = "question")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"text", "discriminatorValue", "answers"})
 public abstract class Question {
 // ------------------------------ FIELDS ------------------------------
 
@@ -32,7 +37,7 @@ public abstract class Question {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "id_question", nullable = false)
-    List<PossibleAnswer> possibleAnswers;
+    List<Answer> answers;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -43,26 +48,28 @@ public abstract class Question {
         this.text = text;
     }
 
-    public Question(String text, List<PossibleAnswer> possibleAnswers) {
+    public Question(String text, List<Answer> answers) {
         this.text = text;
-        this.possibleAnswers = possibleAnswers;
+        this.answers = new ArrayList<Answer>(answers);
     }
 
-    public PossibleAnswer getNthPossibleAnswer(int n) {
+    public Answer getNthAnswer(int n) {
 
-        return possibleAnswers.get(n - 1);
+        return answers.get(n - 1);
     }
 
     @Transient
+    @XmlElement(name = "discriminatorValue")
     public String getDiscriminatorValue() {
         DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
         return val == null ? null : val.value();
     }
 
-    public abstract double score(List<PossibleAnswer> userAnswers);
+    public abstract double score();
 
     // --------------------- GETTER / SETTER METHODS ---------------------
 
+    @XmlTransient
     public Long getId() {
         return id;
     }
@@ -71,14 +78,17 @@ public abstract class Question {
         this.id = id;
     }
 
-    public List<PossibleAnswer> getPossibleAnswers() {
-        return possibleAnswers;
+    @XmlElementWrapper(name = "answers")
+    @XmlElement(name = "answer")
+    public List<Answer> getAnswers() {
+        return answers;
     }
 
-    public void setPossibleAnswers(List<PossibleAnswer> possibleAnswers) {
-        this.possibleAnswers = possibleAnswers;
+    public void setAnswers(List<Answer> possibleAnswers) {
+        this.answers = possibleAnswers;
     }
 
+    @XmlElement
     public String getText() {
         return text;
     }

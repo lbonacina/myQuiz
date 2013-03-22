@@ -2,12 +2,18 @@ package myQuiz.model.quiz;
 
 import myQuiz.model.session.Session;
 import myQuiz.model.user.User;
-import org.apache.commons.collections.map.MultiValueMap;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.*;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.Serializable;
-import java.util.*;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +23,9 @@ import java.util.*;
  */
 @Entity
 @Table(name = "submission")
+@XmlRootElement(name = "submission")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"user", "status", "finalScore", "startTimestamp", "endTimestamp", "session"})
 public class Submission implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
@@ -51,16 +60,13 @@ public class Submission implements Serializable {
     @JoinColumn(name = "id_session")
     private Session session;
 
-    // Answers are not saved right now, only total score
-    //@OneToMany(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "quiz_submission_id")
-    @Transient
-    private List<Answer> userAnswers;
+    @Column(name = "report")
+    private String report;
+
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Submission() {
-        userAnswers = new ArrayList<Answer>();
     }
 
     public Submission(User user, Session session) {
@@ -68,33 +74,16 @@ public class Submission implements Serializable {
         finalScore = 0.0;
         this.user = user;
         this.session = session;
-        userAnswers = new ArrayList<Answer>();
     }
 
 // -------------------------- OTHER METHODS --------------------------
 
     public double complete() {
 
-        double score = 0.0;
-
-        Map<Question, PossibleAnswer> answerMap = new HashMap<Question, PossibleAnswer>();
-        MultiValueMap mvm = MultiValueMap.decorate(answerMap, ArrayList.class);
-
-        for (Answer answer : userAnswers) {
-            mvm.put(answer.getQuestion(), answer.getAnswer());
-        }
-
-        for (Iterator iter = mvm.keySet().iterator(); iter.hasNext(); ) {
-            Question q = (Question) iter.next();
-            List<PossibleAnswer> pa = (List<PossibleAnswer>) mvm.get(q);
-            score += q.score(pa);
-        }
-
+        double score = getQuiz().score();
         finalScore = Math.round(score * 100.0) / 100.0;
-
         endTimestamp = Calendar.getInstance().getTime();
         status = SubmissionStatus.COMPLETED;
-
         return finalScore;
     }
 
@@ -102,18 +91,26 @@ public class Submission implements Serializable {
         return session.getQuiz();
     }
 
-    public void registerAnswer(Question question, PossibleAnswer answer) {
-        userAnswers.add(new Answer(question, answer));
-    }
-
-    public void registerAnswers(Question question, List<PossibleAnswer> answers) {
-        for (PossibleAnswer p : answers)
-            userAnswers.add(new Answer(question, p));
-    }
-
     public void start() {
         status = SubmissionStatus.STARTED;
         startTimestamp = Calendar.getInstance().getTime();
+    }
+
+
+    public String generateHTMLReport() throws TransformerException {
+
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Source xslt = new StreamSource(getClass().getClassLoader().getResourceAsStream("transform.xslt"));
+        Transformer transformer = null;
+        transformer = factory.newTransformer(xslt);
+
+        StringWriter sw = new StringWriter();
+        Source xmlSource = new StreamSource(new StringReader(report));
+        Result htmlResult = new StreamResult(sw);
+
+        transformer.transform(xmlSource, htmlResult);
+
+        return sw.toString();
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
@@ -134,6 +131,7 @@ public class Submission implements Serializable {
         this.finalScore = finalScore;
     }
 
+    @XmlTransient
     public Long getId() {
         return id;
     }
@@ -174,15 +172,17 @@ public class Submission implements Serializable {
         this.user = user;
     }
 
-    public List<Answer> getUserAnswers() {
-        return userAnswers;
+    @XmlTransient
+    public String getReport() {
+        return report;
     }
 
-    public void setUserAnswers(List<Answer> userAnswers) {
-        this.userAnswers = userAnswers;
+    public void setReport(String report) {
+        this.report = report;
     }
 
-// ------------------------ CANONICAL METHODS ------------------------
+
+    // ------------------------ CANONICAL METHODS ------------------------
 
     @Override
     public boolean equals(Object o) {

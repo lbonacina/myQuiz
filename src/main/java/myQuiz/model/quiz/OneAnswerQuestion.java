@@ -5,7 +5,6 @@ import org.apache.commons.collections.CollectionUtils;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,17 +23,21 @@ public class OneAnswerQuestion extends Question implements Serializable {
         super();
     }
 
-    public OneAnswerQuestion(String text, List<PossibleAnswer> answers) {
-        super(text);
+    public OneAnswerQuestion(String text, List<Answer> answers) {
+        super(text, answers);
         assert answers != null;
         assert answers.size() > 0;
         assert CollectionUtils.countMatches(answers, new CorrectPredicate()) == 1;
-        possibleAnswers = new ArrayList<PossibleAnswer>(answers);
     }
 
     @Override
-    public double score(List<PossibleAnswer> userAnswers) {
-        assert userAnswers.size() == 1;
-        return (userAnswers.get(0).correct) ? 1.0 : 0.0;
+    public double score() {
+
+        for (Answer answer : answers) {
+            if (answer.correct && answer.checked)
+                return 1.0;
+        }
+
+        return 0.0;
     }
 }

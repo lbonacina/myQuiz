@@ -6,6 +6,7 @@ import myQuiz.model.user.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -19,6 +20,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "session")
+@XmlRootElement(name = "session")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"name", "status", "startDate", "endDate", "quiz"})
 public class Session implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
@@ -84,6 +88,7 @@ public class Session implements Serializable {
         this.endDate = endDate;
     }
 
+    @XmlTransient
     public Long getId() {
         return id;
     }
@@ -124,6 +129,7 @@ public class Session implements Serializable {
         this.status = status;
     }
 
+    @XmlTransient
     public Set<User> getSubscribers() {
         return subscribers;
     }
