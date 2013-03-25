@@ -2,6 +2,7 @@ package myQuiz.controller;
 
 import myQuiz.model.accesslog.AccessLogEntry;
 import myQuiz.model.user.User;
+import myQuiz.repository.UserConstraintException;
 import myQuiz.security.SecurityProducer;
 import myQuiz.security.accesslog.AccessLog;
 import myQuiz.security.accesslog.AppAccessLog;
@@ -19,7 +20,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.ConstraintViolationException;
 import java.io.Serializable;
 
 
@@ -58,15 +58,24 @@ public class GuestController implements Serializable {
 
         log.debug("trying to guest with {}/{}", firstName + " " + lastName, email);
 
-        User user = userService.createGuest(firstName, lastName, email);
+        AccessLogEntry.Reason reason = AccessLogEntry.Reason.NONE;
+
+        User user = null;
+        try {
+            user = userService.createGuest(firstName, lastName, email);
+        }
+        catch (UserConstraintException uce) {
+            log.error("Unexpected Exception while logging in user.", uce.getMessage());
+            Messages.addGlobalError("email_unique");
+            return "";
+        }
+
         String username = user.getUsername();
         String password = user.getDecryptedPassword();
 
         log.debug("guest created : {}", user);
 
         boolean isAuth = subject.isAuthenticated();
-
-        AccessLogEntry.Reason reason = AccessLogEntry.Reason.NONE;
 
         if (!isAuth) {
 
@@ -98,10 +107,6 @@ public class GuestController implements Serializable {
             }
             catch (AuthenticationException ae) {
                 log.debug("Error during login", ae);
-                reason = AccessLogEntry.Reason.GENERIC_EXCEPTION;
-            }
-            catch (ConstraintViolationException cve) {
-                log.debug("Error during login", cve);
                 reason = AccessLogEntry.Reason.GENERIC_EXCEPTION;
             }
             catch (Exception e) {

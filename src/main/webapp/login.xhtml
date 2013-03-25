@@ -31,7 +31,7 @@
                     <h:inputSecret id="password_i" value="#{auth_ctrl.password}" required="true"/>
                     <f:facet name="footer">
                         <p:commandButton id="submit_btn" action="#{auth_ctrl.login}" style="clear:left;"
-                                         process="input_subform"
+                                         process="input_subform" update="loginError_msg"
                                          icon="ui-icon-play" iconPos="right" value="Login"/>
                         <p:messages id="loginError_msg" style="clear:left;"/>
                         <p:outputLabel id="sessionExpired_lbl" value="#{msg.sessionExpired}"
@@ -52,7 +52,7 @@
                     <h:inputText id="email_i" value="#{guest_ctrl.email}"/>
                     <f:facet name="footer">
                         <p:commandButton id="submit_guest_btn" action="#{guest_ctrl.login}" style="clear:left;"
-                                         process="input_guest_subform"
+                                         process="input_guest_subform" update="loginError_guest_msg"
                                          icon="ui-icon-play" iconPos="right" value="Login"/>
                         <p:messages id="loginError_guest_msg" style="clear:left;"/>
                         <p:outputLabel id="sessionExpired_guestlbl" value="#{msg.sessionExpired}"
@@ -63,5 +63,16 @@
         </p:tabView>
 
     </h:form>
+
+    <p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+        <f:facet name="start">
+            <p:graphicImage value="#{resource['images/ajax_loader.gif']}"/>
+        </f:facet>
+
+        <f:facet name="complete">
+            <h:outputText value=""/>
+        </f:facet>
+    </p:ajaxStatus>
+
 </h:body>
 </html>
