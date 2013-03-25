@@ -77,7 +77,7 @@ public class MultiAnswerQuizTest {
         myQuiz.getNthQuestion(3).getNthAnswer(3).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(3).mark();
 
-        Assert.assertEquals(4.0, submission.complete());
+        Assert.assertEquals(4.0, myQuiz.score());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class MultiAnswerQuizTest {
         myQuiz.getNthQuestion(4).getNthAnswer(1).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(2).mark();
 
-        Assert.assertEquals(0.0, submission.complete());
+        Assert.assertEquals(0.0, myQuiz.score());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class MultiAnswerQuizTest {
         myQuiz.getNthQuestion(2).getNthAnswer(3).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(3).mark();
 
-        Assert.assertEquals(1.0, submission.complete());
+        Assert.assertEquals(1.0, myQuiz.score());
     }
 
     @Test
@@ -122,7 +122,7 @@ public class MultiAnswerQuizTest {
         myQuiz.getNthQuestion(3).getNthAnswer(3).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(2).mark();
 
-        Assert.assertEquals(2.33, submission.complete());
+        Assert.assertEquals(2.33, myQuiz.score());
     }
 
     @Test
@@ -140,6 +140,6 @@ public class MultiAnswerQuizTest {
         myQuiz.getNthQuestion(4).getNthAnswer(3).mark();
 
 
-        Assert.assertEquals(2.67, submission.complete());
+        Assert.assertEquals(2.67, myQuiz.score());
     }
 }

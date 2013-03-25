@@ -1,6 +1,7 @@
-package myQuiz.model.quiz.cyclers;
+package myQuiz.model.quiz.runner;
 
 import myQuiz.model.quiz.Question;
+import myQuiz.model.quiz.Quiz;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -10,60 +11,69 @@ import java.util.NoSuchElementException;
  * Date: 24/03/13
  * Time: 21.45
  */
-public class SimpleQuestionCycler implements Cycler<Question> {
+public class SimpleQuizRunner implements QuizRunner<Quiz, Question> {
 
+    private Quiz quiz;
     private List<Question> questionList;
     private int position;
 
-    public SimpleQuestionCycler(List<Question> questionList) {
+    public SimpleQuizRunner(Quiz quiz) {
 
-        this.questionList = questionList;
+        this.quiz = quiz;
+        this.questionList = quiz.getQuestions();
         position = 0;
     }
 
     @Override
-    public boolean hasNext() {
+    public boolean hasNextQuestion() {
 
         return !(position >= questionList.size() - 1);
     }
 
     @Override
-    public void next() {
+    public void nextQuestion() {
 
-        if (!hasNext())
+        if (!hasNextQuestion())
             throw new NoSuchElementException();
         position += 1;
     }
 
     @Override
-    public boolean hasPrevious() {
+    public boolean hasPreviousQuestion() {
 
         return !(position <= 0);
     }
 
     @Override
-    public void previous() {
+    public void previousQuestion() {
 
-        if (!hasPrevious())
+        if (!hasPreviousQuestion())
             throw new NoSuchElementException();
         position -= 1;
     }
 
     @Override
-    public Question current() {
+    public Question currentQuestion() {
 
         return questionList.get(position);
     }
 
     @Override
-    public int currentSeqIndex() {
+    public int currentQuestionIndex() {
 
-        return position + 1;
+        return position;
     }
 
     @Override
-    public int currentMaxIndex() {
+    public int questionsCount() {
 
         return questionList.size();
     }
+
+    @Override
+    public double score() {
+
+        return quiz.score();
+    }
+
 }

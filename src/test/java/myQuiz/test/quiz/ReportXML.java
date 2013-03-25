@@ -87,7 +87,7 @@ public class ReportXML {
         myQuiz.getNthQuestion(3).getNthAnswer(2).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(2).mark();
 
-        Assert.assertEquals(1.0, submission.complete());
+        Assert.assertEquals(1.0, myQuiz.score());
 
         JAXBContext context = null;
 
