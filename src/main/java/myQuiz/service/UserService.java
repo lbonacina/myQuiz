@@ -8,6 +8,7 @@ import myQuiz.repository.RoleRepository;
 import myQuiz.repository.UserConstraintException;
 import myQuiz.repository.UserRepository;
 import myQuiz.util.AppLog;
+import myQuiz.util.RandomString;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -69,6 +70,7 @@ public class UserService implements Serializable {
     }
 
     public User findByUsername(String username) {
+
         return userRepository.findByUsername(username);
     }
 
@@ -96,6 +98,30 @@ public class UserService implements Serializable {
         log.debug("Failed login attempt by username : {}, current attempt count : {}", username, user.getFailedLoginAttemptCount());
         return count;
     }
+
+
+    public User createGuest(String firstName, String lastName, String email) {
+
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPhone("1234567890");
+        user.setGuest(true);
+        user.setUsername(null);
+
+        RandomString rs = new RandomString(20);
+        user.setUsername(rs.nextString());
+        user.resetPassword();
+
+        Role role = roleRepository.findByRole("Guest");
+        Set<Role> roles = new HashSet<Role>();
+        roles.add(role);
+        user.assignRoles(roles);
+        userRepository.save(user);
+        return user;
+    }
+
 
     public void save(User user) throws UserConstraintException {
 

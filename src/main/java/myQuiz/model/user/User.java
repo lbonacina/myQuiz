@@ -22,7 +22,7 @@ import java.util.Set;
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email"), @UniqueConstraint(columnNames = "username")})
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(propOrder = {"firstName", "lastName", "email", "phone"})
+@XmlType(propOrder = {"firstName", "lastName", "email", "phone", "guest"})
 public class User implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
@@ -69,7 +69,11 @@ public class User implements Serializable {
     // otherwise is null
     // the field is not persisted
     // also probably not the best solution...
+    @Transient
     private String decryptedPassword;
+
+    @Column(nullable = false)
+    private boolean guest;
 
     @Column(nullable = false)
     private boolean enabled;
@@ -100,6 +104,7 @@ public class User implements Serializable {
 
         id = null;
         roles = new HashSet<Role>();
+        guest = false;
         enabled = true;
         superadmin = false;
         failedLoginAttemptCount = 0;
@@ -114,16 +119,19 @@ public class User implements Serializable {
     }
 
     public void disable() {
+
         failedLoginAttemptCount = 0;
         enabled = false;
     }
 
     public void enable() {
+
         failedLoginAttemptCount = 0;
         enabled = true;
     }
 
     public Set<String> getPermissionNames() {
+
         Set<String> set = new HashSet<String>();
         for (Role r : roles) {
             for (Permission p : r.getPermissions()) {
@@ -134,6 +142,7 @@ public class User implements Serializable {
     }
 
     public Set<String> getRoleNames() {
+
         Set<String> set = new HashSet<String>();
         for (Role r : roles) {
             set.add(r.getRole());
@@ -142,6 +151,7 @@ public class User implements Serializable {
     }
 
     public String getRolesAsString() {
+
         StringBuilder sb = new StringBuilder();
         for (Role r : roles) {
             sb.append(r.getRole());
@@ -161,21 +171,26 @@ public class User implements Serializable {
 
     // no real need to store a boolean locked in DB, since failedLoginAttemptCount already tells us if account is locked or no
     public boolean isLocked() {
+
         return (failedLoginAttemptCount >= NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT);
     }
 
     public void assignPassword(String plainTextPwd) {
+
         password = passwordService.encryptPassword(plainTextPwd);
         forcePasswordChangeOnNextLogin = false;
     }
 
+
     public void resetPassword() {
+
         decryptedPassword = generateNewPassword();
         password = passwordService.encryptPassword(decryptedPassword);
         forcePasswordChangeOnNextLogin = true;
     }
 
     private String generateNewPassword() {
+
         return DEFAULT_PASSWORD;
         // you may use this to enable generation of random password on reset
         // passwords may then be sent via email, if supported
@@ -184,6 +199,7 @@ public class User implements Serializable {
 
     // increment failedLoginAttemptCount if we are below threshold and return the number of attempts left
     public int trackFailedLoginAttempt() {
+
         if (failedLoginAttemptCount < NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT)
             failedLoginAttemptCount += 1;
         return NUMBER_OF_ATTEMPTS_BEFORE_LOCKED_ACCOUNT - failedLoginAttemptCount;
@@ -191,122 +207,159 @@ public class User implements Serializable {
 
     // reset failedLoginAttemptCount
     public void trackSuccessfulLoginAttempt() {
+
         failedLoginAttemptCount = 0;
     }
 
     public void unlock() {
+
         failedLoginAttemptCount = 0;
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
     public String getEmail() {
+
         return email;
     }
 
     public void setEmail(String email) {
+
         this.email = email;
     }
 
     @XmlTransient
     public int getFailedLoginAttemptCount() {
+
         return failedLoginAttemptCount;
     }
 
     public void setFailedLoginAttemptCount(int failedLoginAttemptCount) {
+
         this.failedLoginAttemptCount = failedLoginAttemptCount;
     }
 
     public String getFirstName() {
+
         return firstName;
     }
 
     public void setFirstName(String firstName) {
+
         this.firstName = firstName;
     }
 
     @XmlTransient
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
     public String getLastName() {
+
         return lastName;
     }
 
     public void setLastName(String lastName) {
+
         this.lastName = lastName;
     }
 
     @XmlTransient
     public String getPassword() {
+
         return password;
     }
 
     protected void setPassword(String password) {
+
         this.password = password;
     }
 
     public String getPhone() {
+
         return phone;
     }
 
     public void setPhone(String phone) {
+
         this.phone = phone;
     }
 
     @XmlTransient
     public Set<Role> getRoles() {
+
         return roles;
     }
 
     protected void setRoles(Set<Role> roles) {
+
         this.roles = roles;
     }
 
     @XmlTransient
     public String getUsername() {
+
         return username;
     }
 
     public void setUsername(String username) {
+
         this.username = username;
     }
 
     @XmlTransient
     public boolean isEnabled() {
+
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
+
         this.enabled = enabled;
     }
 
     @XmlTransient
     public boolean isSuperadmin() {
+
         return superadmin;
     }
 
     public void setSuperadmin(boolean superadmin) {
+
         this.superadmin = superadmin;
     }
 
     @XmlTransient
     public boolean isForcePasswordChangeOnNextLogin() {
+
         return forcePasswordChangeOnNextLogin;
     }
 
     public void setForcePasswordChangeOnNextLogin(boolean forcePasswordChangeOnNextLogin) {
+
         this.forcePasswordChangeOnNextLogin = forcePasswordChangeOnNextLogin;
     }
 
     @XmlTransient
     public String getDecryptedPassword() {
+
         return decryptedPassword;
+    }
+
+    public boolean isGuest() {
+
+        return guest;
+    }
+
+    public void setGuest(boolean guest) {
+
+        this.guest = guest;
     }
 
     // ------------------------ CANONICAL METHODS ------------------------
@@ -314,6 +367,7 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -326,22 +380,27 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
+
         return email.hashCode();
     }
 
+
     @Override
     public String toString() {
+
         return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", username='" + username + '\'' +
+                "guest=" + guest +
                 ", enabled=" + enabled +
                 ", superadmin=" + superadmin +
                 ", forcePasswordChangeOnNextLogin=" + forcePasswordChangeOnNextLogin +
                 ", failedLoginAttemptCount=" + failedLoginAttemptCount +
+                ", roles=" + roles +
                 ", id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

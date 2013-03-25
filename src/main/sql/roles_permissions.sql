@@ -21,7 +21,8 @@ INSERT INTO `permission` (`id`, `description`, `permission`) VALUES
 INSERT INTO `role` (`id`, `description`, `role`) VALUES
 (1, 'desc', 'Superadmin'),
 (2, 'desc', 'Admin'),
-(3, 'desc', 'User');
+(3, 'desc', 'User'),
+(4, 'desc', 'Guest');
 
 INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
 (1, 1),
@@ -53,7 +54,8 @@ INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
 (2, 16),
 (3, 2),
 (3, 3),
-(3, 15);
+(3, 15),
+(4, 15);
 
 
 --

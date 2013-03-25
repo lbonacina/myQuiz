@@ -82,6 +82,10 @@
                         <p:selectBooleanCheckbox value="#{user_ctrl.selectedUser.enabled}"/>
                         <h:outputText value=""/>
 
+                        <p:outputLabel styleClass="dialogLabel" value="Guest : "/>
+                        <p:selectBooleanCheckbox value="#{user_ctrl.selectedUser.guest}" disabled="true"/>
+                        <h:outputText value=""/>
+
                         <p:outputLabel styleClass="dialogLabel" value="Roles : "/>
 
                         <p:pickList id="roles" style="float:left;" value="#{user_ctrl.rolesPickList}" var="role"
