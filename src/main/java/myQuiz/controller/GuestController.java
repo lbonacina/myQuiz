@@ -1,11 +1,15 @@
 package myQuiz.controller;
 
 import myQuiz.model.accesslog.AccessLogEntry;
+import myQuiz.model.quiz.Quiz;
+import myQuiz.model.session.Session;
 import myQuiz.model.user.User;
 import myQuiz.repository.UserConstraintException;
 import myQuiz.security.SecurityProducer;
 import myQuiz.security.accesslog.AccessLog;
 import myQuiz.security.accesslog.AppAccessLog;
+import myQuiz.service.QuizService;
+import myQuiz.service.SessionService;
 import myQuiz.service.UserService;
 import myQuiz.util.AppLog;
 import org.apache.shiro.SecurityUtils;
@@ -21,6 +25,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Named("guest_ctrl")
@@ -43,6 +50,8 @@ public class GuestController implements Serializable {
     String email;
 
     @Inject UserService userService;
+    @Inject QuizService quizService;
+    @Inject SessionService sessionService;
 
 // -------------------------- OTHER METHODS --------------------------
 
@@ -69,6 +78,15 @@ public class GuestController implements Serializable {
             Messages.addGlobalError("email_unique");
             return "";
         }
+
+        // create a fake session from quiz #2, assign user to it, open it
+        Quiz quiz = quizService.findById((long) 2);
+        Session session = new Session("Dummy Session #1", quiz, Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+        Set<User> sub = new HashSet<User>();
+        sub.add(user);
+        session.setSubscribers(sub);
+        sessionService.save(session);
+        sessionService.open(session);
 
         String username = user.getUsername();
         String password = user.getDecryptedPassword();

@@ -1,7 +1,7 @@
 package myQuiz.model.quiz;
 
 import myQuiz.model.quiz.cyclers.Cycler;
-import myQuiz.model.quiz.cyclers.SimpleQuestionCycler;
+import myQuiz.model.quiz.cyclers.RandomSubsetQuestionCycler;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -74,7 +74,8 @@ public class Quiz implements Serializable {
 
     public Cycler<Question> cycler() {
 
-        return new SimpleQuestionCycler(questions);
+        //return new SimpleQuestionCycler(questions);
+        return new RandomSubsetQuestionCycler(questions, 5);
     }
 
 

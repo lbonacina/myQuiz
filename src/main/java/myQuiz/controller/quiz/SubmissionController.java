@@ -77,9 +77,11 @@ public class SubmissionController implements Serializable {
         for (Question question : quiz.getQuestions()) {
             List<Answer> answers = (List<Answer>) userAnswers.get(question);
 
-            for (Answer a : answers) {
-                a.mark();
-                log.debug("Ans : " + a);
+            if (answers != null) {
+                for (Answer a : answers) {
+                    a.mark();
+                    log.debug("Ans : " + a);
+                }
             }
         }
 
