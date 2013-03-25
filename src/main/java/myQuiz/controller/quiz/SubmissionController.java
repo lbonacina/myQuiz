@@ -4,7 +4,8 @@ import myQuiz.model.quiz.Answer;
 import myQuiz.model.quiz.Question;
 import myQuiz.model.quiz.Quiz;
 import myQuiz.model.quiz.Submission;
-import myQuiz.model.quiz.cyclers.Cycler;
+import myQuiz.model.quiz.runner.QuizRunner;
+import myQuiz.model.quiz.runner.SimpleQuizRunner;
 import myQuiz.model.user.User;
 import myQuiz.security.LoggedUser;
 import myQuiz.service.QuizService;
@@ -29,7 +30,7 @@ import java.util.List;
 
 
 /**
- * controls the executions of one quiz by the user (the submission)
+ * controls the executions of one quiz by the user through the QuizRunner interface
  */
 @Named("sub_ctrl")
 @ConversationScoped
@@ -47,34 +48,42 @@ public class SubmissionController implements Serializable {
     @Inject @LoggedUser User user;
     @Inject QuizService quizService;
 
-    Quiz quiz;
     Submission submission;
-    Cycler<Question> questionsCycler;
+    QuizRunner<Quiz, Question> quizRunner;
 
     Answer singleUserAnswer;
     List<Answer> multiUserAnswer;
 
     MultiValueMap userAnswers;
 
-    double finalScore;
     boolean quizComplete;
 
 // -------------------------- OTHER METHODS --------------------------
 
+    public void start(Submission userSubmission) {
+
+        submission = userSubmission;
+        submission.start();
+        quizService.saveQuizSubmission(submission);
+        quizRunner = new SimpleQuizRunner(userSubmission.getQuiz());
+    }
+
     public String complete() {
 
-        userAnswers.remove(getCurrentQuestion());
+        userAnswers.remove(quizRunner.currentQuestion());
         if (isCurrentQuestionMultiAnswer()) {
-            userAnswers.putAll(getCurrentQuestion(), multiUserAnswer);
+            userAnswers.putAll(quizRunner.currentQuestion(), multiUserAnswer);
         }
         else {
-            userAnswers.put(getCurrentQuestion(), singleUserAnswer);
+            userAnswers.put(quizRunner.currentQuestion(), singleUserAnswer);
         }
 
         quizComplete = true;
 
+        // TODO : this code is still bad, maybe we can avoid the multimap and write the result directly to the runnur
+        // or even better code a custom JSF component to manage the Question directly (a bit complicated...)
         log.debug("User Answers = ");
-        for (Question question : quiz.getQuestions()) {
+        for (Question question : submission.getQuiz().getQuestions()) {
             List<Answer> answers = (List<Answer>) userAnswers.get(question);
 
             if (answers != null) {
@@ -85,8 +94,10 @@ public class SubmissionController implements Serializable {
             }
         }
 
-        finalScore = submission.complete();
-        submission.setReport(generateXMLReport());
+
+        submission.complete();
+        submission.setFinalScore(quizRunner.score());
+        submission.setReport(generateReport());
         quizService.saveQuizSubmission(submission);
         resultsController.setSubmission(submission);
         return "results?faces-redirect=true";
@@ -94,10 +105,10 @@ public class SubmissionController implements Serializable {
 
     public boolean isCurrentQuestionMultiAnswer() {
 
-        return questionsCycler.current().getDiscriminatorValue().equals("multi");
+        return quizRunner.currentQuestion().getDiscriminatorValue().equals("multi");
     }
 
-    private String generateXMLReport() {
+    public String generateReport() {
 
         JAXBContext context;
         try {
@@ -109,24 +120,20 @@ public class SubmissionController implements Serializable {
             return sw.getBuffer().toString();
         }
         catch (JAXBException e) {
-            log.debug("Error generating XML report :", e);  //To change body of catch statement use File | Settings | File Templates.
-            return "ERROR";
+            e.printStackTrace();
+            return "ERROR : " + e.getMessage();
         }
     }
 
-    public List<Answer> getCurrentPossibleAnswers() {
-
-        return questionsCycler.current().getAnswers();
-    }
 
     public boolean getIsEndOfQuiz() {
 
-        return !questionsCycler.hasNext();
+        return !quizRunner.hasNextQuestion();
     }
 
     public boolean getIsStartOfQuiz() {
 
-        return !questionsCycler.hasPrevious();
+        return !quizRunner.hasPreviousQuestion();
     }
 
     @PostConstruct
@@ -134,14 +141,13 @@ public class SubmissionController implements Serializable {
 
         log.debug("SubmissionController::init");
         userAnswers = MultiValueMap.decorate(new HashMap<Question, Answer>(), ArrayList.class);
-        finalScore = 0.0;
         quizComplete = false;
     }
 
     public void next() {
 
         storeResultsForCurrentQuestion();
-        questionsCycler.next();
+        quizRunner.nextQuestion();
         retrieveResultsForCurrentQuestion();
     }
 
@@ -150,12 +156,12 @@ public class SubmissionController implements Serializable {
     private void storeResultsForCurrentQuestion() {
 
         if (isCurrentQuestionMultiAnswer()) {
-            userAnswers.remove(getCurrentQuestion());
-            userAnswers.putAll(getCurrentQuestion(), multiUserAnswer);
+            userAnswers.remove(quizRunner.currentQuestion());
+            userAnswers.putAll(quizRunner.currentQuestion(), multiUserAnswer);
         }
         else {
-            userAnswers.remove(getCurrentQuestion());
-            userAnswers.put(getCurrentQuestion(), singleUserAnswer);
+            userAnswers.remove(quizRunner.currentQuestion());
+            userAnswers.put(quizRunner.currentQuestion(), singleUserAnswer);
         }
     }
 
@@ -166,10 +172,10 @@ public class SubmissionController implements Serializable {
 
         if (isCurrentQuestionMultiAnswer()) {
             singleUserAnswer = null;
-            multiUserAnswer = (List<Answer>) userAnswers.get(getCurrentQuestion());
+            multiUserAnswer = (List<Answer>) userAnswers.get(quizRunner.currentQuestion());
         }
         else {
-            List<Answer> list = (List<Answer>) userAnswers.get(getCurrentQuestion());
+            List<Answer> list = (List<Answer>) userAnswers.get(quizRunner.currentQuestion());
             singleUserAnswer = ((list != null) && (list.size() > 0)) ? list.get(0) : null;
             multiUserAnswer = null;
         }
@@ -178,44 +184,22 @@ public class SubmissionController implements Serializable {
     public void prev() {
 
         storeResultsForCurrentQuestion();
-        questionsCycler.previous();
+        quizRunner.previousQuestion();
         retrieveResultsForCurrentQuestion();
     }
 
-    public void start(Submission userSubmission) {
-
-        submission = userSubmission;
-        quiz = submission.getQuiz();
-        submission.start();
-        quizService.saveQuizSubmission(submission);
-        questionsCycler = quiz.cycler();
-    }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
-    public Question getCurrentQuestion() {
 
-        return questionsCycler.current();
+    public QuizRunner<Quiz, Question> getQuizRunner() {
+
+        return quizRunner;
     }
 
-    public int getCurrentQuestionNumber() {
+    public void setQuizRunner(QuizRunner<Quiz, Question> quizRunner) {
 
-        return questionsCycler.currentSeqIndex();
-    }
-
-    public int getQuestionsNumber() {
-
-        return questionsCycler.currentMaxIndex();
-    }
-
-    public double getFinalScore() {
-
-        return finalScore;
-    }
-
-    public void setFinalScore(int finalScore) {
-
-        this.finalScore = finalScore;
+        this.quizRunner = quizRunner;
     }
 
     public List<Answer> getMultiUserAnswer() {
@@ -226,16 +210,6 @@ public class SubmissionController implements Serializable {
     public void setMultiUserAnswer(List<Answer> multiUserAnswer) {
 
         this.multiUserAnswer = multiUserAnswer;
-    }
-
-    public Quiz getQuiz() {
-
-        return quiz;
-    }
-
-    public void setQuiz(Quiz quiz) {
-
-        this.quiz = quiz;
     }
 
     public Answer getSingleUserAnswer() {

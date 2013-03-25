@@ -1,7 +1,5 @@
 package myQuiz.model.quiz;
 
-import myQuiz.model.quiz.cyclers.Cycler;
-import myQuiz.model.quiz.cyclers.RandomSubsetQuestionCycler;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -72,20 +70,13 @@ public class Quiz implements Serializable {
         return questions.size();
     }
 
-    public Cycler<Question> cycler() {
-
-        //return new SimpleQuestionCycler(questions);
-        return new RandomSubsetQuestionCycler(questions, 5);
-    }
-
-
     public double score() {
 
         double scoreAcc = 0.0;
         for (Question q : questions)
             scoreAcc += q.score();
 
-        return scoreAcc;
+        return Math.round(scoreAcc * 100.0) / 100.0;
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------

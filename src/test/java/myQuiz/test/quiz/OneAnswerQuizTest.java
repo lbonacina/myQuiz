@@ -72,7 +72,7 @@ public class OneAnswerQuizTest {
         myQuiz.getNthQuestion(3).getNthAnswer(1).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(3).mark();
 
-        Assert.assertEquals(4.0, submission.complete());
+        Assert.assertEquals(4.0, myQuiz.score());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class OneAnswerQuizTest {
         myQuiz.getNthQuestion(3).getNthAnswer(2).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(2).mark();
 
-        Assert.assertEquals(0.0, submission.complete());
+        Assert.assertEquals(0.0, myQuiz.score());
     }
 
     @Test
@@ -98,6 +98,6 @@ public class OneAnswerQuizTest {
         myQuiz.getNthQuestion(3).getNthAnswer(2).mark();
         myQuiz.getNthQuestion(4).getNthAnswer(2).mark();
 
-        Assert.assertEquals(1.0, submission.complete());
+        Assert.assertEquals(1.0, myQuiz.score());
     }
 }

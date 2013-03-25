@@ -12,19 +12,20 @@
             <p:outputPanel id="question" styleClass="question">
 
                 <p:outputLabel
-                        value="Question #{sub_ctrl.currentQuestionNumber} of #{sub_ctrl.questionsNumber} : "/>
-                <h:outputText styleClass="question_text ui-widget" value="#{sub_ctrl.currentQuestion.text}"/>
+                        value="Question #{sub_ctrl.quizRunner.currentQuestionIndex()} of #{sub_ctrl.quizRunner.questionsCount()} : "/>
+                <h:outputText styleClass="question_text ui-widget"
+                              value="#{sub_ctrl.quizRunner.currentQuestion().text}"/>
 
                 <p:outputLabel value="Answers : "/>
                 <p:selectOneRadio value="#{sub_ctrl.singleUserAnswer}" converter="possibleAnswerItemsConverter"
                                   layout="pageDirection" rendered="#{!sub_ctrl.currentQuestionMultiAnswer}">
-                    <f:selectItems value="#{sub_ctrl.currentPossibleAnswers}"
+                    <f:selectItems value="#{sub_ctrl.quizRunner.currentQuestion().answers}"
                                    var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
                 </p:selectOneRadio>
 
                 <p:selectManyCheckbox value="#{sub_ctrl.multiUserAnswer}" converter="possibleAnswerItemsConverter"
                                       layout="pageDirection" rendered="#{sub_ctrl.currentQuestionMultiAnswer}">
-                    <f:selectItems value="#{sub_ctrl.currentPossibleAnswers}"
+                    <f:selectItems value="#{sub_ctrl.quizRunner.currentQuestion().answers}"
                                    var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
                 </p:selectManyCheckbox>
 

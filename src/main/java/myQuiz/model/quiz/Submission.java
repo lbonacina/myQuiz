@@ -67,9 +67,11 @@ public class Submission implements Serializable {
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Submission() {
+
     }
 
     public Submission(User user, Session session) {
+
         status = SubmissionStatus.NEW;
         finalScore = 0.0;
         this.user = user;
@@ -78,20 +80,19 @@ public class Submission implements Serializable {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public double complete() {
+    public void complete() {
 
-        double score = getQuiz().score();
-        finalScore = Math.round(score * 100.0) / 100.0;
         endTimestamp = Calendar.getInstance().getTime();
         status = SubmissionStatus.COMPLETED;
-        return finalScore;
     }
 
     public Quiz getQuiz() {
+
         return session.getQuiz();
     }
 
     public void start() {
+
         status = SubmissionStatus.STARTED;
         startTimestamp = Calendar.getInstance().getTime();
     }
@@ -116,68 +117,84 @@ public class Submission implements Serializable {
 // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Date getEndTimestamp() {
+
         return endTimestamp;
     }
 
     public void setEndTimestamp(Date endDate) {
+
         this.endTimestamp = endDate;
     }
 
     public Double getFinalScore() {
+
         return finalScore;
     }
 
     public void setFinalScore(Double finalScore) {
+
         this.finalScore = finalScore;
     }
 
     @XmlTransient
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
     public Session getSession() {
+
         return session;
     }
 
     public void setSession(Session session) {
+
         this.session = session;
     }
 
     public Date getStartTimestamp() {
+
         return startTimestamp;
     }
 
     public void setStartTimestamp(Date startDate) {
+
         this.startTimestamp = startDate;
     }
 
     public SubmissionStatus getStatus() {
+
         return status;
     }
 
     public void setStatus(SubmissionStatus status) {
+
         this.status = status;
     }
 
     public User getUser() {
+
         return user;
     }
 
     public void setUser(User user) {
+
         this.user = user;
     }
 
     @XmlTransient
     public String getReport() {
+
         return report;
     }
 
     public void setReport(String report) {
+
         this.report = report;
     }
 
@@ -186,6 +203,7 @@ public class Submission implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -199,6 +217,7 @@ public class Submission implements Serializable {
 
     @Override
     public int hashCode() {
+
         int result = user != null ? user.hashCode() : 0;
         result = 31 * result + (session != null ? session.hashCode() : 0);
         return result;

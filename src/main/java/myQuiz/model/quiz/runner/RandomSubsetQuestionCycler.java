@@ -1,4 +1,4 @@
-package myQuiz.model.quiz.cyclers;
+package myQuiz.model.quiz.runner;
 
 import myQuiz.model.quiz.Question;
 
@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
  * Date: 24/03/13
  * Time: 21.45
  */
-public class RandomSubsetQuestionCycler implements Cycler<Question> {
+public class RandomSubsetQuestionCycler {
 
     private List<Question> questionList;
     private int position;
@@ -27,13 +27,13 @@ public class RandomSubsetQuestionCycler implements Cycler<Question> {
         size = subsetSize;
     }
 
-    @Override
+
     public boolean hasNext() {
 
         return !(position >= questionList.size() - 1);
     }
 
-    @Override
+
     public void next() {
 
         if (!hasNext())
@@ -41,13 +41,13 @@ public class RandomSubsetQuestionCycler implements Cycler<Question> {
         position += 1;
     }
 
-    @Override
+
     public boolean hasPrevious() {
 
         return !(position <= 0);
     }
 
-    @Override
+
     public void previous() {
 
         if (!hasPrevious())
@@ -55,19 +55,19 @@ public class RandomSubsetQuestionCycler implements Cycler<Question> {
         position -= 1;
     }
 
-    @Override
+
     public Question current() {
 
         return questionList.get(position);
     }
 
-    @Override
+
     public int currentSeqIndex() {
 
         return position + 1;
     }
 
-    @Override
+
     public int currentMaxIndex() {
 
         return size;

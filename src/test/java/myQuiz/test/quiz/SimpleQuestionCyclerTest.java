@@ -2,7 +2,8 @@ package myQuiz.test.quiz;
 
 import junit.framework.Assert;
 import myQuiz.model.quiz.*;
-import myQuiz.model.quiz.cyclers.Cycler;
+import myQuiz.model.quiz.runner.QuizRunner;
+import myQuiz.model.quiz.runner.SimpleQuizRunner;
 import myQuiz.model.session.Session;
 import myQuiz.model.user.User;
 import org.junit.Before;
@@ -69,77 +70,77 @@ public class SimpleQuestionCyclerTest {
     public void previousAtStartTest() {
 
         Quiz myQuiz = submission.getQuiz();
-        Cycler<Question> iter = myQuiz.cycler();
+        QuizRunner<Quiz, Question> iter = new SimpleQuizRunner(myQuiz);
 
-        Assert.assertFalse(iter.hasPrevious());
-        iter.previous();
+        Assert.assertFalse(iter.hasPreviousQuestion());
+        iter.previousQuestion();
     }
 
     @Test
     public void nextAtStartTest() {
 
         Quiz myQuiz = submission.getQuiz();
-        Cycler<Question> iter = myQuiz.cycler();
-        Assert.assertEquals("question_1", iter.current().getText());
-        Assert.assertTrue(iter.hasNext());
-        iter.next();
-        Assert.assertEquals("question_2", iter.current().getText());
+        QuizRunner<Quiz, Question> iter = new SimpleQuizRunner(myQuiz);
+        Assert.assertEquals("question_1", iter.currentQuestion().getText());
+        Assert.assertTrue(iter.hasNextQuestion());
+        iter.nextQuestion();
+        Assert.assertEquals("question_2", iter.currentQuestion().getText());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void nextNextNextTest() {
 
         Quiz myQuiz = submission.getQuiz();
-        Cycler<Question> iter = myQuiz.cycler();
-        Assert.assertTrue(iter.hasNext());
-        Assert.assertEquals("question_1", iter.current().getText());
-        iter.next();
-        Assert.assertEquals("question_2", iter.current().getText());
-        iter.next();
-        Assert.assertEquals("question_3", iter.current().getText());
-        iter.next();
-        Assert.assertEquals("question_4", iter.current().getText());
-        Assert.assertFalse(iter.hasNext());
-        iter.next();
+        QuizRunner<Quiz, Question> iter = new SimpleQuizRunner(myQuiz);
+        Assert.assertTrue(iter.hasNextQuestion());
+        Assert.assertEquals("question_1", iter.currentQuestion().getText());
+        iter.nextQuestion();
+        Assert.assertEquals("question_2", iter.currentQuestion().getText());
+        iter.nextQuestion();
+        Assert.assertEquals("question_3", iter.currentQuestion().getText());
+        iter.nextQuestion();
+        Assert.assertEquals("question_4", iter.currentQuestion().getText());
+        Assert.assertFalse(iter.hasNextQuestion());
+        iter.nextQuestion();
     }
 
     @Test
     public void nextAndPreviousAlternatedTest() {
 
         Quiz myQuiz = submission.getQuiz();
-        Cycler<Question> iter = myQuiz.cycler();
-        Assert.assertTrue(iter.hasNext());
-        iter.next();
-        Assert.assertEquals("question_2", iter.current().getText());
-        iter.previous();
-        Assert.assertEquals("question_1", iter.current().getText());
-        iter.next();
-        Assert.assertEquals("question_2", iter.current().getText());
-        iter.previous();
-        Assert.assertEquals("question_1", iter.current().getText());
+        QuizRunner<Quiz, Question> iter = new SimpleQuizRunner(myQuiz);
+        Assert.assertTrue(iter.hasNextQuestion());
+        iter.nextQuestion();
+        Assert.assertEquals("question_2", iter.currentQuestion().getText());
+        iter.previousQuestion();
+        Assert.assertEquals("question_1", iter.currentQuestion().getText());
+        iter.nextQuestion();
+        Assert.assertEquals("question_2", iter.currentQuestion().getText());
+        iter.previousQuestion();
+        Assert.assertEquals("question_1", iter.currentQuestion().getText());
     }
 
     @Test
     public void fullTest() {
 
         Quiz myQuiz = submission.getQuiz();
-        Cycler<Question> iter = myQuiz.cycler();
-        Assert.assertTrue(iter.hasNext());
-        Assert.assertFalse(iter.hasPrevious());
-        Assert.assertEquals("question_1", iter.current().getText());
-        iter.next();
-        Assert.assertEquals("question_2", iter.current().getText());
-        iter.next();
-        Assert.assertEquals("question_3", iter.current().getText());
-        iter.next();
-        Assert.assertEquals("question_4", iter.current().getText());
-        Assert.assertFalse(iter.hasNext());
-        iter.previous();
-        Assert.assertEquals("question_3", iter.current().getText());
-        iter.previous();
-        Assert.assertEquals("question_2", iter.current().getText());
-        iter.previous();
-        Assert.assertEquals("question_1", iter.current().getText());
-        Assert.assertFalse(iter.hasPrevious());
+        QuizRunner<Quiz, Question> iter = new SimpleQuizRunner(myQuiz);
+        Assert.assertTrue(iter.hasNextQuestion());
+        Assert.assertFalse(iter.hasPreviousQuestion());
+        Assert.assertEquals("question_1", iter.currentQuestion().getText());
+        iter.nextQuestion();
+        Assert.assertEquals("question_2", iter.currentQuestion().getText());
+        iter.nextQuestion();
+        Assert.assertEquals("question_3", iter.currentQuestion().getText());
+        iter.nextQuestion();
+        Assert.assertEquals("question_4", iter.currentQuestion().getText());
+        Assert.assertFalse(iter.hasNextQuestion());
+        iter.previousQuestion();
+        Assert.assertEquals("question_3", iter.currentQuestion().getText());
+        iter.previousQuestion();
+        Assert.assertEquals("question_2", iter.currentQuestion().getText());
+        iter.previousQuestion();
+        Assert.assertEquals("question_1", iter.currentQuestion().getText());
+        Assert.assertFalse(iter.hasPreviousQuestion());
     }
 }
