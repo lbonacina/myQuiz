@@ -185,7 +185,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `phone` varchar(25) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(200) NOT NULL,
-  `decryptedPassword` varchar(255) DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL,
   `failed_login_attempt_count` int(11) NOT NULL,
   `pwd_change_on_next_login` tinyint(1) NOT NULL,
