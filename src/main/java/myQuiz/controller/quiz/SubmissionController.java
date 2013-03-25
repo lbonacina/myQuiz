@@ -4,6 +4,7 @@ import myQuiz.model.quiz.Answer;
 import myQuiz.model.quiz.Question;
 import myQuiz.model.quiz.Quiz;
 import myQuiz.model.quiz.Submission;
+import myQuiz.model.quiz.cyclers.Cycler;
 import myQuiz.model.user.User;
 import myQuiz.security.LoggedUser;
 import myQuiz.service.QuizService;
@@ -48,8 +49,7 @@ public class SubmissionController implements Serializable {
 
     Quiz quiz;
     Submission submission;
-
-    int currentQuestionNumber;
+    Cycler<Question> questionsCycler;
 
     Answer singleUserAnswer;
     List<Answer> multiUserAnswer;
@@ -61,20 +61,13 @@ public class SubmissionController implements Serializable {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public void start(Submission userSubmission) {
-
-        submission = userSubmission;
-        quiz = submission.getQuiz();
-        submission.start();
-        quizService.saveQuizSubmission(submission);
-    }
-
     public String complete() {
 
         userAnswers.remove(getCurrentQuestion());
         if (isCurrentQuestionMultiAnswer()) {
             userAnswers.putAll(getCurrentQuestion(), multiUserAnswer);
-        } else {
+        }
+        else {
             userAnswers.put(getCurrentQuestion(), singleUserAnswer);
         }
 
@@ -82,7 +75,6 @@ public class SubmissionController implements Serializable {
 
         log.debug("User Answers = ");
         for (Question question : quiz.getQuestions()) {
-
             List<Answer> answers = (List<Answer>) userAnswers.get(question);
 
             for (Answer a : answers) {
@@ -92,18 +84,19 @@ public class SubmissionController implements Serializable {
         }
 
         finalScore = submission.complete();
-
         submission.setReport(generateXMLReport());
-
         quizService.saveQuizSubmission(submission);
-
         resultsController.setSubmission(submission);
-
         return "results?faces-redirect=true";
     }
 
+    public boolean isCurrentQuestionMultiAnswer() {
+
+        return questionsCycler.current().getDiscriminatorValue().equals("multi");
+    }
 
     private String generateXMLReport() {
+
         JAXBContext context;
         try {
             context = JAXBContext.newInstance(Submission.class);
@@ -120,15 +113,18 @@ public class SubmissionController implements Serializable {
     }
 
     public List<Answer> getCurrentPossibleAnswers() {
-        return quiz.getNthQuestion(currentQuestionNumber).getAnswers();
+
+        return questionsCycler.current().getAnswers();
     }
 
     public boolean getIsEndOfQuiz() {
-        return (currentQuestionNumber == quiz.getNumberOfQuestions());
+
+        return !questionsCycler.hasNext();
     }
 
     public boolean getIsStartOfQuiz() {
-        return (currentQuestionNumber == 1);
+
+        return !questionsCycler.hasPrevious();
     }
 
     @PostConstruct
@@ -136,135 +132,137 @@ public class SubmissionController implements Serializable {
 
         log.debug("SubmissionController::init");
         userAnswers = MultiValueMap.decorate(new HashMap<Question, Answer>(), ArrayList.class);
-        currentQuestionNumber = 1;
         finalScore = 0.0;
         quizComplete = false;
     }
 
     public void next() {
 
-        log.debug("current question : {} , going to next question.", currentQuestionNumber);
+        storeResultsForCurrentQuestion();
+        questionsCycler.next();
+        retrieveResultsForCurrentQuestion();
+    }
+
+    // take the results from the inputs (based on the type of the query)
+    // and store it in the multimap
+    private void storeResultsForCurrentQuestion() {
 
         if (isCurrentQuestionMultiAnswer()) {
             userAnswers.remove(getCurrentQuestion());
             userAnswers.putAll(getCurrentQuestion(), multiUserAnswer);
-        } else {
+        }
+        else {
             userAnswers.remove(getCurrentQuestion());
             userAnswers.put(getCurrentQuestion(), singleUserAnswer);
         }
+    }
 
-        if (currentQuestionNumber < quiz.getNumberOfQuestions()) {
-            currentQuestionNumber += 1;
 
-            if (isCurrentQuestionMultiAnswer()) {
-                singleUserAnswer = null;
-                multiUserAnswer = (List<Answer>) userAnswers.get(getCurrentQuestion());
-            } else {
-                List<Answer> list = (List<Answer>) userAnswers.get(getCurrentQuestion());
-                if ((list != null) && (list.size() > 0))
-                    singleUserAnswer = list.get(0);
-                else
-                    singleUserAnswer = null;
+    // retrive the results of the question from the multimap and store it
+    // in the appropriate values based on question type
+    private void retrieveResultsForCurrentQuestion() {
 
-                multiUserAnswer = null;
-            }
+        if (isCurrentQuestionMultiAnswer()) {
+            singleUserAnswer = null;
+            multiUserAnswer = (List<Answer>) userAnswers.get(getCurrentQuestion());
+        }
+        else {
+            List<Answer> list = (List<Answer>) userAnswers.get(getCurrentQuestion());
+            singleUserAnswer = ((list != null) && (list.size() > 0)) ? list.get(0) : null;
+            multiUserAnswer = null;
         }
     }
 
     public void prev() {
 
-        log.debug("current question : {} , going to prev question.", currentQuestionNumber);
-
-        if (isCurrentQuestionMultiAnswer()) {
-            userAnswers.remove(getCurrentQuestion());
-            userAnswers.putAll(getCurrentQuestion(), multiUserAnswer);
-        } else {
-            userAnswers.remove(getCurrentQuestion());
-            userAnswers.put(getCurrentQuestion(), singleUserAnswer);
-        }
-
-        if (currentQuestionNumber > 1) {
-            currentQuestionNumber -= 1;
-
-            if (isCurrentQuestionMultiAnswer()) {
-                singleUserAnswer = null;
-                multiUserAnswer = (List<Answer>) userAnswers.get(getCurrentQuestion());
-            } else {
-                List<Answer> list = (List<Answer>) userAnswers.get(getCurrentQuestion());
-                if ((list != null) && (list.size() > 0))
-                    singleUserAnswer = list.get(0);
-                else
-                    singleUserAnswer = null;
-
-                multiUserAnswer = null;
-            }
-        }
+        storeResultsForCurrentQuestion();
+        questionsCycler.previous();
+        retrieveResultsForCurrentQuestion();
     }
 
-    public boolean isCurrentQuestionMultiAnswer() {
-        return getCurrentQuestion().getDiscriminatorValue().equals("multi");
-    }
+    public void start(Submission userSubmission) {
 
-    public Question getCurrentQuestion() {
-        return quiz.getNthQuestion(currentQuestionNumber);
+        submission = userSubmission;
+        quiz = submission.getQuiz();
+        submission.start();
+        quizService.saveQuizSubmission(submission);
+        questionsCycler = quiz.cycler();
     }
-
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
-    public int getCurrentQuestionNumber() {
-        return currentQuestionNumber;
+    public Question getCurrentQuestion() {
+
+        return questionsCycler.current();
     }
 
-    public void setCurrentQuestionNumber(int currentQuestionNumber) {
-        this.currentQuestionNumber = currentQuestionNumber;
+    public int getCurrentQuestionNumber() {
+
+        return questionsCycler.currentSeqIndex();
+    }
+
+    public int getQuestionsNumber() {
+
+        return questionsCycler.currentMaxIndex();
     }
 
     public double getFinalScore() {
+
         return finalScore;
     }
 
     public void setFinalScore(int finalScore) {
+
         this.finalScore = finalScore;
     }
 
     public List<Answer> getMultiUserAnswer() {
+
         return multiUserAnswer;
     }
 
     public void setMultiUserAnswer(List<Answer> multiUserAnswer) {
+
         this.multiUserAnswer = multiUserAnswer;
     }
 
     public Quiz getQuiz() {
+
         return quiz;
     }
 
     public void setQuiz(Quiz quiz) {
+
         this.quiz = quiz;
     }
 
     public Answer getSingleUserAnswer() {
+
         return singleUserAnswer;
     }
 
     public void setSingleUserAnswer(Answer singleUserAnswer) {
+
         this.singleUserAnswer = singleUserAnswer;
     }
 
-    public boolean isQuizComplete() {
-        return quizComplete;
-    }
-
-    public void setQuizComplete(boolean quizComplete) {
-        this.quizComplete = quizComplete;
-    }
-
     public Submission getSubmission() {
+
         return submission;
     }
 
     public void setSubmission(Submission submission) {
+
         this.submission = submission;
+    }
+
+    public boolean isQuizComplete() {
+
+        return quizComplete;
+    }
+
+    public void setQuizComplete(boolean quizComplete) {
+
+        this.quizComplete = quizComplete;
     }
 }

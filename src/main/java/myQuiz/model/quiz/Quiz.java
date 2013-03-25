@@ -1,5 +1,7 @@
 package myQuiz.model.quiz;
 
+import myQuiz.model.quiz.cyclers.Cycler;
+import myQuiz.model.quiz.cyclers.SimpleQuestionCycler;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -41,9 +43,11 @@ public class Quiz implements Serializable {
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Quiz() {
+
     }
 
     public Quiz(String name) {
+
         this.name = name;
         questions = new ArrayList<Question>();
     }
@@ -51,17 +55,28 @@ public class Quiz implements Serializable {
 // -------------------------- OTHER METHODS --------------------------
 
     public void addQuestion(Question question) {
+
         questions.add(question);
     }
 
+    // use it only for testing purpose, use iterator for real code
     // 1-based
     public Question getNthQuestion(int n) {
+
         return questions.get(n - 1);
     }
 
+    //// use it only for testing purpose, use iterator for real code
     public int getNumberOfQuestions() {
+
         return questions.size();
     }
+
+    public Cycler<Question> cycler() {
+
+        return new SimpleQuestionCycler(questions);
+    }
+
 
     public double score() {
 
@@ -75,28 +90,34 @@ public class Quiz implements Serializable {
 // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     @XmlElementWrapper(name = "questions")
     @XmlElement(name = "question")
     public List<Question> getQuestions() {
+
         return questions;
     }
 
     public void setQuestions(List<Question> questions) {
+
         this.questions = questions;
     }
 
@@ -104,6 +125,7 @@ public class Quiz implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -116,6 +138,7 @@ public class Quiz implements Serializable {
 
     @Override
     public int hashCode() {
+
         return name != null ? name.hashCode() : 0;
     }
 }

@@ -94,7 +94,8 @@ public class AuthenticationController implements Serializable {
                 Messages.addGlobalError("unexpectedError", e.getMessage());
                 reason = AccessLogEntry.Reason.UNCATCHED_EXCEPTION;
             }
-        } else {
+        }
+        else {
 
             log.debug("{} already authenticated.", username);
             user = userService.findByUsername(username); // really needed apart from satisfying the assert below ?
@@ -109,14 +110,16 @@ public class AuthenticationController implements Serializable {
             if (user.isForcePasswordChangeOnNextLogin()) {
                 log.debug("Successful login but need to force password change, redirecting to personal page.");
                 return "pages/user/account?faces-redirect=true";
-            } else {
+            }
+            else {
                 log.debug("Redirecting to main page.");
                 if (subject.hasRole("User"))
-                    return "pages/quiz/user_subs?faces-redirect=true";
+                    return "pages/quiz/list?faces-redirect=true";
                 else
                     return "pages/main?faces-redirect=true";
             }
-        } else {
+        }
+        else {
 
             Messages.addGlobalError("genericLoginError");
             accessLog.trackFailedLogin(username, reason);
@@ -147,18 +150,22 @@ public class AuthenticationController implements Serializable {
 // --------------------- GETTER / SETTER METHODS ---------------------
 
     public String getPassword() {
+
         return password;
     }
 
     public void setPassword(String password) {
+
         this.password = password;
     }
 
     public String getUsername() {
+
         return username;
     }
 
     public void setUsername(String username) {
+
         this.username = username;
     }
 }
