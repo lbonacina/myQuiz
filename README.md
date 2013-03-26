@@ -9,6 +9,14 @@ myQuiz is a simple application for online quiz, based on the myApp skeleton
 
 TODO : ideas
 
+    - quick ideas:
+
+        - use a single dummy session for all guests (Guest Session, retrieved by name or by fixed id = 1)
+          which is already/always open (date 2000-2099)
+
+        - define a method on QuizRunner to record the answers using varargs to support 1 answer or multiple
+          based on question type (must convert list to array if multi)
+
     - implements the concept of Session to associate Users with Quiz and generate QuizSubmission
     - Session could trace also % of completion of users, aggregate scores and stats
     - generate the result of the test as HTML file for the user to review
