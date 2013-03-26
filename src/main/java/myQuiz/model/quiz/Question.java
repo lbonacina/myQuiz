@@ -39,18 +39,28 @@ public abstract class Question {
     @JoinColumn(name = "id_question", nullable = false)
     List<Answer> answers;
 
+    @Transient
+    boolean submitted;
+
 // --------------------------- CONSTRUCTORS ---------------------------
 
     protected Question() {
+
+        submitted = false;
     }
 
+
     protected Question(String text) {
+
         this.text = text;
+        submitted = false;
     }
 
     public Question(String text, List<Answer> answers) {
+
         this.text = text;
         this.answers = new ArrayList<Answer>(answers);
+        submitted = false;
     }
 
     public Answer getNthAnswer(int n) {
@@ -61,6 +71,7 @@ public abstract class Question {
     @Transient
     @XmlElement(name = "discriminatorValue")
     public String getDiscriminatorValue() {
+
         DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
         return val == null ? null : val.value();
     }
@@ -71,29 +82,68 @@ public abstract class Question {
 
     @XmlTransient
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
     @XmlElementWrapper(name = "answers")
     @XmlElement(name = "answer")
     public List<Answer> getAnswers() {
+
         return answers;
     }
 
     public void setAnswers(List<Answer> possibleAnswers) {
+
         this.answers = possibleAnswers;
     }
 
     @XmlElement
     public String getText() {
+
         return text;
     }
 
     public void setText(String text) {
+
         this.text = text;
+    }
+
+    @XmlTransient
+    public boolean isSubmitted() {
+
+        return submitted;
+    }
+
+    public void setSubmitted(boolean submitted) {
+
+        this.submitted = submitted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Question question = (Question) o;
+
+        if (!answers.equals(question.answers)) return false;
+        if (!text.equals(question.text)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = text.hashCode();
+        result = 31 * result + answers.hashCode();
+        return result;
     }
 }

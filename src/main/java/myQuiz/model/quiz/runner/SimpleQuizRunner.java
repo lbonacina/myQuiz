@@ -13,15 +13,21 @@ import java.util.NoSuchElementException;
  */
 public class SimpleQuizRunner implements QuizRunner<Quiz, Question> {
 
-    private Quiz quiz;
-    private List<Question> questionList;
-    private int position;
+    protected Quiz quiz;
+    protected List<Question> questionList;
+    protected int position;
+
+    protected SimpleQuizRunner() {
+
+    }
 
     public SimpleQuizRunner(Quiz quiz) {
 
         this.quiz = quiz;
         this.questionList = quiz.getQuestions();
         position = 0;
+        for (Question q : questionList)
+            q.setSubmitted(true);
     }
 
     @Override
@@ -61,7 +67,7 @@ public class SimpleQuizRunner implements QuizRunner<Quiz, Question> {
     @Override
     public int currentQuestionIndex() {
 
-        return position;
+        return position + 1;
     }
 
     @Override

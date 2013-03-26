@@ -42,9 +42,11 @@ public class Answer implements Serializable {
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Answer() {
+
     }
 
     public Answer(String text, boolean correct) {
+
         this.text = text;
         this.correct = correct;
         this.checked = false;
@@ -64,40 +66,47 @@ public class Answer implements Serializable {
 
     @XmlTransient
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
     public String getText() {
+
         return text;
     }
 
     public void setText(String text) {
+
         this.text = text;
     }
 
     @XmlElement
     public boolean isCorrect() {
+
         return correct;
     }
 
     @XmlElement
     public boolean isChecked() {
+
         return checked;
     }
 
     public void setChecked(boolean checked) {
+
         this.checked = checked;
     }
-
 
     // ------------------------ CANONICAL METHODS ------------------------
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -110,11 +119,13 @@ public class Answer implements Serializable {
 
     @Override
     public int hashCode() {
+
         return text != null ? text.hashCode() : 0;
     }
 
     @Override
     public String toString() {
+
         return "PossibleAnswer{" +
                 "correct=" + correct +
                 ", text='" + text + '\'' +

@@ -5,7 +5,7 @@ import myQuiz.model.quiz.Question;
 import myQuiz.model.quiz.Quiz;
 import myQuiz.model.quiz.Submission;
 import myQuiz.model.quiz.runner.QuizRunner;
-import myQuiz.model.quiz.runner.SimpleQuizRunner;
+import myQuiz.model.quiz.runner.RandomSubsetQuizRunner;
 import myQuiz.model.user.User;
 import myQuiz.security.LoggedUser;
 import myQuiz.service.QuizService;
@@ -65,7 +65,7 @@ public class SubmissionController implements Serializable {
         submission = userSubmission;
         submission.start();
         quizService.saveQuizSubmission(submission);
-        quizRunner = new SimpleQuizRunner(userSubmission.getQuiz());
+        quizRunner = new RandomSubsetQuizRunner(userSubmission.getQuiz(), 5);
     }
 
     public String complete() {
@@ -93,7 +93,6 @@ public class SubmissionController implements Serializable {
                 }
             }
         }
-
 
         submission.complete();
         submission.setFinalScore(quizRunner.score());

@@ -65,6 +65,8 @@ public class GuestController implements Serializable {
      */
     public String login() {
 
+        // TODO : login as guest could be simplified, but we maybe need to allow for a user to guest multiple time with the same email
+
         log.debug("trying to guest with {}/{}", firstName + " " + lastName, email);
 
         AccessLogEntry.Reason reason = AccessLogEntry.Reason.NONE;
@@ -144,11 +146,8 @@ public class GuestController implements Serializable {
             accessLog.trackSuccessfulLogin(username, user.getFullName());
 
             assert user != null;
-            log.debug("Redirecting to main page.");
-            if (subject.hasRole("User"))
-                return "pages/quiz/list?faces-redirect=true";
-            else
-                return "pages/main?faces-redirect=true";
+            log.debug("Redirecting to quiz page.");
+            return "pages/quiz/list?faces-redirect=true";
         }
         else {
 

@@ -6,8 +6,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "quiz")
+@XmlRootElement(name = "quiz")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"name", "submittedQuestions"})
 public class Quiz implements Serializable {
 
     // ------------------------------ FIELDS ------------------------------
@@ -79,8 +81,20 @@ public class Quiz implements Serializable {
         return Math.round(scoreAcc * 100.0) / 100.0;
     }
 
+    @XmlElementWrapper(name = "questions")
+    @XmlElement(name = "question")
+    public List<Question> getSubmittedQuestions() {
+
+        List<Question> sq = new ArrayList<Question>();
+        for (Question q : questions)
+            if (q.isSubmitted())
+                sq.add(q);
+        return sq;
+    }
+
 // --------------------- GETTER / SETTER METHODS ---------------------
 
+    @XmlTransient
     public Long getId() {
 
         return id;
@@ -101,8 +115,7 @@ public class Quiz implements Serializable {
         this.name = name;
     }
 
-    @XmlElementWrapper(name = "questions")
-    @XmlElement(name = "question")
+    @XmlTransient
     public List<Question> getQuestions() {
 
         return questions;

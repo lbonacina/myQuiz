@@ -32,42 +32,42 @@ insert into question (id,type,text,id_quiz) values (13,"one","Dummy Question #10
 
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #1",true,4) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #1",false,4) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #1",false,4) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #1",false,4) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #1",false,4) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #2",false,5) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #2",true,5) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #2",false,5) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #2",true,5) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #2",false,5) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #3",false,6) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #3",false,6) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #3",true,6) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #3",false,6) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #3",true,6) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #4",true,7) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #4",false,7) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #4",false,7) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #4",false,7) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #4",false,7) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #5",false,8) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #5",true,8) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #5",false,8) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #5",true,8) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #5",false,8) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #6",false,9) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #6",false,9) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #6",true,9) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #6",false,9) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #6",true,9) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #7",true,10) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #7",false,10) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #7",false,10) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #7",false,10) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #7",false,10) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #8",false,11) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #8",true,11) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #8",false,11) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #8",true,11) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #8",false,11) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #9",false,12) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #9",false,12) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #9",true,12) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #9",false,12) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #9",true,12) ;
 
 insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #10",true,13) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #10",false,13) ;
-insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Question #10",false,13) ;
+insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #10",false,13) ;
+insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #10",false,13) ;
 
