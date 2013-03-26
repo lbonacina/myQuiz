@@ -17,7 +17,6 @@ insert into answer (text, correct, id_question) values ("Notepad",false,3) ;
 insert into answer (text, correct, id_question) values ("Un qualunque editor di testi",true,3) ;
 
 
-
 insert into quiz (id,name) values (2,"Quiz di valutazione #1") ;
 insert into question (id,type,text,id_quiz) values (4,"one","Dummy Question #1",2) ;
 insert into question (id,type,text,id_quiz) values (5,"one","Dummy Question #2",2) ;
@@ -71,3 +70,4 @@ insert into answer (text, correct, id_question) values ("Answer #1 to Dummy Ques
 insert into answer (text, correct, id_question) values ("Answer #2 to Dummy Question #10",false,13) ;
 insert into answer (text, correct, id_question) values ("Answer #3 to Dummy Question #10",false,13) ;
 
+insert into session (id, id_quiz, name, status, start_date, end_date) values (1,2,"Dummy Session",1,'2000-1-01','2099-1-01') ;

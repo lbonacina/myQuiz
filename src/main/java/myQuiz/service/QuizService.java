@@ -33,20 +33,17 @@ public class QuizService implements Serializable {
 // -------------------------- OTHER METHODS --------------------------
 
     public List<Quiz> findAll() {
+
         return quizRepository.findAll();
     }
 
     public Quiz findById(Long id) {
+
         return quizRepository.findOne(id);
     }
 
     public void saveQuizSubmission(Submission submission) {
-/*
-        assert submission.getFinalScore() != null ;
-        assert submission.getUser() != null ;
-        assert submission.getStartDate() != null ;
-        assert submission.getEndDate() != null ;
-*/
+
         quizSubmissionRepository.save(submission);
     }
 
@@ -54,10 +51,5 @@ public class QuizService implements Serializable {
 
         return quizSubmissionRepository.findSubmissionsByUser(user);
     }
-    /*
-      public void createQuizSubmissionsForUser(Quiz quiz, User user) {
 
-          quizSubmissionRepository.save(new Submission(user, quiz));
-      }
-    */
 }

@@ -65,11 +65,13 @@ public class Session implements Serializable {
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Session() {
+
         status = SessionStatus.NEW;
         subscribers = new HashSet<User>();
     }
 
     public Session(String name, Quiz quiz, Date startDate, Date endDate) {
+
         status = SessionStatus.NEW;
         this.name = name;
         this.quiz = quiz;
@@ -78,63 +80,82 @@ public class Session implements Serializable {
         subscribers = new HashSet<User>();
     }
 
+    public void addSubscriber(User user) {
+
+        subscribers.add(user);
+    }
+
 // --------------------- GETTER / SETTER METHODS ---------------------
 
     public Date getEndDate() {
+
         return endDate;
     }
 
     public void setEndDate(Date endDate) {
+
         this.endDate = endDate;
     }
 
     @XmlTransient
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public Quiz getQuiz() {
+
         return quiz;
     }
 
     public void setQuiz(Quiz quiz) {
+
         this.quiz = quiz;
     }
 
     public Date getStartDate() {
+
         return startDate;
     }
 
     public void setStartDate(Date startDate) {
+
         this.startDate = startDate;
     }
 
     public SessionStatus getStatus() {
+
         return status;
     }
 
     public void setStatus(SessionStatus status) {
+
         this.status = status;
     }
 
     @XmlTransient
     public Set<User> getSubscribers() {
+
         return subscribers;
     }
 
     public void setSubscribers(Set<User> users) {
+
         this.subscribers = users;
     }
 

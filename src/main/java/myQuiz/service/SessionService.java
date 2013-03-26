@@ -23,42 +23,17 @@ import java.util.Set;
  */
 @Stateless
 public class SessionService implements Serializable {
+// ------------------------------ FIELDS ------------------------------
 
-    // ------------------------------ FIELDS ------------------------------
     private static final long serialVersionUID = -2022296170410565093L;
-
-    @Inject @AppLog
-    private Logger log;
 
     @Inject SessionRepository sessionRepository;
     @Inject SubmissionRepository submissionRepository;
 
+    @Inject @AppLog
+    private Logger log;
+
 // -------------------------- OTHER METHODS --------------------------
-
-    public List<Session> findAll() {
-
-        Sort sort = new Sort(Sort.Direction.DESC, "startDate");
-        return sessionRepository.findAll(sort);
-    }
-
-    public void save(Session session) {
-
-        sessionRepository.save(session);
-    }
-
-    public void open(Session session) {
-
-        session.setStatus(Session.SessionStatus.OPEN);
-
-        Set<Submission> submissions = new HashSet<Submission>();
-        for (User user : session.getSubscribers()) {
-            submissions.add(new Submission(user, session));
-        }
-
-        sessionRepository.save(session);
-        submissionRepository.save(submissions);
-    }
-
 
     public void close(Session session) {
 
@@ -74,8 +49,48 @@ public class SessionService implements Serializable {
         submissionRepository.save(submissions);
     }
 
+    public List<Session> findAll() {
+
+        Sort sort = new Sort(Sort.Direction.DESC, "startDate");
+        return sessionRepository.findAll(sort);
+    }
+
+    public Session findById(Long id) {
+
+        return sessionRepository.findOne(id);
+    }
+
     public List<Submission> findSubmissionsForSession(Session session) {
 
         return submissionRepository.findSubmissionsBySession(session);
+    }
+
+    public void open(Session session) {
+
+        session.setStatus(Session.SessionStatus.OPEN);
+
+        Set<Submission> submissions = new HashSet<Submission>();
+        for (User user : session.getSubscribers()) {
+            submissions.add(new Submission(user, session));
+        }
+
+        sessionRepository.save(session);
+        submissionRepository.save(submissions);
+    }
+
+    public void addGuestToDummySession(User guest) {
+
+        // update dummy session
+        Session session = findById((long) 1);
+        session.addSubscriber(guest);
+        sessionRepository.save(session);
+        // creating submission
+        Submission submission = new Submission(guest, session);
+        submissionRepository.save(submission);
+    }
+
+    public void save(Session session) {
+
+        sessionRepository.save(session);
     }
 }
