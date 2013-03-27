@@ -1,5 +1,9 @@
 package myQuiz.model.quiz.runner;
 
+import myQuiz.model.quiz.Answer;
+
+import java.util.List;
+
 /**
  * User: eluibon
  * Date: 24/03/13
@@ -20,6 +24,12 @@ public interface QuizRunner<T, Q> {
     int currentQuestionIndex();
 
     int questionsCount();
+
+    void storeAnswer(Answer answer);
+
+    void storeAnswers(List<Answer> answer);
+
+    List<Answer> retrieveAnswers();
 
     double score();
 }

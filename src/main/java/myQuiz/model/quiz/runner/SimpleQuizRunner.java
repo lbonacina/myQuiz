@@ -1,8 +1,10 @@
 package myQuiz.model.quiz.runner;
 
+import myQuiz.model.quiz.Answer;
 import myQuiz.model.quiz.Question;
 import myQuiz.model.quiz.Quiz;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -74,6 +76,37 @@ public class SimpleQuizRunner implements QuizRunner<Quiz, Question> {
     public int questionsCount() {
 
         return questionList.size();
+    }
+
+    @Override
+    public void storeAnswer(Answer answer) {
+
+        for (Answer a : currentQuestion().getAnswers()) {
+            a.unmark();
+            if (answer.equals(a))
+                a.mark();
+        }
+    }
+
+    @Override
+    public void storeAnswers(List<Answer> answer) {
+
+        for (Answer a : currentQuestion().getAnswers()) {
+            a.unmark();
+            if (answer.contains(a))
+                a.mark();
+        }
+    }
+
+    @Override
+    public List<Answer> retrieveAnswers() {
+
+        List<Answer> answers = new ArrayList<Answer>();
+        for (Answer a : currentQuestion().getAnswers()) {
+            if (a.isChecked())
+                answers.add(a);
+        }
+        return answers;
     }
 
     @Override
