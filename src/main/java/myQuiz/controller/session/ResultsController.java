@@ -17,7 +17,7 @@ import java.util.List;
 
 
 /**
- * controls the executions of one quiz by the user (the submission)
+ * controls the executions of one submission by the user (the submission)
  */
 @Named("results_ctrl")
 @ConversationScoped
@@ -46,10 +46,12 @@ public class ResultsController implements Serializable {
     }
 
     public List<Submission> getSubmissionList() {
+
         return submissionList;
     }
 
     public void setSubmissionList(List<Submission> submissionList) {
+
         this.submissionList = submissionList;
     }
 }

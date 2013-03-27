@@ -134,8 +134,8 @@ public class GuestController implements Serializable {
             accessLog.trackSuccessfulLogin(username, user.getFullName());
 
             assert user != null;
-            log.debug("Redirecting to quiz page.");
-            return "pages/quiz/list?faces-redirect=true";
+            log.debug("Redirecting to submission page.");
+            return "pages/submission/list?faces-redirect=true";
         }
         else {
 

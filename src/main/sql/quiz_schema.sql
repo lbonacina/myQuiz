@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `quiz`
+-- Database: `submission`
 --
 
 -- --------------------------------------------------------
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `question` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `quiz`
+-- Struttura della tabella `submission`
 --
 
 DROP TABLE IF EXISTS `quiz`;
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `quiz` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Dump dei dati per la tabella `quiz`
+-- Dump dei dati per la tabella `submission`
 --
 
 -- --------------------------------------------------------

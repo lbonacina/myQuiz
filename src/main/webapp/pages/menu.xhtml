@@ -16,26 +16,28 @@
 
         <h:form id="menu_form">
             <p:menu id="nav_menu" styleClass="nav_menu">
-                <p:menuitem id="question_page_btn" value="My Quiz"
-                            action="/pages/quiz/list?faces-redirect=true" ajax="false"
+                <p:menuitem id="question_page_btn" value="My Quiz" actionListener="#{menu.resetConversations}"
+                            action="/pages/submission/list?faces-redirect=true" ajax="false"
                             rendered="#{s:hasPermission('menu:quiz')}"/>
                 <p:menuitem id="sessions_page_btn" value="Sessions" actionListener="#{menu.resetConversations}"
                             action="/pages/session/list?faces-redirect=true" ajax="false"
                             rendered="#{s:hasPermission('menu:session')}"/>
-                <p:menuitem id="users_page_btn" value="Users"
+                <p:menuitem id="users_page_btn" value="Users" actionListener="#{menu.resetConversations}"
                             action="/pages/user/list?faces-redirect=true" ajax="false"
                             rendered="#{s:hasPermission('menu:user')}"/>
-                <p:menuitem id="logs_page_btn" value="Logs"
+                <p:menuitem id="logs_page_btn" value="Logs" actionListener="#{menu.resetConversations}"
                             action="/pages/superadmin/logs?faces-redirect=true"
                             rendered="#{s:hasPermission('menu:logs')}"/>
                 <p:menuitem id="personal_page_btn" value="Modify Personal Info"
+                            actionListener="#{menu.resetConversations}"
                             action="/pages/user/personal?faces-redirect=true"
                             rendered="#{s:hasPermission('menu:personal_info')}"/>
-                <p:menuitem id="account_page_btn" value="Modify Account"
+                <p:menuitem id="account_page_btn" value="Modify Account" actionListener="#{menu.resetConversations}"
                             action="/pages/user/account?faces-redirect=true"
                             rendered="#{s:hasPermission('menu:account')}"/>
 
-                <p:menuitem value="Logout" id="logout_btn" action="#{auth_ctrl.logout}" ajax="false"/>
+                <p:menuitem value="Logout" id="logout_btn" actionListener="#{menu.resetConversations}"
+                            action="#{auth_ctrl.logout}" ajax="false"/>
             </p:menu>
         </h:form>
 

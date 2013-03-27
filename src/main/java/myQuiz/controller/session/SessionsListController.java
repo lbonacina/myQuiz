@@ -21,7 +21,7 @@ import java.util.List;
 
 
 /**
- * controls the executions of one quiz by the user (the submission)
+ * controls the executions of one submission by the user (the submission)
  */
 @Named("sl_ctrl")
 @ConversationScoped
@@ -118,18 +118,22 @@ public class SessionsListController implements Serializable {
     @Produces
     @SelectedSession
     public Session getSelectedSession() {
+
         return selectedSession;
     }
 
     public void setSelectedSession(Session selectedSession) {
+
         this.selectedSession = selectedSession;
     }
 
     public List<Session> getSessions() {
+
         return sessions;
     }
 
     public void setSessions(List<Session> sessions) {
+
         this.sessions = sessions;
     }
 }

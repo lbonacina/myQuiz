@@ -1,4 +1,4 @@
-package myQuiz.controller.quiz;
+package myQuiz.controller.submission;
 
 /**
  * User: eluibon

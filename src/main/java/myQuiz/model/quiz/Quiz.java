@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "quiz")
-@XmlRootElement(name = "quiz")
+@XmlRootElement(name = "submission")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlType(propOrder = {"name", "submittedQuestions"})
 public class Quiz implements Serializable {

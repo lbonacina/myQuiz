@@ -23,7 +23,7 @@ import java.util.*;
 
 
 /**
- * controls the executions of one quiz by the user (the submission)
+ * controls the executions of one submission by the user (the submission)
  */
 @Named("sess_ctrl")
 @ConversationScoped
@@ -96,26 +96,32 @@ public class SessionController implements Serializable {
 
 
     public DualListModel<User> getUsersPickList() {
+
         return usersPickList;
     }
 
     public void setUsersPickList(DualListModel<User> usersPickList) {
+
         this.usersPickList = usersPickList;
     }
 
     public List<Quiz> getQuizList() {
+
         return quizList;
     }
 
     public void setQuizList(List<Quiz> quizList) {
+
         this.quizList = quizList;
     }
 
     public Session getSession() {
+
         return session;
     }
 
     public void setSession(Session session) {
+
         this.session = session;
     }
 }
