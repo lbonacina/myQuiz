@@ -16,7 +16,8 @@ INSERT INTO `permission` (`id`, `description`, `permission`) VALUES
 (13, 'desc', 'user:list_enabled'),
 (14, 'desc', 'menu:logs'),
 (15, 'desc', 'menu:quiz'),
-(16, 'desc', 'menu:session');
+(16, 'desc', 'menu:session'),
+(17, 'desc', 'menu:quiz_builder');
 
 INSERT INTO `role` (`id`, `description`, `role`) VALUES
 (1, 'desc', 'Superadmin'),
@@ -41,6 +42,7 @@ INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
 (1, 14),
 (1, 15),
 (1, 16),
+(1, 17),
 (2, 1),
 (2, 2),
 (2, 3),
@@ -52,6 +54,7 @@ INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
 (2, 10),
 (2, 15),
 (2, 16),
+(2, 17),
 (3, 2),
 (3, 3),
 (3, 15),

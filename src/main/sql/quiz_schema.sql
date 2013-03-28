@@ -88,9 +88,9 @@ CREATE TABLE IF NOT EXISTS `question` (
   `id`  INT NOT NULL AUTO_INCREMENT,
   `type` varchar(5) NOT NULL,
   `text` longtext NOT NULL,
-  `id_quiz`  INT DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKBA823BE697775615` (`id_quiz`)
+  `area` varchar(50) DEFAULT NULL,
+  `level` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -114,6 +114,18 @@ CREATE TABLE IF NOT EXISTS `quiz` (
 --
 -- Dump dei dati per la tabella `submission`
 --
+
+
+DROP TABLE IF EXISTS `quiz_question`;
+CREATE TABLE `quiz_question` (
+  `id_quiz` INT NOT NULL,
+  `id_question` INT NOT NULL,
+  KEY `FK8BB1A906C5940B7` (`id_question`),
+  KEY `FK8BB1A90CC63B15` (`id_quiz`),
+  CONSTRAINT `FK8BB1A90CC63B15` FOREIGN KEY (`id_quiz`) REFERENCES `quiz` (`id`),
+  CONSTRAINT `FK8BB1A906C5940B7` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 

@@ -5,7 +5,7 @@ import myQuiz.model.quiz.Question;
 import myQuiz.model.quiz.Quiz;
 import myQuiz.model.quiz.Submission;
 import myQuiz.model.quiz.runner.QuizRunner;
-import myQuiz.model.quiz.runner.RandomSubsetQuizRunner;
+import myQuiz.model.quiz.runner.RandomQuizRunner;
 import myQuiz.model.user.User;
 import myQuiz.security.LoggedUser;
 import myQuiz.service.QuizService;
@@ -63,7 +63,8 @@ public class SubmissionController implements Serializable {
 
         submission.start();
         quizService.saveQuizSubmission(submission);
-        quizRunner = new RandomSubsetQuizRunner(submission.getQuiz(), 5);
+        //quizRunner = new RandomSubsetQuizRunner(submission.getQuiz(), 5);
+        quizRunner = new RandomQuizRunner(submission.getQuiz());
         return "submission?faces-redirect=true";
     }
 
@@ -136,12 +137,15 @@ public class SubmissionController implements Serializable {
 
     private void storeResultsForCurrentQuestion() {
 
+        log.debug("Store Answers for Type : {}, Question : {}", quizRunner.currentQuestion().getDiscriminatorValue(), quizRunner.currentQuestion().getText());
         if (isCurrentQuestionMultiAnswer()) {
+            log.debug("User Answers : {}", multiUserAnswer);
             if ((multiUserAnswer != null) && (multiUserAnswer.size() > 0)) {
                 quizRunner.storeAnswers(multiUserAnswer);
             }
         }
         else {
+            log.debug("User Answer : {}", singleUserAnswer);
             if (singleUserAnswer != null)
                 quizRunner.storeAnswer(singleUserAnswer);
         }
@@ -149,11 +153,14 @@ public class SubmissionController implements Serializable {
 
     private void retrieveResultsForCurrentQuestion() {
 
+        log.debug("Retrieve Answers for Type : {}, Question : {}", quizRunner.currentQuestion().getDiscriminatorValue(), quizRunner.currentQuestion().getText());
         if (isCurrentQuestionMultiAnswer()) {
+            log.debug("User Answers : {}", multiUserAnswer);
             singleUserAnswer = null;
             multiUserAnswer = quizRunner.retrieveAnswers();
         }
         else {
+            log.debug("User Answer : {}", singleUserAnswer);
             List<Answer> list = quizRunner.retrieveAnswers();
             singleUserAnswer = ((list != null) && (list.size() > 0)) ? list.get(0) : null;
             multiUserAnswer = null;

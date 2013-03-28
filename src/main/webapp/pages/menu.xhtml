@@ -22,6 +22,9 @@
                 <p:menuitem id="sessions_page_btn" value="Sessions" actionListener="#{menu.resetConversations}"
                             action="/pages/session/list?faces-redirect=true" ajax="false"
                             rendered="#{s:hasPermission('menu:session')}"/>
+                <p:menuitem id="builder_page_btn" value="Builder" actionListener="#{menu.resetConversations}"
+                            action="/pages/builder/list?faces-redirect=true" ajax="false"
+                            rendered="#{s:hasPermission('menu:quiz_builder')}"/>
                 <p:menuitem id="users_page_btn" value="Users" actionListener="#{menu.resetConversations}"
                             action="/pages/user/list?faces-redirect=true" ajax="false"
                             rendered="#{s:hasPermission('menu:user')}"/>

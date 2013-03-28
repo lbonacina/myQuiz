@@ -1,14 +1,12 @@
 package myQuiz.model.quiz;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +20,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "type")
 @XmlRootElement(name = "question")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(propOrder = {"text", "discriminatorValue", "answers"})
+@XmlType(propOrder = {"text", "discriminatorValue", "answers", "area", "level"})
 public abstract class Question {
 // ------------------------------ FIELDS ------------------------------
 
@@ -34,21 +32,23 @@ public abstract class Question {
     @Size(min = 10, max = 4000)
     String text;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinColumn(name = "id_question", nullable = false)
-    List<Answer> answers;
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    Set<Answer> answers;
+
+    Level level;
+
+    String area;
 
     @Transient
     boolean submitted;
 
+
 // --------------------------- CONSTRUCTORS ---------------------------
 
-    protected Question() {
+    public Question() {
 
         submitted = false;
     }
-
 
     protected Question(String text) {
 
@@ -59,14 +59,11 @@ public abstract class Question {
     public Question(String text, List<Answer> answers) {
 
         this.text = text;
-        this.answers = new ArrayList<Answer>(answers);
+        this.answers = new HashSet<Answer>(answers);
         submitted = false;
     }
 
-    public Answer getNthAnswer(int n) {
-
-        return answers.get(n - 1);
-    }
+// -------------------------- OTHER METHODS --------------------------
 
     @Transient
     @XmlElement(name = "discriminatorValue")
@@ -76,9 +73,36 @@ public abstract class Question {
         return val == null ? null : val.value();
     }
 
+    public Answer getNthAnswer(int n) {
+
+        return null; // TODO : fix or quiz will break !
+    }
+
     public abstract double score();
 
-    // --------------------- GETTER / SETTER METHODS ---------------------
+// --------------------- GETTER / SETTER METHODS ---------------------
+
+    @XmlElementWrapper(name = "answers")
+    @XmlElement(name = "answer")
+    public Set<Answer> getAnswers() {
+
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> possibleAnswers) {
+
+        this.answers = possibleAnswers;
+    }
+
+    public String getArea() {
+
+        return area;
+    }
+
+    public void setArea(String area) {
+
+        this.area = area;
+    }
 
     @XmlTransient
     public Long getId() {
@@ -91,16 +115,14 @@ public abstract class Question {
         this.id = id;
     }
 
-    @XmlElementWrapper(name = "answers")
-    @XmlElement(name = "answer")
-    public List<Answer> getAnswers() {
+    public Level getLevel() {
 
-        return answers;
+        return level;
     }
 
-    public void setAnswers(List<Answer> possibleAnswers) {
+    public void setLevel(Level level) {
 
-        this.answers = possibleAnswers;
+        this.level = level;
     }
 
     @XmlElement
@@ -125,6 +147,8 @@ public abstract class Question {
         this.submitted = submitted;
     }
 
+// ------------------------ CANONICAL METHODS ------------------------
+
     @Override
     public boolean equals(Object o) {
 
@@ -133,8 +157,9 @@ public abstract class Question {
 
         Question question = (Question) o;
 
-        if (!answers.equals(question.answers)) return false;
-        if (!text.equals(question.text)) return false;
+        if (area != null ? !area.equals(question.area) : question.area != null) return false;
+        if (level != question.level) return false;
+        if (text != null ? !text.equals(question.text) : question.text != null) return false;
 
         return true;
     }
@@ -142,8 +167,16 @@ public abstract class Question {
     @Override
     public int hashCode() {
 
-        int result = text.hashCode();
-        result = 31 * result + answers.hashCode();
+        int result = text != null ? text.hashCode() : 0;
+        result = 31 * result + (level != null ? level.hashCode() : 0);
+        result = 31 * result + (area != null ? area.hashCode() : 0);
         return result;
+    }
+
+
+// -------------------------- ENUMERATIONS --------------------------
+
+    public enum Level {
+        ASSESSED, EXPERIENCED, SENIOR
     }
 }

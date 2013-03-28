@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/templates/withMenu.xhtml">
+    <ui:define name="content">
+
+        <h:form id="sessions_form">
+
+            <pe:layoutPane position="center" size="280" resizable="false" closable="false">
+
+                <f:facet name="header">
+                    <h:outputText id="page_title" styleClass="ui-widget" value="TODO"/>
+                </f:facet>
+
+                <p:dataTable id="sessions" value="#{builder_ctrl.questions}" var="q"
+                             selection="#{sl_ctrl.selectedSession}"
+                             selectionMode="single" rowKey="#{q.id}">
+
+                    <p:column headerText="Name">
+                        #{q.area}
+                    </p:column>
+                    <p:column headerText="Status">
+                        #{q.level}
+                    </p:column>
+                    <p:column headerText="Quiz">
+                        #{q.text}
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:panel header="New Quiz">
+
+                    <p:outputPanel id="quiz_details" styleClass="input_form account_input_form ui-helper-clearfix">
+
+                        <p:outputLabel styleClass="dialogLabel" value="Quiz Name : "/>
+                        <p:inputText id="quizname" value="#{builder_ctrl.quizName}"/>
+                        <p:message id="quiznameMsg" for="quizname"/>
+
+                        <p:outputLabel styleClass="dialogLabel" value="Nr. from Assessed : "/>
+                        <p:inputText id="assessed" value="#{builder_ctrl.assessedCount}">
+                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="2"/>
+                        </p:inputText>
+
+                        <p:message id="assessed_msg" for="assessed" showDetail="true"/>
+
+                        <p:outputLabel styleClass="dialogLabel" value="Nr. from Experienced : "/>
+                        <p:inputText id="experienced" value="#{builder_ctrl.experiencedCount}">
+                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="2"/>
+                        </p:inputText>
+                        <p:message id="experienced_msg" for="experienced" showDetail="true"/>
+
+                        <p:outputLabel styleClass="dialogLabel" value="Nr. from Senior : "/>
+                        <p:inputText id="senior" value="#{builder_ctrl.seniorCount}">
+                            <f:convertNumber maxFractionDigits="0" maxIntegerDigits="2"/>
+                        </p:inputText>
+                        <p:message id="senior_msg" for="senior" showDetail="true"/>
+
+
+                    </p:outputPanel>
+
+                    <p:commandButton value="Create" action="#{builder_ctrl.buildRandomQuiz}"/>
+                    <p:commandButton value="Load" action="#{builder_ctrl.load}"/>
+                </p:panel>
+
+            </pe:layoutPane>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -35,9 +35,11 @@ public class Quiz implements Serializable {
     @Size(min = 10, max = 4000)
     String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinColumn(name = "id_quiz")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinTable(name = "quiz_question",
+            joinColumns = @JoinColumn(name = "id_quiz"),
+            inverseJoinColumns = @JoinColumn(name = "id_question"))
     List<Question> questions;
 
 // --------------------------- CONSTRUCTORS ---------------------------

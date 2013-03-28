@@ -52,4 +52,9 @@ public class QuizService implements Serializable {
         return quizSubmissionRepository.findSubmissionsByUser(user);
     }
 
+    public void save(Quiz quiz) {
+
+        quizRepository.save(quiz);
+    }
+
 }

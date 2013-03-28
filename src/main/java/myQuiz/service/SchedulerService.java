@@ -3,7 +3,6 @@ package myQuiz.service;
 import myQuiz.util.AppLog;
 import org.slf4j.Logger;
 
-import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.Serializable;
@@ -23,8 +22,9 @@ public class SchedulerService implements Serializable {
 
     @Inject @AppLog private Logger log;
 
-    @Schedule(dayOfWeek = "*", hour = "*", minute = "*/5", persistent = true)
+    //@Schedule(dayOfWeek = "*", hour = "*", minute = "*/5", persistent = true)
     public void backgroundProcessing() {
+
         log.info("\n\n\t SchedulerService's backgroundProcessing() called....at: " + new Date());
     }
 
