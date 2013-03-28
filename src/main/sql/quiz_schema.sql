@@ -87,6 +87,7 @@ DROP TABLE IF EXISTS `question`;
 CREATE TABLE IF NOT EXISTS `question` (
   `id`  INT NOT NULL AUTO_INCREMENT,
   `type` varchar(5) NOT NULL,
+  `code` varchar(10) NOT NULL,
   `text` longtext NOT NULL,
   `area` varchar(50) DEFAULT NULL,
   `level` int(1) DEFAULT NULL,

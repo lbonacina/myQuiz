@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,12 +36,13 @@ public class BuilderController implements Serializable {
 
     @Inject QuestionService questionService;
     @Inject QuizService quizService;
-    List<Question> questions;
 
-    String quizName;
-    int assessedCount;
-    int experiencedCount;
-    int seniorCount;
+    List<Question> questions;
+    List<Question.Level> questionLevels;
+
+    Question.Level selectedQuestionLevel;
+    int questionCount;
+    String selectedQuestionArea;
 
     Quiz quiz;
 
@@ -50,29 +52,27 @@ public class BuilderController implements Serializable {
     public void init() {
 
         questions = questionService.findAll();
+        questionLevels = Arrays.asList(Question.Level.values());
+        newQuiz();
     }
 
-    public String buildRandomQuiz() {
+    public void newQuiz() {
 
         quiz = new Quiz();
-        quiz.setName(quizName);
-
-        List<Question> list = new ArrayList<Question>();
-
-        list.addAll(getRandomQuestions("Management", Question.Level.ASSESSED, assessedCount));
-        list.addAll(getRandomQuestions("Management", Question.Level.EXPERIENCED, experiencedCount));
-        list.addAll(getRandomQuestions("Management", Question.Level.SENIOR, seniorCount));
-
-        quiz.setQuestions(list);
-
-        quizService.save(quiz);
-
-        return "quiz?faces-redirect=true";
     }
 
-    public String load() {
+    public void addAnswers() {
 
-        quiz = quizService.findById((long) 5);
+        List<Question> list = new ArrayList<Question>();
+        list.addAll(getRandomQuestions(selectedQuestionArea, selectedQuestionLevel, questionCount));
+        log.debug("Area = {}, Level = {}", selectedQuestionArea, selectedQuestionLevel);
+        log.debug("Count = {}, List = {}", questionCount, list);
+        quiz.addQuestions(list);
+    }
+
+    public String saveQuiz() {
+
+        quizService.save(quiz);
         return "quiz?faces-redirect=true";
     }
 
@@ -93,6 +93,45 @@ public class BuilderController implements Serializable {
         return list2;
     }
 
+    public String load() {
+
+        quiz = quizService.findById((long) 5);
+        return "quiz?faces-redirect=true";
+    }
+
+// --------------------- GETTER / SETTER METHODS ---------------------
+
+
+    public String getSelectedQuestionArea() {
+
+        return selectedQuestionArea;
+    }
+
+    public void setSelectedQuestionArea(String selectedQuestionArea) {
+
+        this.selectedQuestionArea = selectedQuestionArea;
+    }
+
+    public int getQuestionCount() {
+
+        return questionCount;
+    }
+
+    public void setQuestionCount(int questionCount) {
+
+        this.questionCount = questionCount;
+    }
+
+    public List<Question.Level> getQuestionLevels() {
+
+        return questionLevels;
+    }
+
+    public void setQuestionLevels(List<Question.Level> questionLevels) {
+
+        this.questionLevels = questionLevels;
+    }
+
     public List<Question> getQuestions() {
 
         return questions;
@@ -103,46 +142,6 @@ public class BuilderController implements Serializable {
         this.questions = questions;
     }
 
-    public String getQuizName() {
-
-        return quizName;
-    }
-
-    public void setQuizName(String quizName) {
-
-        this.quizName = quizName;
-    }
-
-    public int getAssessedCount() {
-
-        return assessedCount;
-    }
-
-    public void setAssessedCount(int assessedCount) {
-
-        this.assessedCount = assessedCount;
-    }
-
-    public int getExperiencedCount() {
-
-        return experiencedCount;
-    }
-
-    public void setExperiencedCount(int experiencedCount) {
-
-        this.experiencedCount = experiencedCount;
-    }
-
-    public int getSeniorCount() {
-
-        return seniorCount;
-    }
-
-    public void setSeniorCount(int seniorCount) {
-
-        this.seniorCount = seniorCount;
-    }
-
     public Quiz getQuiz() {
 
         return quiz;
@@ -151,5 +150,15 @@ public class BuilderController implements Serializable {
     public void setQuiz(Quiz quiz) {
 
         this.quiz = quiz;
+    }
+
+    public Question.Level getSelectedQuestionLevel() {
+
+        return selectedQuestionLevel;
+    }
+
+    public void setSelectedQuestionLevel(Question.Level selectedQuestionLevel) {
+
+        this.selectedQuestionLevel = selectedQuestionLevel;
     }
 }

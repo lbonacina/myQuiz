@@ -46,6 +46,7 @@ public class Quiz implements Serializable {
 
     public Quiz() {
 
+        questions = new ArrayList<Question>();
     }
 
     public Quiz(String name) {
@@ -59,6 +60,11 @@ public class Quiz implements Serializable {
     public void addQuestion(Question question) {
 
         questions.add(question);
+    }
+
+    public void addQuestions(List<Question> questions) {
+
+        this.questions.addAll(questions);
     }
 
     // use it only for testing purpose, use iterator for real code
