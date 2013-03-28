@@ -198,7 +198,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `phone` varchar(25) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(200) NOT NULL,
-  `guest` tinyint(1) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   `failed_login_attempt_count` int(11) NOT NULL,
   `pwd_change_on_next_login` tinyint(1) NOT NULL,
@@ -211,12 +210,6 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 -- Dump dei dati per la tabella `user`
 --
-
-insert into `user`(`id`,`firstName`,`lastName`,`email`,`phone`,`username`,`password`,`enabled`,`failed_login_attempt_count`,`pwd_change_on_next_login`,`superadmin`) values (1,'Jane','Doe','jane@super.com','2125551212','wakka','$shiro1$SHA-256$500000$no8bF4L6ou/rwcuv0/7qNw==$qOuLZWUSVBw6KJ+acoajJuDPeeoYoU33bdiYpQivvvo=',1,0,0,1);
-insert into `user`(`id`,`firstName`,`lastName`,`email`,`phone`,`username`,`password`,`enabled`,`failed_login_attempt_count`,`pwd_change_on_next_login`,`superadmin`) values (2,'Paul','Smith','admin@mail.com','2125551212','admin','$shiro1$SHA-256$500000$yZnmkAQSFkP6MnlRAOisng==$LW6he2w5PcPhJC0CBLBtnH4QrkgxPb8Xt9/U0y0/dfc=',1,0,0,0);
-insert into `user`(`id`,`firstName`,`lastName`,`email`,`phone`,`username`,`password`,`enabled`,`failed_login_attempt_count`,`pwd_change_on_next_login`,`superadmin`) values (3,'Teresa','Pinkerton','pinkerton@mail.com','1234567890','tpink','$shiro1$SHA-256$500000$JFXIxeg8LKeae6exWrYNWw==$s8x81SjM0OZWKs9AfEp287FHHGvoOyOczTt/inDZs9Q=',1,0,0,0);
-insert into `user`(`id`,`firstName`,`lastName`,`email`,`phone`,`username`,`password`,`enabled`,`failed_login_attempt_count`,`pwd_change_on_next_login`,`superadmin`) values (4,'Pippo','Inzaghi','pippo@gmail.com','1234567890','superpippo','$shiro1$SHA-256$500000$4Cn/pAeiCi4KwG7D596qDw==$jDY+91MnHDKviufik3myf2b9lS0bRrD8F+MWDb0B/Gk=',1,0,1,0);
-insert into `user`(`id`,`firstName`,`lastName`,`email`,`phone`,`username`,`password`,`enabled`,`failed_login_attempt_count`,`pwd_change_on_next_login`,`superadmin`) values (5,'Gino','Pilotino','gino@gmail.com','1234567890','geeno','$shiro1$SHA-256$500000$cic+lbIFXBGLwSfkU6SwYw==$jZKoOFwQiQskdZfzrorarfUWjeDEsdkFhC9RWcbacnk=',1,0,1,0);
 
 -- --------------------------------------------------------
 

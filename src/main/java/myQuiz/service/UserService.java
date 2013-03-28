@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +37,7 @@ public class UserService implements Serializable {
     @Inject @AppLog
     private Logger log;
 
+    @Inject EntityManager entityManager;
     @Inject UserRepository userRepository;
     @Inject RoleRepository roleRepository;
 
@@ -53,16 +55,40 @@ public class UserService implements Serializable {
         QUser user = QUser.user;
         BooleanBuilder bb = new BooleanBuilder();
 
+        //Role superAdmin = roleRepository.findByRole("Superadmin") ;
+        //Role adminRole = roleRepository.findByRole("Admin") ;
+        //Role userRole = roleRepository.findByRole("User") ;
+        //Role guestRole = roleRepository.findByRole("Guest") ;
+
         // if we decide to allow for logical deletion of users or any other kind of filter, for example on organizations
         // or country they can be added here really quickly
         //if ( ! loggedSubject.isPermitted("user:list_deleted"))
         //    bb.and(user.deleted.isFalse()) ;
         // if not permitted to list superadmin users add superadmin = false
-        if (!loggedSubject.isPermitted("user:list_superadmin"))
-            bb.and(user.superadmin.isFalse());
+        if (loggedSubject.isPermitted("user:list_superadmin"))
+            bb.or(user.roles.contains(roleRepository.findByRole("Superadmin")));
+        if (loggedSubject.isPermitted("user:list_admin"))
+            bb.or(user.roles.contains(roleRepository.findByRole("Admin")));
+        if (loggedSubject.isPermitted("user:list_user"))
+            bb.or(user.roles.contains(roleRepository.findByRole("User")));
+        if (loggedSubject.isPermitted("user:list_guest"))
+            bb.or(user.roles.contains(roleRepository.findByRole("Guest")));
+
 
         return (List<User>) userRepository.findAll(bb.getValue());
     }
+
+
+    /*
+    public List<User> findAllWithUserPermission() {
+
+        QUser user = QUser.user;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        Role r = roleRepository.findByRole("Admin") ;
+        return query.from(user).where(user.roles.contains(r)).list(user) ;
+    }
+    */
 
     public List<Role> findAllRoles() {
 
@@ -114,7 +140,6 @@ public class UserService implements Serializable {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPhone("1234567890");
-        user.setGuest(true);
         user.setUsername(null);
 
         if (!checkEmailUniqueness(user)) {

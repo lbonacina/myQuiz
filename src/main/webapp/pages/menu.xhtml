@@ -16,15 +16,19 @@
 
         <h:form id="menu_form">
             <p:menu id="nav_menu" styleClass="nav_menu">
-                <p:menuitem id="question_page_btn" value="My Quiz" actionListener="#{menu.resetConversations}"
+                <p:menuitem id="question_page_btn" value="Take Test" actionListener="#{menu.resetConversations}"
                             action="/pages/submission/list?faces-redirect=true" ajax="false"
-                            rendered="#{s:hasPermission('menu:quiz')}"/>
+                            rendered="#{s:hasPermission('menu:take_test')}"/>
                 <p:menuitem id="sessions_page_btn" value="Sessions" actionListener="#{menu.resetConversations}"
                             action="/pages/session/list?faces-redirect=true" ajax="false"
-                            rendered="#{s:hasPermission('menu:session')}"/>
+                            rendered="#{s:hasPermission('menu:sessions')}"/>
+                <p:menuitem id="quick_session_page_btn" value="Quick Session"
+                            actionListener="#{menu.resetConversations}"
+                            action="/pages/session/list?faces-redirect=true" ajax="false"
+                            rendered="#{s:hasPermission('menu:quick')}"/>
                 <p:menuitem id="builder_page_btn" value="Builder" actionListener="#{menu.resetConversations}"
                             action="/pages/builder/list?faces-redirect=true" ajax="false"
-                            rendered="#{s:hasPermission('menu:quiz_builder')}"/>
+                            rendered="#{s:hasPermission('menu:test_builder')}"/>
                 <p:menuitem id="users_page_btn" value="Users" actionListener="#{menu.resetConversations}"
                             action="/pages/user/list?faces-redirect=true" ajax="false"
                             rendered="#{s:hasPermission('menu:user')}"/>

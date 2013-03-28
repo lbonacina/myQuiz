@@ -104,20 +104,19 @@ public class AuthenticationController implements Serializable {
         if (isAuth) {
 
             accessLog.trackSuccessfulLogin(username, user.getFullName());
-
             assert user != null;
 
-            if (user.isForcePasswordChangeOnNextLogin()) {
-                log.debug("Successful login but need to force password change, redirecting to personal page.");
-                return "pages/user/account?faces-redirect=true";
-            }
-            else {
-                log.debug("Redirecting to main page.");
-                if (subject.hasRole("User"))
-                    return "pages/submission/list?faces-redirect=true";
-                else
-                    return "pages/main?faces-redirect=true";
-            }
+            //if (user.isForcePasswordChangeOnNextLogin()) {
+            //    log.debug("Successful login but need to force password change, redirecting to personal page.");
+            //    return "pages/user/account?faces-redirect=true";
+            //}
+            //else {
+            log.debug("Redirecting to main page.");
+            if (subject.hasRole("User"))
+                return "pages/submission/list?faces-redirect=true";
+            else
+                return "pages/main?faces-redirect=true";
+            //}
         }
         else {
 

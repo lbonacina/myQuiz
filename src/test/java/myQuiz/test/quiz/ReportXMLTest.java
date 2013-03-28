@@ -25,7 +25,7 @@ import java.util.List;
  * Date: 06/03/13
  * Time: 11.51
  */
-public class ReportXML {
+public class ReportXMLTest {
 
     Submission submission;
 

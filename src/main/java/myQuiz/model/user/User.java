@@ -22,7 +22,7 @@ import java.util.Set;
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email"), @UniqueConstraint(columnNames = "username")})
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(propOrder = {"firstName", "lastName", "email", "phone", "guest"})
+@XmlType(propOrder = {"firstName", "lastName", "email", "phone"})
 public class User implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 
@@ -73,13 +73,7 @@ public class User implements Serializable {
     private String decryptedPassword;
 
     @Column(nullable = false)
-    private boolean guest;
-
-    @Column(nullable = false)
     private boolean enabled;
-
-    @Column(nullable = false)
-    private boolean superadmin;
 
     @Column(nullable = false, name = "pwd_change_on_next_login")
     private boolean forcePasswordChangeOnNextLogin;
@@ -104,9 +98,7 @@ public class User implements Serializable {
 
         id = null;
         roles = new HashSet<Role>();
-        guest = false;
         enabled = true;
-        superadmin = false;
         failedLoginAttemptCount = 0;
         resetPassword();
     }
@@ -325,17 +317,6 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public boolean isSuperadmin() {
-
-        return superadmin;
-    }
-
-    public void setSuperadmin(boolean superadmin) {
-
-        this.superadmin = superadmin;
-    }
-
-    @XmlTransient
     public boolean isForcePasswordChangeOnNextLogin() {
 
         return forcePasswordChangeOnNextLogin;
@@ -350,16 +331,6 @@ public class User implements Serializable {
     public String getDecryptedPassword() {
 
         return decryptedPassword;
-    }
-
-    public boolean isGuest() {
-
-        return guest;
-    }
-
-    public void setGuest(boolean guest) {
-
-        this.guest = guest;
     }
 
     // ------------------------ CANONICAL METHODS ------------------------
@@ -389,9 +360,7 @@ public class User implements Serializable {
     public String toString() {
 
         return "User{" +
-                "guest=" + guest +
                 ", enabled=" + enabled +
-                ", superadmin=" + superadmin +
                 ", forcePasswordChangeOnNextLogin=" + forcePasswordChangeOnNextLogin +
                 ", failedLoginAttemptCount=" + failedLoginAttemptCount +
                 ", roles=" + roles +

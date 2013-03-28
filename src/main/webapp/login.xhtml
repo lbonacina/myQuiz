@@ -19,25 +19,26 @@
 
     <h:form id="login_form">
 
-        <p:tabView style="width:400px;margin-top:200px;margin-left:auto;margin-right:auto;">
-            <p:tab title="Login">
-                <p:panelGrid id="input_subform" columns="2" style="width:360px;">
-                    <f:facet name="header">
-                        <h:outputLabel id="form_lbl" value="#{msg.welcome}"/>
-                    </f:facet>
-                    <h:outputLabel for="username_i" value="Username : "/>
-                    <h:inputText id="username_i" value="#{auth_ctrl.username}" required="true"/>
-                    <h:outputLabel for="password_i" value="Password : "/>
-                    <h:inputSecret id="password_i" value="#{auth_ctrl.password}" required="true"/>
-                    <f:facet name="footer">
-                        <p:commandButton id="submit_btn" action="#{auth_ctrl.login}" style="clear:left;"
-                                         process="input_subform" update="loginError_msg"
-                                         icon="ui-icon-play" iconPos="right" value="Login"/>
-                        <p:messages id="loginError_msg" style="clear:left;"/>
-                        <p:outputLabel id="sessionExpired_lbl" value="#{msg.sessionExpired}"
-                                       rendered="#{param.reason == 'expired'}" style="clear:left;"/>
-                    </f:facet>
-                </p:panelGrid>
+        <!-- <p:tabView style="width:400px;margin-top:200px;margin-left:auto;margin-right:auto;">
+      <p:tab title="Login"> -->
+        <p:panelGrid id="input_subform" columns="2" style="width:360px;">
+            <f:facet name="header">
+                <h:outputLabel id="form_lbl" value="#{msg.welcome}"/>
+            </f:facet>
+            <h:outputLabel for="username_i" value="Username : "/>
+            <h:inputText id="username_i" value="#{auth_ctrl.username}" required="true"/>
+            <h:outputLabel for="password_i" value="Password : "/>
+            <h:inputSecret id="password_i" value="#{auth_ctrl.password}" required="true"/>
+            <f:facet name="footer">
+                <p:commandButton id="submit_btn" action="#{auth_ctrl.login}" style="clear:left;"
+                                 process="input_subform" update="loginError_msg"
+                                 icon="ui-icon-play" iconPos="right" value="Login"/>
+                <p:messages id="loginError_msg" style="clear:left;"/>
+                <p:outputLabel id="sessionExpired_lbl" value="#{msg.sessionExpired}"
+                               rendered="#{param.reason == 'expired'}" style="clear:left;"/>
+            </f:facet>
+        </p:panelGrid>
+        <!--
             </p:tab>
             <p:tab title="Guest">
                 <p:panelGrid id="input_guest_subform" columns="2" style="width:360px;">
@@ -61,7 +62,7 @@
                 </p:panelGrid>
             </p:tab>
         </p:tabView>
-
+            -->
     </h:form>
 
     <p:ajaxStatus style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
