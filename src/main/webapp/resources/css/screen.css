@@ -1,14 +1,24 @@
 /* Core styles for the page */
 body {
+    font-family: arial, verdana, sans-serif, clean !important;
     margin: 0;
     padding: 5px;
     font-size: 11px;
 }
 
 .page_layout_north {
-    overflow-y: hidden;
+    /*overflow-y: hidden;
     padding: 0 !important;
-    border: 0 none;
+    border: 0 none;*/
+    background-color: #01325A !important;
+    background-image: none !important;
+    color: white;
+}
+
+.page_layout_south {
+    background-color: #eeeeee !important;
+    background-image: none !important;
+    color: white;
 }
 
 .page_layout_center {
@@ -16,22 +26,29 @@ body {
 }
 
 .pe-layout-pane-header {
+    /*    color : #06b ; */
+    color: #01325A;
+    font-size: 1.1em;
+    font-weight: bold;
     height: 15px !important;
     padding: 8px 1em !important;
 }
 
-/* "north" toolbar */
+/* "north" toolbar
 .page_toolbar {
     height: 50px;
-    background: #01325A none;
+    background-color: #01325A !important;
+    background-image: none !important;
     color: white;
 }
+*/
 
 /* app name on top left of the header */
 .top_header {
     margin-left: 20px;
     margin-top: 5px;
-    font-size: 2.6em;
+    font-size: 3.6em;
+    font-family: Ericsson Capital TT
 }
 
 /* logged user name on bottom right of the header */
@@ -166,15 +183,34 @@ body {
     padding: 10px;
 }
 
+.ui-datatable-header {
+    /* TODO : RGB of E/// header : 163:196:0 -> 0:131:182 */
+    background-image: url(#{resource[ 'images/ericsson-green-blue-header.png' ]}) !important;
+    background-size: 100% auto;
+    /*background-color: #06b ;*/
+    color: white;
+}
+
 .ui-datatable-scrollable {
-    border-bottom: 1px solid #A6C9E2 !important;
+    border-bottom: 1px solid #EEEEEE !important;
 }
 
 .ui-datatable-scrollable-body {
     font-size: 0.8em !important;
 }
 
+.ui-datatable-even {
+
+    background-color: #eeeeee;
+}
+
 .small_button {
-    width: 1.4em;
-    height: 1.4em;
+    width: 1.7em;
+    height: 1.7em;
+}
+
+.ui-dialog {
+    -moz-box-shadow: 0 0 50px 5px #DDD !important;
+    -webkit-box-shadow: 0 0 50px 5px #DDD !important;
+    box-shadow: 0 0 50px 5px #DDD !important;
 }

@@ -39,7 +39,7 @@
 
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>redmond</param-value>
+        <param-value>bootstrap</param-value>
     </context-param>
 
     <!-- CDI Listener to inject a JPA Realm into Shiro. see class for info -->

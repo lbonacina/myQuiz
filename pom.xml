@@ -171,7 +171,7 @@
 
         <dependency>
             <groupId>org.primefaces.themes</groupId>
-            <artifactId>redmond</artifactId>
+            <artifactId>bootstrap</artifactId>
             <version>1.0.8</version>
         </dependency>
 

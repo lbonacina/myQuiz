@@ -16,28 +16,35 @@
                     <h:outputText id="page_title" styleClass="ui-widget" value="TODO"/>
                 </f:facet>
 
-                <p:dataTable id="sessions" value="#{builder_ctrl.model}" lazy="true" var="q"
-                             paginator="false" rows="5000" scrollHeight="216" scrollable="true">
+                <p:outputPanel style="padding:2px; display:block;">
+                    <p:dataTable id="questions" value="#{builder_ctrl.model}" lazy="true" var="q"
+                                 paginator="false" rows="5000" scrollHeight="200" scrollable="true">
 
-                    <f:facet name="header">
-                        <h:outputText value="Questions"/>
-                    </f:facet>
-                    <p:column headerText="Code" width="100">
-                        #{q.code}
-                    </p:column>
-                    <p:column id="Area" headerText="Area" width="100" filterBy="#{q.area}" filterMatchMode="exact"
-                              filterOptions="#{builder_ctrl.areas}">
-                        #{q.area}
-                    </p:column>
-                    <p:column headerText="Level" width="100" filterBy="#{q.level}" filterMatchMode="exact"
-                              filterOptions="#{builder_ctrl.levels}">
-                        #{q.level}
-                    </p:column>
-                    <p:column headerText="Text">
-                        #{q.text}
-                    </p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Questions"/>
+                        </f:facet>
+                        <p:column width="20">
+                            <h:outputText id="dragIcon"
+                                          styleClass="ui-icon ui-icon-arrow-4"/>
+                            <p:draggable for="dragIcon" revert="true"/>
+                        </p:column>
+                        <p:column headerText="Code" width="100">
+                            #{q.code}
+                        </p:column>
+                        <p:column id="Area" headerText="Area" width="100" filterBy="#{q.area}" filterMatchMode="exact"
+                                  filterOptions="#{builder_ctrl.areas}">
+                            #{q.area}
+                        </p:column>
+                        <p:column headerText="Level" width="100" filterBy="#{q.level}" filterMatchMode="exact"
+                                  filterOptions="#{builder_ctrl.levels}">
+                            #{q.level}
+                        </p:column>
+                        <p:column headerText="Text">
+                            #{q.text}
+                        </p:column>
 
-                </p:dataTable>
+                    </p:dataTable>
+                </p:outputPanel>
 
                 <p:outputPanel id="quiz_details" style="margin-top:20px;margin-bottom:5px;display:block;">
 
@@ -45,49 +52,65 @@
                     <p:commandButton value="Load" update=":load_form" oncomplete="load_dlg.show();"/>
                     <p:commandButton value="Save as..." update=":load_form" oncomplete="saveas_dlg.show();"/>
                     <p:commandButton id="addx3_btn" value="Add x3" action="#{builder_ctrl.addQuestions}"
-                                     update="quiz_questions messages" onclick="tooltip.hide();"/>
+                                     process="@this questions" update="quiz_questions messages"
+                                     onclick="tooltip.hide();"/>
                     <p:messages id="messages" showDetail="true"/>
 
                     <!-- TODO : add simple tooltip to guide user -->
-                    <!--pe:tooltip for="addx3_btn" value="Click here" widgetVar="tooltip" autoShow="true" hideEvent="mouseleave"/-->
+                    <pe:tooltip for="addx3_btn"
+                                value="Selezionare un insieme di domande dalla griglia superiore e usare questo bottone per aggiungerne 3 a caso."
+                                widgetVar="tooltip" autoShow="true" hideEvent="mouseleave"/>
 
                 </p:outputPanel>
 
-                <p:dataTable id="quiz_questions" value="#{builder_ctrl.quiz.questions}" var="q"
-                             scrollHeight="216" scrollable="true">
+                <p:outputPanel id="droppable_src" style="padding:2px; display:block;">
+                    <p:outputPanel id="droppable">
+                        <p:dataTable id="quiz_questions" value="#{builder_ctrl.quiz.questions}" var="q"
+                                     scrollHeight="200" scrollable="true">
 
-                    <f:facet name="header">
-                        <h:outputText value="Current Test : #{builder_ctrl.quiz.name}"/>
-                    </f:facet>
-                    <p:column width="20">
-                        <p:commandButton icon="ui-icon-closethick" styleClass="small_button"
-                                         action="#{builder_ctrl.removeQuestion(q)}"
-                                         update=":builder_form:quiz_questions"/>
-                    </p:column>
-                    <p:column headerText="Code" width="100">
-                        #{q.code}
-                    </p:column>
-                    <p:column headerText="Area" width="100">
-                        #{q.area}
-                    </p:column>
-                    <p:column headerText="Level" width="100">
-                        #{q.level}
-                    </p:column>
-                    <p:column headerText="Text">
-                        #{q.text}
-                    </p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Current Test : #{builder_ctrl.quiz.name}"/>
+                            </f:facet>
+                            <p:column width="20">
+                                <p:commandButton icon="ui-icon-closethick" styleClass="small_button"
+                                                 action="#{builder_ctrl.removeQuestion(q)}"
+                                                 update=":builder_form:quiz_questions"/>
+                            </p:column>
+                            <p:column headerText="Code" width="100">
+                                #{q.code}
+                            </p:column>
+                            <p:column headerText="Area" width="100">
+                                #{q.area}
+                            </p:column>
+                            <p:column headerText="Level" width="100">
+                                #{q.level}
+                            </p:column>
+                            <p:column headerText="Text">
+                                #{q.text}
+                            </p:column>
 
-                </p:dataTable>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:droppable for="droppable_src" tolerance="touch" activeStyleClass="ui-state-highlight"
+                             datasource="questions">
+                    <p:ajax listener="#{builder_ctrl.onQuestionDrop}" update="droppable"/>
+                </p:droppable>
 
             </pe:layoutPane>
 
         </h:form>
 
-        <p:dialog widgetVar="saveas_dlg">
+        <p:dialog widgetVar="saveas_dlg" header="Save quiz">
             <h:form id="saveas_form">
-                <h:inputText id="quizname" value="#{builder_ctrl.quiz.name}" required="true"/>
-                <p:message for="quizname"/>
-                <p:commandButton value="Save" action="#{builder_ctrl.saveQuiz}" oncomplete="saveas_dlg.hide()"/>
+                <p:outputPanel styleClass="input_form ui-helper-clearfix">
+                    <h:inputText id="name" value="#{builder_ctrl.quiz.name}" required="true"/>
+                    <p:message for="name"/>
+                    <h:inputText id="desc" value="#{builder_ctrl.quiz.description}" required="true"/>
+                    <p:message for="desc"/>
+                    <p:commandButton value="Save" action="#{builder_ctrl.saveQuiz}" oncomplete="saveas_dlg.hide()"/>
+                </p:outputPanel>
             </h:form>
         </p:dialog>
 

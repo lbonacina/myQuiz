@@ -1,7 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
@@ -20,14 +19,15 @@
 
         <pe:layoutPane styleClassContent="page_layout_north" position="north" size="58" resizable="false"
                        closable="true">
-            <p:toolbar styleClass="page_toolbar">
+            <h:outputText value="MYQUIZ" styleClass="top_header"/>
+            <!--p:toolbar styleClass="page_toolbar">
                 <p:toolbarGroup align="left" styleClass="top_header">
                     <h:outputText value="myQuiz"/>
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right" styleClass="logged_user_header">
                     <h:outputText value="User: #{loggedUserFullName}"/>
                 </p:toolbarGroup>
-            </p:toolbar>
+            </p:toolbar-->
         </pe:layoutPane>
 
         <ui:insert name="west">
@@ -36,7 +36,8 @@
         <ui:insert name="center">
         </ui:insert>
 
-        <pe:layoutPane position="south" size="50" resizable="false" closable="true">
+        <pe:layoutPane styleClassContent="page_layout_south" position="south" size="50" resizable="false"
+                       closable="true">
             <h:outputText value="FOOTER"/>
         </pe:layoutPane>
 

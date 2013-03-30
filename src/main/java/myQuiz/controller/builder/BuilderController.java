@@ -7,6 +7,7 @@ import myQuiz.service.QuizService;
 import myQuiz.util.AppLog;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationGroup;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationScoped;
+import org.primefaces.event.DragDropEvent;
 import org.primefaces.model.LazyDataModel;
 import org.slf4j.Logger;
 
@@ -73,6 +74,14 @@ public class BuilderController implements Serializable {
 
         quiz = new Quiz();
         quiz.setName("New Test");
+    }
+
+    public void onQuestionDrop(DragDropEvent ddEvent) {
+
+        Question q = ((Question) ddEvent.getData());
+
+        log.debug("Drag & Drop on : {}", q);
+        quiz.addQuestion(q);
     }
 
     public void addQuestions() {
