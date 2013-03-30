@@ -23,17 +23,16 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlType(propOrder = {"name", "submittedQuestions"})
 public class Quiz implements Serializable {
+// ------------------------------ FIELDS ------------------------------
 
-    // ------------------------------ FIELDS ------------------------------
     private static final long serialVersionUID = 4482970585403512285L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotNull
-    @Size(min = 10, max = 4000)
+    @Size(min = 5, max = 200)
     String name;
+
+    @Size(min = 1, max = 4000)
+    String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
@@ -41,6 +40,10 @@ public class Quiz implements Serializable {
             joinColumns = @JoinColumn(name = "id_quiz"),
             inverseJoinColumns = @JoinColumn(name = "id_question"))
     List<Question> questions;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -56,6 +59,17 @@ public class Quiz implements Serializable {
     }
 
 // -------------------------- OTHER METHODS --------------------------
+
+    @XmlElementWrapper(name = "questions")
+    @XmlElement(name = "question")
+    public List<Question> getSubmittedQuestions() {
+
+        List<Question> sq = new ArrayList<Question>();
+        for (Question q : questions)
+            if (q.isSubmitted())
+                sq.add(q);
+        return sq;
+    }
 
     public void addQuestion(Question question) {
 
@@ -93,18 +107,17 @@ public class Quiz implements Serializable {
         return Math.round(scoreAcc * 100.0) / 100.0;
     }
 
-    @XmlElementWrapper(name = "questions")
-    @XmlElement(name = "question")
-    public List<Question> getSubmittedQuestions() {
+// --------------------- GETTER / SETTER METHODS ---------------------
 
-        List<Question> sq = new ArrayList<Question>();
-        for (Question q : questions)
-            if (q.isSubmitted())
-                sq.add(q);
-        return sq;
+    public String getDescription() {
+
+        return description;
     }
 
-// --------------------- GETTER / SETTER METHODS ---------------------
+    public void setDescription(String description) {
+
+        this.description = description;
+    }
 
     @XmlTransient
     public Long getId() {

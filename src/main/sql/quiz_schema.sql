@@ -108,7 +108,8 @@ CREATE TABLE IF NOT EXISTS `question` (
 DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE IF NOT EXISTS `quiz` (
   `id`  INT NOT NULL AUTO_INCREMENT,
-  `name` longtext NOT NULL,
+  `name` VARCHAR(200) NOT NULL,
+  `descriptions` longtext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
