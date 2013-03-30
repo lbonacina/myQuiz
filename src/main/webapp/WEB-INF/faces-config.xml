@@ -9,11 +9,11 @@
     <!-- This descriptor activates the JSF 2.0 Servlet -->
 
     <!-- Ajax Exception Handler from Omnifaces : http://balusc.blogspot.it/2012/03/full-ajax-exception-handler.html -->
-    <!-- uses standard web.xml excepion handling for Ajax request -->
-    <factory>
+    <!-- uses standard web.xml exception handling for Ajax request -->
+    <!--factory>
         <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory
         </exception-handler-factory>
-    </factory>
+    </factory-->
 
     <!-- dichiariamo un resource bundle da cui si possono attingere messaggi di errore ed eventualmente in futuro
          anche tutti i messaggi tipo label, bottoni, header per una internalizzazione completa dell'app.

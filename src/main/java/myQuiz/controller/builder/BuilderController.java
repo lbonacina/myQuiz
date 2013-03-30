@@ -7,15 +7,16 @@ import myQuiz.service.QuizService;
 import myQuiz.util.AppLog;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationGroup;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationScoped;
+import org.primefaces.model.LazyDataModel;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,13 +39,13 @@ public class BuilderController implements Serializable {
     @Inject QuizService quizService;
 
     List<Question> questions;
-    List<Question.Level> questionLevels;
-
-    Question.Level selectedQuestionLevel;
-    int questionCount;
-    String selectedQuestionArea;
+    LazyDataModel model;
 
     Quiz quiz;
+    List<Quiz> quizList;
+
+    List<SelectItem> areas;
+    List<SelectItem> levels;
 
 // -------------------------- OTHER METHODS --------------------------
 
@@ -52,45 +53,53 @@ public class BuilderController implements Serializable {
     public void init() {
 
         questions = questionService.findAll();
-        questionLevels = Arrays.asList(Question.Level.values());
+        model = new QuestionLazyDataModel(questionService);
         newQuiz();
+
+        quizList = quizService.findAll();
+
+        areas = new ArrayList<SelectItem>();
+        areas.add(new SelectItem("empty", "select..."));
+        areas.add(new SelectItem("Management", "Management"));
+        areas.add(new SelectItem("Database", "Database"));
+        levels = new ArrayList<SelectItem>();
+        levels.add(new SelectItem("empty", "select..."));
+        levels.add(new SelectItem("Assessed", "Assessed"));
+        levels.add(new SelectItem("Experienced", "Experienced"));
+        levels.add(new SelectItem("Senior", "Senior"));
     }
 
     public void newQuiz() {
 
         quiz = new Quiz();
+        quiz.setName("New Test");
     }
 
-    public void addAnswers() {
+    public void addQuestions() {
 
         List<Question> list = new ArrayList<Question>();
-        list.addAll(getRandomQuestions(selectedQuestionArea, selectedQuestionLevel, questionCount));
-        log.debug("Area = {}, Level = {}", selectedQuestionArea, selectedQuestionLevel);
-        log.debug("Count = {}, List = {}", questionCount, list);
+        list.addAll(getRandomQuestions(3));
         quiz.addQuestions(list);
+    }
+
+    private List<Question> getRandomQuestions(int number) {
+
+        List<Question> list = new ArrayList<Question>();
+        list.addAll((List<Question>) model.getWrappedData());
+        Collections.shuffle(list);
+        return list.subList(0, number);
+    }
+
+    public void removeQuestion(Question question) {
+
+        log.debug("remove : {}", question);
+        quiz.removeQuestion(question);
     }
 
     public String saveQuiz() {
 
         quizService.save(quiz);
         return "quiz?faces-redirect=true";
-    }
-
-    private List<Question> getRandomQuestions(String area, Question.Level level, int numer) {
-
-        List<Question> list = new ArrayList<Question>();
-
-        for (Question q : questions) {
-            if (q.getArea().equals(area) && q.getLevel().equals(level)) {
-                list.add(q);
-            }
-        }
-
-        List list2 = list.subList(0, numer);
-
-        Collections.shuffle(list2);
-
-        return list2;
     }
 
     public String load() {
@@ -101,35 +110,34 @@ public class BuilderController implements Serializable {
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 
+    public List<SelectItem> getAreas() {
 
-    public String getSelectedQuestionArea() {
-
-        return selectedQuestionArea;
+        return areas;
     }
 
-    public void setSelectedQuestionArea(String selectedQuestionArea) {
+    public void setAreas(List<SelectItem> areas) {
 
-        this.selectedQuestionArea = selectedQuestionArea;
+        this.areas = areas;
     }
 
-    public int getQuestionCount() {
+    public List<SelectItem> getLevels() {
 
-        return questionCount;
+        return levels;
     }
 
-    public void setQuestionCount(int questionCount) {
+    public void setLevels(List<SelectItem> levels) {
 
-        this.questionCount = questionCount;
+        this.levels = levels;
     }
 
-    public List<Question.Level> getQuestionLevels() {
+    public LazyDataModel getModel() {
 
-        return questionLevels;
+        return model;
     }
 
-    public void setQuestionLevels(List<Question.Level> questionLevels) {
+    public void setModel(LazyDataModel model) {
 
-        this.questionLevels = questionLevels;
+        this.model = model;
     }
 
     public List<Question> getQuestions() {
@@ -152,13 +160,13 @@ public class BuilderController implements Serializable {
         this.quiz = quiz;
     }
 
-    public Question.Level getSelectedQuestionLevel() {
+    public List<Quiz> getQuizList() {
 
-        return selectedQuestionLevel;
+        return quizList;
     }
 
-    public void setSelectedQuestionLevel(Question.Level selectedQuestionLevel) {
+    public void setQuizList(List<Quiz> quizList) {
 
-        this.selectedQuestionLevel = selectedQuestionLevel;
+        this.quizList = quizList;
     }
 }

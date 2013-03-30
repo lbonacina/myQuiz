@@ -165,3 +165,16 @@ body {
 .question .ui-selectoneradio td, .question .ui-selectoneradio tr {
     padding: 10px;
 }
+
+.ui-datatable-scrollable {
+    border-bottom: 1px solid #A6C9E2 !important;
+}
+
+.ui-datatable-scrollable-body {
+    font-size: 0.8em !important;
+}
+
+.small_button {
+    width: 1.4em;
+    height: 1.4em;
+}

@@ -55,11 +55,6 @@ public class UserService implements Serializable {
         QUser user = QUser.user;
         BooleanBuilder bb = new BooleanBuilder();
 
-        //Role superAdmin = roleRepository.findByRole("Superadmin") ;
-        //Role adminRole = roleRepository.findByRole("Admin") ;
-        //Role userRole = roleRepository.findByRole("User") ;
-        //Role guestRole = roleRepository.findByRole("Guest") ;
-
         // if we decide to allow for logical deletion of users or any other kind of filter, for example on organizations
         // or country they can be added here really quickly
         //if ( ! loggedSubject.isPermitted("user:list_deleted"))

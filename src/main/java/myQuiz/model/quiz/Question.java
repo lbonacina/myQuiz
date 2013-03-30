@@ -192,6 +192,6 @@ public abstract class Question {
 // -------------------------- ENUMERATIONS --------------------------
 
     public enum Level {
-        ASSESSED, EXPERIENCED, SENIOR
+        Assessed, Experienced, Senior
     }
 }

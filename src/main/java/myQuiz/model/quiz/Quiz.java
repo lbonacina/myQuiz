@@ -67,14 +67,18 @@ public class Quiz implements Serializable {
         this.questions.addAll(questions);
     }
 
-    // use it only for testing purpose, use iterator for real code
-    // 1-based
+    public void removeQuestion(Question question) {
+
+        this.questions.remove(question);
+    }
+
+    // use it only for testing purpose, use iterator for real code (1-based)
     public Question getNthQuestion(int n) {
 
         return questions.get(n - 1);
     }
 
-    //// use it only for testing purpose, use iterator for real code
+    // use it only for testing purpose, use iterator for real code
     public int getNumberOfQuestions() {
 
         return questions.size();
