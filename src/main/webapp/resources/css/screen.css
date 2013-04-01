@@ -27,6 +27,7 @@ body {
 
 .pe-layout-pane-header {
     /*    color : #06b ; */
+    background: #e8e8e8;
     color: #01325A;
     font-size: 1.1em;
     font-weight: bold;
