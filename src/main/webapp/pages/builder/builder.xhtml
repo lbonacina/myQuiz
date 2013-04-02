@@ -52,7 +52,7 @@
                     <p:commandButton value="Load" update=":load_form" oncomplete="load_dlg.show();"/>
                     <p:commandButton value="Save as..." update=":load_form" oncomplete="saveas_dlg.show();"/>
                     <p:commandButton id="addx3_btn" value="Add x3" action="#{builder_ctrl.addQuestions}"
-                                     process="@this questions" update="quiz_questions messages"
+                                     process="@this questions" update="questions quiz_questions messages"
                                      onclick="tooltip.hide();"/>
                     <p:messages id="messages" showDetail="true"/>
 
@@ -74,7 +74,7 @@
                             <p:column width="20">
                                 <p:commandButton icon="ui-icon-closethick" styleClass="small_button"
                                                  action="#{builder_ctrl.removeQuestion(q)}"
-                                                 update=":builder_form:quiz_questions"/>
+                                                 update=":builder_form:questions :builder_form:quiz_questions"/>
                             </p:column>
                             <p:column headerText="Code" width="100">
                                 #{q.code}
