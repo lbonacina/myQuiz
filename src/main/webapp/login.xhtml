@@ -21,9 +21,9 @@
 
         <!-- <p:tabView style="width:400px;margin-top:200px;margin-left:auto;margin-right:auto;">
       <p:tab title="Login"> -->
-        <p:panelGrid id="input_subform" columns="2" style="width:360px;">
+        <p:panelGrid id="input_subform" columns="2" styleClass="login_form">
             <f:facet name="header">
-                <h:outputLabel id="form_lbl" value="#{msg.welcome}"/>
+                <h:outputLabel id="form_lbl" styleClass="login_form_header_label" value="#{msg.welcome}"/>
             </f:facet>
             <h:outputLabel for="username_i" value="Username : "/>
             <h:inputText id="username_i" value="#{auth_ctrl.username}" required="true"/>

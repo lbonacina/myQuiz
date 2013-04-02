@@ -6,10 +6,24 @@ body {
     font-size: 11px;
 }
 
+.login_form {
+    width: 400px;
+    margin-top: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login_form .ui-widget-header, .login_form .ui-widget-footer {
+    background: #01325A none !important;
+    color: white !important;
+    height: 40px;
+}
+
+.login_form_header_label {
+    font-size: 1.5em;
+}
+
 .page_layout_north {
-    /*overflow-y: hidden;
-    padding: 0 !important;
-    border: 0 none;*/
     background-color: #01325A !important;
     background-image: none !important;
     color: white;
@@ -34,15 +48,6 @@ body {
     height: 15px !important;
     padding: 8px 1em !important;
 }
-
-/* "north" toolbar
-.page_toolbar {
-    height: 50px;
-    background-color: #01325A !important;
-    background-image: none !important;
-    color: white;
-}
-*/
 
 /* app name on top left of the header */
 .top_header {
