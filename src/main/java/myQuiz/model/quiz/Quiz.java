@@ -31,7 +31,7 @@ public class Quiz implements Serializable {
     @Size(min = 5, max = 200)
     String name;
 
-    @Size(min = 1, max = 4000)
+    @Size(max = 4000)
     String description;
 
     @ManyToMany(fetch = FetchType.EAGER)

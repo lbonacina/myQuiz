@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
   `id`  INT NOT NULL,
   `role` varchar(100) NOT NULL,
-  `description` longtext NOT NULL,  
+  `description` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

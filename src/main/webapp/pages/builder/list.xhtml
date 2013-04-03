@@ -16,18 +16,18 @@
                     <h:outputText id="page_title" styleClass="ui-widget" value="TODO"/>
                 </f:facet>
 
-                <p:dataTable id="sessions" value="#{builder_ctrl.quiz.questions}" var="q"
-                             selection="#{sl_ctrl.selectedSession}"
+                <p:commandButton value="New" action="#{builder_ctrl.newQuiz}"/>
+                <p:commandButton value="Edit" action="#{builder_ctrl.editQuiz}"/>
+
+                <p:dataTable id="sessions" value="#{builder_ctrl.quizList}" var="q"
+                             selection="#{builder_ctrl.quiz}"
                              selectionMode="single" rowKey="#{q.id}">
 
                     <p:column headerText="Name">
-                        #{q.area}
+                        #{q.name}
                     </p:column>
                     <p:column headerText="Status">
-                        #{q.level}
-                    </p:column>
-                    <p:column headerText="Quiz">
-                        #{q.text}
+                        #{q.description}
                     </p:column>
 
                 </p:dataTable>

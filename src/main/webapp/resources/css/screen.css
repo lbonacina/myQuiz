@@ -6,6 +6,8 @@ body {
     font-size: 11px;
 }
 
+/* Login */
+
 .login_form {
     width: 400px;
     margin-top: 200px;
@@ -19,9 +21,23 @@ body {
     height: 40px;
 }
 
-.login_form_header_label {
-    font-size: 1.5em;
+/* Dialogs */
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 3px 10px !important;
+    background: #e8e8e8 none !important;
+
 }
+
+.ui-dialog.ui-widget-content .ui-dialog-title {
+    font-size: 14px;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-content {
+    font-size: 13px;
+}
+
+/* Layout */
 
 .page_layout_north {
     background-color: #01325A !important;

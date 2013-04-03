@@ -7,7 +7,7 @@ import myQuiz.service.QuizService;
 import myQuiz.util.AppLog;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationGroup;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ConversationScoped;
-import org.primefaces.event.DragDropEvent;
+import org.omnifaces.util.Messages;
 import org.primefaces.model.LazyDataModel;
 import org.slf4j.Logger;
 
@@ -44,6 +44,7 @@ public class BuilderController implements Serializable {
 
     Quiz quiz;
     List<Quiz> quizList;
+    boolean newQuiz;
 
     List<SelectItem> areas;
     List<SelectItem> levels;
@@ -55,9 +56,10 @@ public class BuilderController implements Serializable {
 
         questions = questionService.findAll();
         model = new QuestionLazyDataModel(questionService);
-        newQuiz();
 
         quizList = quizService.findAll();
+        quiz = null;
+        newQuiz = false;
 
         areas = new ArrayList<SelectItem>();
         areas.add(new SelectItem("empty", "select..."));
@@ -70,12 +72,25 @@ public class BuilderController implements Serializable {
         levels.add(new SelectItem("Senior", "Senior"));
     }
 
-    public void newQuiz() {
+    public String newQuiz() {
 
         quiz = new Quiz();
+        newQuiz = true;
         quiz.setName("New Test");
+        return "builder?faces-redirect=true";
     }
 
+    public String editQuiz() {
+
+        if (quiz == null) {
+            Messages.addGlobalError("Select a Quiz");
+            return "";
+        }
+        newQuiz = false;
+        return "builder?faces-redirect=true";
+    }
+
+    /*
     public void onQuestionDrop(DragDropEvent ddEvent) {
 
         Question q = ((Question) ddEvent.getData());
@@ -83,6 +98,7 @@ public class BuilderController implements Serializable {
         log.debug("Drag & Drop on : {}", q);
         quiz.addQuestion(q);
     }
+    */
 
     public void addQuestions() {
 
@@ -107,6 +123,7 @@ public class BuilderController implements Serializable {
 
     public String saveQuiz() {
 
+        log.debug("save : {}", quiz);
         quizService.save(quiz);
         return "quiz?faces-redirect=true";
     }
@@ -177,5 +194,15 @@ public class BuilderController implements Serializable {
     public void setQuizList(List<Quiz> quizList) {
 
         this.quizList = quizList;
+    }
+
+    public boolean isNewQuiz() {
+
+        return newQuiz;
+    }
+
+    public void setNewQuiz(boolean newQuiz) {
+
+        this.newQuiz = newQuiz;
     }
 }
