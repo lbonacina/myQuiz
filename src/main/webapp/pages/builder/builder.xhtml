@@ -13,7 +13,7 @@
             <pe:layoutPane position="center" size="280" styleContent="padding:15px;" resizable="false" closable="false">
 
                 <f:facet name="header">
-                    <h:outputText id="page_title" styleClass="ui-widget" value="TODO"/>
+                    <h:outputText id="page_title" styleClass="ui-widget" value="#{msg.page_title_builder}"/>
                 </f:facet>
 
                 <p:outputPanel style="padding:2px; display:block;">
@@ -48,17 +48,17 @@
 
                 <p:outputPanel id="quiz_details" style="margin-top:20px;margin-bottom:5px;display:block;">
 
-                    <p:commandButton value="New" action="#{builder_ctrl.newQuiz}" update="quiz_questions messages"/>
-                    <!--p:commandButton value="Load" update=":load_form" oncomplete="load_dlg.show();"/-->
-                    <p:commandButton id="addx3_btn" value="Add x3" action="#{builder_ctrl.addQuestions}"
+
+                    <p:commandButton id="addx3_btn" value="Add Questions" action="#{builder_ctrl.addQuestions}"
                                      process="@this questions" update="questions quiz_questions messages"/>
+                    <p:spinner id="spinnerBasic"
+                               value="#{builder_ctrl.questionsNumber}"/>
                     <!--onclick="tooltip.hide();"/-->
                     <p:commandButton value="Save" action="#{builder_ctrl.saveQuiz}"
                                      rendered="#{!builder_ctrl.newQuiz}"/>
                     <p:commandButton value="Save as..." update=":saveas_form" oncomplete="saveas_dlg.show();"
                                      rendered="#{builder_ctrl.newQuiz}"/>
-                    <!--h:inputText id="name" value="#{builder_ctrl.quiz.name}" required="true"/>
-                    <p:message for="name"/-->
+                    <p:button value="Back" outcome="list?faces-redirect=true" immediate="true"/>
                     <p:messages id="messages" showDetail="true"/>
 
                     <!-- TODO : add simple tooltip to guide user -->

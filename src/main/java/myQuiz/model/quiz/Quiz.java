@@ -73,12 +73,15 @@ public class Quiz implements Serializable {
 
     public void addQuestion(Question question) {
 
-        questions.add(question);
+        if ( !questions.contains(question) )
+            questions.add(question);
     }
 
     public void addQuestions(List<Question> questions) {
 
-        this.questions.addAll(questions);
+        for ( Question q : questions) {
+            addQuestion(q);
+        }
     }
 
     public void removeQuestion(Question question) {

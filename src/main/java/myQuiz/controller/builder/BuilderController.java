@@ -45,6 +45,7 @@ public class BuilderController implements Serializable {
     Quiz quiz;
     List<Quiz> quizList;
     boolean newQuiz;
+    int questionsNumber;
 
     List<SelectItem> areas;
     List<SelectItem> levels;
@@ -60,6 +61,7 @@ public class BuilderController implements Serializable {
         quizList = quizService.findAll();
         quiz = null;
         newQuiz = false;
+        questionsNumber = 3;
 
         areas = new ArrayList<SelectItem>();
         areas.add(new SelectItem("empty", "select..."));
@@ -103,7 +105,7 @@ public class BuilderController implements Serializable {
     public void addQuestions() {
 
         List<Question> list = new ArrayList<Question>();
-        list.addAll(getRandomQuestions(3));
+        list.addAll(getRandomQuestions(questionsNumber));
         quiz.addQuestions(list);
     }
 
@@ -204,5 +206,13 @@ public class BuilderController implements Serializable {
     public void setNewQuiz(boolean newQuiz) {
 
         this.newQuiz = newQuiz;
+    }
+
+    public int getQuestionsNumber() {
+        return questionsNumber;
+    }
+
+    public void setQuestionsNumber(int questionsNumber) {
+        this.questionsNumber = questionsNumber;
     }
 }

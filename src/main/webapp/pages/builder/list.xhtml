@@ -13,7 +13,7 @@
             <pe:layoutPane position="center" size="280" resizable="false" closable="false">
 
                 <f:facet name="header">
-                    <h:outputText id="page_title" styleClass="ui-widget" value="TODO"/>
+                    <h:outputText id="page_title" styleClass="ui-widget" value="#{msg.page_title_builder}"/>
                 </f:facet>
 
                 <p:commandButton value="New" action="#{builder_ctrl.newQuiz}"/>
@@ -22,6 +22,10 @@
                 <p:dataTable id="sessions" value="#{builder_ctrl.quizList}" var="q"
                              selection="#{builder_ctrl.quiz}"
                              selectionMode="single" rowKey="#{q.id}">
+
+                    <f:facet name="header">
+                        <h:outputText value="Quiz List"/>
+                    </f:facet>
 
                     <p:column headerText="Name">
                         #{q.name}
