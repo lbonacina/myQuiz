@@ -67,6 +67,7 @@ public class BuilderController implements Serializable {
         areas.add(new SelectItem("empty", "select..."));
         areas.add(new SelectItem("Management", "Management"));
         areas.add(new SelectItem("Database", "Database"));
+        areas.add(new SelectItem("Java", "Java"));
         levels = new ArrayList<SelectItem>();
         levels.add(new SelectItem("empty", "select..."));
         levels.add(new SelectItem("Assessed", "Assessed"));
@@ -209,10 +210,12 @@ public class BuilderController implements Serializable {
     }
 
     public int getQuestionsNumber() {
+
         return questionsNumber;
     }
 
     public void setQuestionsNumber(int questionsNumber) {
+
         this.questionsNumber = questionsNumber;
     }
 }

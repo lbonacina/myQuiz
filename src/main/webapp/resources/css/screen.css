@@ -202,7 +202,7 @@ body {
 }
 
 .question .ui-selectoneradio td, .question .ui-selectoneradio tr {
-    padding: 10px;
+    padding: 3px;
 }
 
 .ui-datatable-header {
@@ -235,4 +235,19 @@ body {
     -moz-box-shadow: 0 0 50px 5px #DDD !important;
     -webkit-box-shadow: 0 0 50px 5px #DDD !important;
     box-shadow: 0 0 50px 5px #DDD !important;
+}
+
+.custom_question_code {
+    background-color: #EEEEEE;
+    padding: 10px;
+    font-size: 0.8em;
+    font-family: Courier New;
+}
+
+.custom_question_text {
+    float: none;
+    clear: none;
+    padding: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

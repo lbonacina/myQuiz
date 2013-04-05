@@ -14,7 +14,8 @@
                 <p:outputLabel
                         value="Question #{sub_ctrl.quizRunner.currentQuestionIndex()} of #{sub_ctrl.quizRunner.questionsCount()} : "/>
                 <h:outputText styleClass="question_text ui-widget"
-                              value="#{sub_ctrl.quizRunner.currentQuestion().text}"/>
+                              value="#{sub_ctrl.quizRunner.currentQuestion().text}"
+                              escape="#{!sub_ctrl.quizRunner.currentQuestion().htmlFormatted}"/>
 
                 <p:outputLabel value="Answers : "/>
                 <p:selectOneRadio value="#{sub_ctrl.singleUserAnswer}" converter="possibleAnswerItemsConverter"

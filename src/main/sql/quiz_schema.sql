@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   `type` varchar(5) NOT NULL,
   `code` varchar(10) NOT NULL,
   `text` longtext NOT NULL,
+  `html_formatted` tinyint(1) NOT NULL DEFAULT 0,
   `area` varchar(50) DEFAULT NULL,
   `level` int(1) DEFAULT NULL,
   PRIMARY KEY (`id`)

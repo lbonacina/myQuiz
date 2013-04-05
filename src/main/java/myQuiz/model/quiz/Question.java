@@ -35,6 +35,9 @@ public abstract class Question {
     @Size(min = 10, max = 4000)
     String text;
 
+    @Column(name = "html_formatted")
+    public boolean htmlFormatted;
+
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     List<Answer> answers;
 
@@ -158,6 +161,16 @@ public abstract class Question {
     public void setCode(String code) {
 
         this.code = code;
+    }
+
+    public boolean isHtmlFormatted() {
+
+        return htmlFormatted;
+    }
+
+    public void setHtmlFormatted(boolean htmlFormatted) {
+
+        this.htmlFormatted = htmlFormatted;
     }
 
     // ------------------------ CANONICAL METHODS ------------------------
