@@ -27,7 +27,8 @@
                 <p:selectManyCheckbox value="#{sub_ctrl.multiUserAnswer}" converter="possibleAnswerItemsConverter"
                                       layout="pageDirection" rendered="#{sub_ctrl.currentQuestionMultiAnswer}">
                     <f:selectItems value="#{sub_ctrl.quizRunner.currentQuestion().answers}"
-                                   var="a" itemLabel="#{a.text}" itemValue="#{a}"/>
+                                   var="a" itemLabel="#{a.text}" itemValue="#{a}"
+                                   escape="#{!sub_ctrl.quizRunner.currentQuestion().htmlFormatted}"/>
                 </p:selectManyCheckbox>
 
                 <p:outputPanel styleClass="question_button_panel">

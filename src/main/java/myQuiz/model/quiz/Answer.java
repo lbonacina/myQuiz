@@ -29,7 +29,7 @@ public class Answer implements Serializable {
     Long id;
 
     @NotNull
-    @Size(min = 10, max = 4000)
+    @Size(min = 1, max = 4000)
     String text;
 
     @NotNull

@@ -28,7 +28,7 @@ public abstract class Question {
     Long id;
 
     @NotNull
-    @Size(min = 10, max = 10)
+    @Size(min = 1, max = 10)
     String code;
 
     @NotNull
@@ -38,7 +38,7 @@ public abstract class Question {
     @Column(name = "html_formatted")
     public boolean htmlFormatted;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     List<Answer> answers;
 
     Level level;
@@ -85,6 +85,14 @@ public abstract class Question {
     }
 
     public abstract double score();
+
+    public void addAnswers(List<Answer> answers) {
+
+        for (Answer answer : answers) {
+            answer.setQuestion(this);
+        }
+        this.answers = answers;
+    }
 
 // --------------------- GETTER / SETTER METHODS ---------------------
 

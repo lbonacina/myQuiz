@@ -61,4 +61,9 @@ public class QuestionService implements Serializable {
         return (List<Question>) questionRepository.findAll(bb.getValue());
     }
 
+    public void save(Question question) {
+
+        questionRepository.save(question);
+    }
+
 }
