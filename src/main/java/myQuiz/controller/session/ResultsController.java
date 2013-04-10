@@ -36,6 +36,8 @@ public class ResultsController implements Serializable {
 
     private List<Submission> submissionList;
 
+    private Submission selectedSubmission;
+
 
 // -------------------------- OTHER METHODS --------------------------
 
@@ -53,5 +55,13 @@ public class ResultsController implements Serializable {
     public void setSubmissionList(List<Submission> submissionList) {
 
         this.submissionList = submissionList;
+    }
+
+    public Submission getSelectedSubmission() {
+        return selectedSubmission;
+    }
+
+    public void setSelectedSubmission(Submission selectedSubmission) {
+        this.selectedSubmission = selectedSubmission;
     }
 }

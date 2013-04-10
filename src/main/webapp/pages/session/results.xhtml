@@ -2,6 +2,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions"
                 template="/resources/templates/withMenu.xhtml">
@@ -31,11 +32,22 @@
                     <p:column headerText="Score">
                         #{r.finalScore}
                     </p:column>
+                    <p:column headerText="Result">
+                        <p:commandButton value="Report" update=":HTMLReport_content" onclick="HTMLReport.show();">
+                            <f:setPropertyActionListener value="#{r}" target="#{results_ctrl.selectedSubmission}"/>
+                        </p:commandButton>
+                    </p:column>
                 </p:dataTable>
 
             </pe:layoutPane>
 
         </h:form>
+
+        <p:dialog widgetVar="HTMLReport" resizable="false">
+            <p:scrollPanel id="HTMLReport_content" style="width:1000px;height:600px" mode="native">
+                <h:outputText value="#{results_ctrl.selectedSubmission.HTMLReport}" escape="false"/>
+            </p:scrollPanel>
+        </p:dialog>
 
     </ui:define>
 </ui:composition>

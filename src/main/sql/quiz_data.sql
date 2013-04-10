@@ -120,11 +120,5 @@ insert into answer (text, correct, id_question) values ("Db.004.Answer #3",false
 insert into answer (text, correct, id_question) values ("Db.004.Answer #4",false,16) ;
 insert into answer (text, correct, id_question) values ("Db.004.Answer #5",false,16) ;
 
-insert into question (id,type,code,text,area,html_formatted,level) values (17,"one","Jv.001","<html><p>Dato il seguente codice:</p><div class="code">public interface Drivable {...}public class Tractor implements Drivable {...}public Class Veichle {...}public class Car extends Veichle implements Drivable {...}public class Truck extends Veichle implements  Drivable {...}<div><p>la sequenza di istruzioni sottostante genererà errori di compilazione ?</p><div class="code">Car car  = new Car() ;Vehicle vehicle = car ;<div></html>","Java",1,1) ;
-insert into answer (text, correct, id_question) values ("Nessun Errore",true,17) ;
-insert into answer (text, correct, id_question) values ("Verrà sollevato un errore di compilazione.",false,17) ;
-
-
-
 
 -- insert into session (id, id_quiz, name, status, start_date, end_date) values (1,2,"Dummy Session",1,'2000-1-01','2099-1-01') ;

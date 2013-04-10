@@ -98,20 +98,24 @@ public class Submission implements Serializable {
     }
 
 
-    public String generateHTMLReport() throws TransformerException {
+    public String getHTMLReport() {
 
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Source xslt = new StreamSource(getClass().getClassLoader().getResourceAsStream("transform.xslt"));
-        Transformer transformer = null;
-        transformer = factory.newTransformer(xslt);
+        try {
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Source xslt = new StreamSource(getClass().getClassLoader().getResourceAsStream("transform.xslt"));
+            Transformer transformer = null;
+            transformer = factory.newTransformer(xslt);
 
-        StringWriter sw = new StringWriter();
-        Source xmlSource = new StreamSource(new StringReader(report));
-        Result htmlResult = new StreamResult(sw);
+            StringWriter sw = new StringWriter();
+            Source xmlSource = new StreamSource(new StringReader(report));
+            Result htmlResult = new StreamResult(sw);
 
-        transformer.transform(xmlSource, htmlResult);
+            transformer.transform(xmlSource, htmlResult);
 
-        return sw.toString();
+            return sw.toString();
+        } catch (TransformerException e) {
+            return ("<html><body>Sorry, error :(</body></html>");
+        }
     }
 
 // --------------------- GETTER / SETTER METHODS ---------------------

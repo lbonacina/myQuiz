@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "quiz")
 @XmlRootElement(name = "submission")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(propOrder = {"name", "submittedQuestions"})
+@XmlType(propOrder = {"name", "description", "submittedQuestions"})
 public class Quiz implements Serializable {
 // ------------------------------ FIELDS ------------------------------
 

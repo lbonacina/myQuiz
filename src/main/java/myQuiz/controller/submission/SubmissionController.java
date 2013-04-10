@@ -95,16 +95,6 @@ public class SubmissionController implements Serializable {
         }
     }
 
-    public String getHtmlReport() {
-
-        try {
-            return submission.generateHTMLReport();
-        }
-        catch (TransformerException e) {
-            log.debug("Error during conversion from XML to HTML", e);
-            return ("<html><body>Sorry, error :(</body></html>");
-        }
-    }
 
     public void next() {
 

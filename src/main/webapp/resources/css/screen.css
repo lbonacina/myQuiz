@@ -37,6 +37,12 @@ body {
     font-size: 13px;
 }
 
+.ui-dialog {
+    -moz-box-shadow: 0 0 50px 5px #DDD !important;
+    -webkit-box-shadow: 0 0 50px 5px #DDD !important;
+    box-shadow: 0 0 50px 5px #DDD !important;
+}
+
 /* Layout */
 
 .page_layout_north {
@@ -206,7 +212,7 @@ body {
 }
 
 .ui-datatable-header {
-    /* TODO : RGB of E/// header : 163:196:0 -> 0:131:182 */
+    /* TODO : RGB of E/// header : 163:196:0 -> 0:131:182  A3C400 -> 0083B6 */
     background-image: url(#{resource[ 'images/ericsson-green-blue-header.png' ]}) !important;
     background-size: 100% auto;
     /*background-color: #06b ;*/
@@ -231,8 +237,11 @@ body {
     height: 1.7em;
 }
 
-.ui-dialog {
-    -moz-box-shadow: 0 0 50px 5px #DDD !important;
-    -webkit-box-shadow: 0 0 50px 5px #DDD !important;
-    box-shadow: 0 0 50px 5px #DDD !important;
+.ui-menu .ui-state-hover {
+
+    background: none !important;
+    background-color: #A3C400 !important ;
 }
+
+
+

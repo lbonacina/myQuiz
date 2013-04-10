@@ -19,7 +19,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "type")
 @XmlRootElement(name = "question")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(propOrder = {"text", "discriminatorValue", "answers", "area", "level"})
+@XmlType(propOrder = {"text", "discriminatorValue", "answers", "area", "level", "code"})
 public abstract class Question {
 // ------------------------------ FIELDS ------------------------------
 
@@ -171,6 +171,7 @@ public abstract class Question {
         this.code = code;
     }
 
+    @XmlTransient
     public boolean isHtmlFormatted() {
 
         return htmlFormatted;

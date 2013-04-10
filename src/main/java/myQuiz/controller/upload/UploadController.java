@@ -46,7 +46,7 @@ public class UploadController implements Serializable {
 
     public void upload() throws IOException, InvalidFormatException {
 
-        NPOIFSFileSystem fs = new NPOIFSFileSystem(new File("/esmmt/questions.xls"));
+        NPOIFSFileSystem fs = new NPOIFSFileSystem(new File("/questions.xls"));
 
         try {
             Workbook wb = WorkbookFactory.create(fs);
@@ -54,7 +54,7 @@ public class UploadController implements Serializable {
             Sheet sheet = wb.getSheet("Java");
 
             int rowStart = Math.min(15, sheet.getFirstRowNum());
-            int rowEnd = Math.max(100, sheet.getLastRowNum());
+            int rowEnd = Math.max(200, sheet.getLastRowNum());
 
             log.debug("Opening file....");
             log.debug("Row Start : {}", rowStart);
